@@ -6,6 +6,7 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="CardFront" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("1_kwd8c")
 
 [node name="CardBack" type="Sprite2D" parent="."]
