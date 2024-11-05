@@ -40,7 +40,7 @@ position = Vector2(320, 240)
 texture = ExtResource("4_obhrf")
 
 [node name="Node2D" parent="." instance=ExtResource("1_etrgc")]
-position = Vector2(580, 429)
+position = Vector2(585, 413)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(320, 240)

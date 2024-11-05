@@ -1,13 +1,77 @@
-[gd_scene load_steps=3 format=3 uid="uid://cy6xfsj2qbdjs"]
+[gd_scene load_steps=5 format=3 uid="uid://cy6xfsj2qbdjs"]
 
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
+[ext_resource type="FontFile" uid="uid://bquqir84qilxq" path="res://Fonts/Kenney Pixel.ttf" id="2_6gjtp"]
 [ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="2_8rs7r"]
+[ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_gx64q"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="CardFront" type="Sprite2D" parent="."]
-visible = false
 texture = ExtResource("1_kwd8c")
 
+[node name="Cost" type="RichTextLabel" parent="CardFront"]
+offset_left = -53.0
+offset_top = -92.0
+offset_right = -39.0
+offset_bottom = -68.0
+theme_override_fonts/normal_font = ExtResource("2_6gjtp")
+theme_override_font_sizes/normal_font_size = 30
+text = "0"
+visible_characters = 1
+
+[node name="Health" type="RichTextLabel" parent="CardFront"]
+offset_left = 43.0
+offset_top = -92.0
+offset_right = 57.0
+offset_bottom = -68.0
+theme_override_fonts/normal_font = ExtResource("2_6gjtp")
+theme_override_font_sizes/normal_font_size = 30
+text = "0"
+visible_characters = 1
+
+[node name="Attack" type="RichTextLabel" parent="CardFront"]
+offset_left = 44.0
+offset_top = 68.0
+offset_right = 58.0
+offset_bottom = 92.0
+theme_override_fonts/normal_font = ExtResource("2_6gjtp")
+theme_override_font_sizes/normal_font_size = 30
+text = "0"
+visible_characters = 1
+
+[node name="CardName" type="RichTextLabel" parent="CardFront"]
+offset_left = -38.0
+offset_top = -86.0
+offset_right = 37.0
+offset_bottom = -73.0
+theme = ExtResource("3_gx64q")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("2_6gjtp")
+theme_override_font_sizes/normal_font_size = 16
+text = "An Overly Verbose And Realy long Text Name Test Name"
+scroll_active = false
+
+[node name="CardDescription" type="RichTextLabel" parent="CardFront"]
+offset_left = -40.0
+offset_top = 25.0
+offset_right = 40.0
+offset_bottom = 73.0
+theme = ExtResource("3_gx64q")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Rerum beatae aliquam perferendis neque. Quaerat et quisquam sint corrupti optio quis. Voluptas et non qui vitae rerum sint qui sunt.
+
+Ipsa voluptatum tempore omnis eius ipsam sit dolores. Ut quia culpa quis. Et consequuntur fugiat inventore.
+
+Dolores facere sit ea vel harum in cum et. Alias commodi illum autem tenetur. Ut rerum nihil quis. Doloribus molestiae sed dicta quo rerum expedita animi id. Inventore occaecati magnam ut pariatur.
+
+Accusamus in et doloremque ex. Laudantium aut animi quidem sint expedita voluptas omnis. Perferendis hic voluptatem ut at.
+
+Sed soluta non velit quae. Pariatur et corrupti illum neque quis. Reprehenderit id quisquam vero harum ipsum commodi quisquam cupiditate."
+scroll_active = false
+
 [node name="CardBack" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("2_8rs7r")
