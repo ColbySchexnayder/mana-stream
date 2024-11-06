@@ -19,9 +19,11 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var p1HandSeperationRatio = 1/ (1+player1hand.size())
+	
+	var p1HandSeperationRatio = p_1_hand.get_global_rect().size.x / (player1hand.size()+1)
 	p_1_hand.add_theme_constant_override("separation", p1HandSeperationRatio)
 
-
 func _on_p_1_deck_pressed() -> void:
-	pass
+	var drawnCard = Card.constructor()
+	player1hand.push_front(drawnCard)
+	p_1_hand.add_child(drawnCard)

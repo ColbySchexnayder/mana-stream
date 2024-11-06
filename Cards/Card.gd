@@ -14,6 +14,11 @@ enum position {
 var currentPosition := position.IN_DECK
 var exhausted := false
 
+const CARD = preload("res://Cards/Card.tscn")
+static func constructor():
+	var obj = CARD.instantiate()
+	return obj
+
 func onPlay() -> void:
 	pass
 
