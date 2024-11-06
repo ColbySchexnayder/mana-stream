@@ -19,7 +19,10 @@ static func constructor():
 	var obj = CARD.instantiate()
 	return obj
 
-func onPlay() -> void:
+func summon() -> void:
+	pass
+
+func mana() -> void:
 	pass
 
 func action() -> void:
