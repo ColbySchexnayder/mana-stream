@@ -8,10 +8,12 @@
 
 [node name="Card" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 113.0
-offset_bottom = 175.0
+anchor_right = 0.177
+anchor_bottom = 0.365
+offset_right = -0.279999
+offset_bottom = -0.200012
 pivot_offset = Vector2(56, 87)
+mouse_default_cursor_shape = 2
 script = ExtResource("1_hmu5p")
 
 [node name="CardFront" type="TextureRect" parent="."]
@@ -77,6 +79,7 @@ offset_bottom = 160.0
 theme = ExtResource("3_gx64q")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 16
 text = "Rerum beatae aliquam perferendis neque. Quaerat et quisquam sint corrupti optio quis. Voluptas et non qui vitae rerum sint qui sunt.
 
 Ipsa voluptatum tempore omnis eius ipsam sit dolores. Ut quia culpa quis. Et consequuntur fugiat inventore.
@@ -94,6 +97,40 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("2_8rs7r")
+
+[node name="InspectView" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_top = -44.0
+offset_right = 310.0
+offset_bottom = 267.0
+mouse_filter = 1
+
+[node name="ExpandedName" type="RichTextLabel" parent="InspectView"]
+layout_mode = 0
+offset_top = -30.0
+offset_right = 115.0
+offset_bottom = 40.0
+theme = ExtResource("3_gx64q")
+text = "An Overly Verbose and long winded test name"
+
+[node name="ExpandedDescription" type="RichTextLabel" parent="InspectView"]
+layout_mode = 0
+offset_left = 146.0
+offset_top = 46.0
+offset_right = 355.0
+offset_bottom = 219.0
+theme = ExtResource("3_gx64q")
+text = "An Overly Verbose and long winded test name"
+
+[node name="LoreText" type="RichTextLabel" parent="InspectView"]
+layout_mode = 0
+offset_left = -30.0
+offset_top = 221.0
+offset_right = 158.0
+offset_bottom = 319.0
+theme = ExtResource("3_gx64q")
+text = "An Overly Verbose and long winded test name"
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

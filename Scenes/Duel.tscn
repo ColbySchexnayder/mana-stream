@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dr7x5xbprtx2w" path="res://Backgrounds/starbackground1.png" id="2_mkbtj"]
 [ext_resource type="Texture2D" uid="uid://dhmbvsr0g6yvu" path="res://Backgrounds/starbackground2.png" id="3_luy51"]
 [ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="6_8c1q3"]
-[ext_resource type="Texture2D" uid="uid://bmj7s18xl3e6s" path="res://Art/heart.png" id="6_k5ebx"]
+[ext_resource type="Texture2D" uid="uid://bx1fpjvc0fhqe" path="res://Art/heart16.png" id="6_rwkrb"]
 [ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="7_o1sjj"]
 
 [node name="Duel" type="Node2D"]
@@ -86,18 +86,18 @@ texture_normal = ExtResource("6_8c1q3")
 
 [node name="TextureRect" type="TextureRect" parent="Control"]
 layout_mode = 0
-offset_left = 562.0
-offset_top = 234.0
-offset_right = 626.0
-offset_bottom = 298.0
-texture = ExtResource("6_k5ebx")
+offset_left = 583.0
+offset_top = 269.0
+offset_right = 615.0
+offset_bottom = 301.0
+texture = ExtResource("6_rwkrb")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control"]
 layout_mode = 0
-offset_left = 539.0
+offset_left = 545.0
 offset_top = 266.0
-offset_right = 602.0
-offset_bottom = 325.0
+offset_right = 584.0
+offset_bottom = 306.0
 theme = ExtResource("7_o1sjj")
 text = "10"
 

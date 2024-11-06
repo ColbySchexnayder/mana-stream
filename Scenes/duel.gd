@@ -10,6 +10,11 @@ var player2hand := []
 var player2summon := []
 var player2mana := []
 
+#TODO Implement this
+var field := []
+
+var inspectedCard
+
 var playersTurn := true
 
 @onready var p_1_summon_zone: HBoxContainer = $Control/Player1Zone/P1SummonZone
