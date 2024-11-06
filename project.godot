@@ -14,6 +14,10 @@ config/name="Mana Stream"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GmManager="*res://Scripts/GMManager.gd"
+
 [display]
 
 window/size/viewport_width=640
