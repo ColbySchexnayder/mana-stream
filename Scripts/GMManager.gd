@@ -1,4 +1,5 @@
 extends Node
 class_name GMManager
 
-var Player1Deck := []
+static var Player1Deck = []
+static var Player2Deck = []

@@ -23,6 +23,9 @@ func _ready() -> void:
 		drawnCard.currentPosition = Card.position.IN_HAND
 		player1hand.push_front(drawnCard)
 		p_1_hand.add_child(drawnCard)
+		
+		player1deck = GMManager.Player1Deck
+		player2deck = GMManager.Player2Deck
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,3 +45,7 @@ func _on_p_1_deck_pressed() -> void:
 	drawnCard.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(drawnCard)
 	p_1_hand.add_child(drawnCard)
+
+
+func _on_node_2d_gui_input(event: InputEvent) -> void:
+	pass # Replace with function body.

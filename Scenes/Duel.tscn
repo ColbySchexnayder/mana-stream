@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://cx5b2r46v00uw"]
+[gd_scene load_steps=8 format=3 uid="uid://cx5b2r46v00uw"]
 
 [ext_resource type="Texture2D" uid="uid://dsc3ly3yyje2k" path="res://Backgrounds/starbackground0.png" id="1_ku1mf"]
 [ext_resource type="Script" path="res://Scenes/duel.gd" id="1_ljhtk"]
 [ext_resource type="Texture2D" uid="uid://dr7x5xbprtx2w" path="res://Backgrounds/starbackground1.png" id="2_mkbtj"]
 [ext_resource type="Texture2D" uid="uid://dhmbvsr0g6yvu" path="res://Backgrounds/starbackground2.png" id="3_luy51"]
-[ext_resource type="PackedScene" uid="uid://cy6xfsj2qbdjs" path="res://Cards/Card.tscn" id="4_mw64r"]
 [ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="6_8c1q3"]
+[ext_resource type="Texture2D" uid="uid://bmj7s18xl3e6s" path="res://Art/heart.png" id="6_k5ebx"]
+[ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="7_o1sjj"]
 
 [node name="Duel" type="Node2D"]
 script = ExtResource("1_ljhtk")
@@ -45,12 +46,6 @@ texture = ExtResource("3_luy51")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(320, 240)
 
-[node name="Node2D" parent="." instance=ExtResource("4_mw64r")]
-offset_left = 870.0
-offset_top = 388.0
-offset_right = 983.0
-offset_bottom = 563.0
-
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -88,5 +83,22 @@ offset_top = 307.0
 offset_right = 638.0
 offset_bottom = 482.0
 texture_normal = ExtResource("6_8c1q3")
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = 562.0
+offset_top = 234.0
+offset_right = 626.0
+offset_bottom = 298.0
+texture = ExtResource("6_k5ebx")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 0
+offset_left = 539.0
+offset_top = 266.0
+offset_right = 602.0
+offset_bottom = 325.0
+theme = ExtResource("7_o1sjj")
+text = "10"
 
 [connection signal="pressed" from="Control/P1Deck" to="." method="_on_p_1_deck_pressed"]
