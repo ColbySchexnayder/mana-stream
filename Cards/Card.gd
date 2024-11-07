@@ -14,7 +14,7 @@ Accusamus in et doloremque ex. Laudantium aut animi quidem sint expedita volupta
 
 Sed soluta non velit quae. Pariatur et corrupti illum neque quis. Reprehenderit id quisquam vero harum ipsum commodi quisquam cupiditate."
 var cardLore := "An interesting and curious experience to peer behind the current and glimpse the unknowable"
-
+var tags = ['creature', 'testbug']
 enum position {
 	IN_DECK,
 	IN_HAND,
@@ -24,7 +24,9 @@ enum position {
 
 var currentPosition := position.IN_DECK
 var exhausted := false
-var inspected := 0
+var revealed := false
+
+@onready var card: Card = $"."
 
 @onready var card_front: TextureRect = $CardFront
 @onready var cost_text: RichTextLabel = $CardFront/Cost
@@ -40,6 +42,7 @@ var inspected := 0
 @onready var expanded_name: RichTextLabel = $InspectView/ExpandedName
 @onready var expanded_description: RichTextLabel = $InspectView/ExpandedDescription
 @onready var lore_text: RichTextLabel = $InspectView/LoreText
+@onready var tag_text: RichTextLabel = $InspectView/TagText
 
 
 const CARD = preload("res://Cards/Card.tscn")
@@ -55,7 +58,16 @@ func mana() -> void:
 
 func action() -> void:
 	pass
+
+func exhaust(card)-> void:
+	if card.exhausted:
+		return
+	card.card_back.scale.x = .5
+	card.card_back.scale.y = .5
 	
+func refresh(card)-> void:
+	pass
+
 func react() -> void:
 	pass
 
@@ -70,7 +82,10 @@ func _ready() -> void:
 	expanded_name.text = cardName
 	expanded_description.text = cardDescription
 	lore_text.text = cardLore
-
+	tag_text.text = tags[0] + ", " + tags[1]
+	
+	GmManager.connect("_card_exhaust", exhaust)
+	GmManager.connect("_card_activate", action)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -90,3 +105,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			card_front.visible = false
 			card_back.visible = true
 			currentPosition = position.IN_MANA
+			GmManager.emit_signal("_card_to_mana", self)
+		elif currentPosition == position.IN_MANA:
+			GmManager.emit_signal("_card_exhaust", self)
+			exhausted = true

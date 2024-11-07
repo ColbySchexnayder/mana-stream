@@ -94,8 +94,8 @@ scroll_active = false
 [node name="CardBack" type="TextureRect" parent="."]
 visible = false
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 113.0
+offset_bottom = 175.0
 texture = ExtResource("2_8rs7r")
 
 [node name="InspectView" type="Control" parent="."]
@@ -131,6 +131,15 @@ offset_right = 158.0
 offset_bottom = 319.0
 theme = ExtResource("3_gx64q")
 text = "An Overly Verbose and long winded test name"
+
+[node name="TagText" type="RichTextLabel" parent="InspectView"]
+layout_mode = 0
+offset_left = 141.0
+offset_top = -30.0
+offset_right = 338.0
+offset_bottom = 10.0
+theme = ExtResource("3_gx64q")
+text = "List of tagged values"
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

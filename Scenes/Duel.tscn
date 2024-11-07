@@ -68,8 +68,10 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="P1ManaZone" type="HBoxContainer" parent="Control/Player1Zone"]
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 120
 
 [node name="P1Hand" type="HBoxContainer" parent="Control/Player1Zone"]
 clip_contents = true
@@ -93,7 +95,7 @@ offset_right = 615.0
 offset_bottom = 301.0
 texture = ExtResource("6_rwkrb")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+[node name="P1Life" type="RichTextLabel" parent="Control"]
 layout_mode = 0
 offset_left = 545.0
 offset_top = 266.0
@@ -116,5 +118,14 @@ offset_left = 197.0
 offset_top = -49.0
 offset_right = 268.0
 offset_bottom = 7.0
+
+[node name="P1Mana" type="RichTextLabel" parent="Control"]
+layout_mode = 0
+offset_left = 544.0
+offset_top = 239.0
+offset_right = 595.0
+offset_bottom = 263.0
+theme = ExtResource("7_o1sjj")
+text = "0/0"
 
 [connection signal="pressed" from="Control/P1Deck" to="." method="_on_p_1_deck_pressed"]

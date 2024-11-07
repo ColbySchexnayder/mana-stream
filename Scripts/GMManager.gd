@@ -7,3 +7,5 @@ var Player2Deck = []
 signal _card_select(card)
 signal _card_to_mana(card)
 signal _card_exhaust(card)
+signal _card_activate(card)
+signal _card_refresh(card)
