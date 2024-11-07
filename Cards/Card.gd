@@ -24,7 +24,7 @@ enum position {
 
 var currentPosition := position.IN_DECK
 var exhausted := false
-var inspected := false
+var inspected := 0
 
 @onready var card_front: TextureRect = $CardFront
 @onready var cost_text: RichTextLabel = $CardFront/Cost
@@ -33,6 +33,8 @@ var inspected := false
 
 @onready var name_text: RichTextLabel = $CardFront/CardName
 @onready var description_text: RichTextLabel = $CardFront/CardDescription
+
+@onready var card_back: TextureRect = $CardBack
 
 @onready var inspect_view: Control = $InspectView
 @onready var expanded_name: RichTextLabel = $InspectView/ExpandedName
@@ -81,9 +83,10 @@ func _on_mouse_entered() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if (event.is_action_pressed("activate")):
-		if not inspected:
-			inspected = true
-			inspect_view.visible = true
-		else:
-			inspected = false
-			inspect_view.visible = false
+		GmManager.emit_signal("_card_select", self)
+		
+	elif (event.is_action_pressed("alternate")):
+		if currentPosition == position.IN_HAND:
+			card_front.visible = false
+			card_back.visible = true
+			currentPosition = position.IN_MANA

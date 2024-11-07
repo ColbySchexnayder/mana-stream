@@ -10,8 +10,6 @@ var player2hand := []
 var player2summon := []
 var player2mana := []
 
-#TODO Implement this
-var field := []
 
 var inspectedCard
 
@@ -20,6 +18,7 @@ var playersTurn := true
 @onready var p_1_summon_zone: HBoxContainer = $Control/Player1Zone/P1SummonZone
 @onready var p_1_mana_zone: HBoxContainer = $Control/Player1Zone/P1ManaZone
 @onready var p_1_hand: HBoxContainer = $Control/Player1Zone/P1Hand
+@onready var inspection_area: Control = $Control/InspectionArea/CenterContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -29,8 +28,10 @@ func _ready() -> void:
 		player1hand.push_front(drawnCard)
 		p_1_hand.add_child(drawnCard)
 		
-		player1deck = GMManager.Player1Deck
-		player2deck = GMManager.Player2Deck
+		
+	player1deck = GmManager.Player1Deck
+	player2deck = GmManager.Player2Deck
+	GmManager.connect("_card_select", card_select)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,6 +45,20 @@ func _process(delta: float) -> void:
 	
 	var p1SummonSeperationRatio = p_1_summon_zone.get_global_rect().size.x / (player1summon.size()+1)
 	p_1_summon_zone.add_theme_constant_override("seperation", p1SummonSeperationRatio)
+	
+
+func card_select(card):
+	if inspection_area.get_child_count() == 0:
+		card.reparent(inspection_area)
+		card.inspect_view.visible = true
+	elif inspection_area.get_child(0) == card:
+		match (card.currentPosition):
+			card.position.IN_HAND:
+				card.inspected = 0
+				card.reparent(p_1_hand)
+				card.inspect_view.visible = false
+	
+
 
 func _on_p_1_deck_pressed() -> void:
 	var drawnCard = Card.constructor()
