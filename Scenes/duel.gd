@@ -40,6 +40,7 @@ func _ready() -> void:
 	GmManager.connect("_card_select", card_select)
 	GmManager.connect("_card_to_mana", card_to_mana)
 	GmManager.connect("_card_exhaust", card_exhaust)
+	GmManager.connect("_card_summon", card_summon)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -60,6 +61,7 @@ func card_to_mana(card):
 	player1mana.push_front(card)
 	player1hand.erase(card)
 	card.reparent(p_1_mana_zone)
+	card.inspect_view.visible = false
 	
 	
 	totalMana += 1
@@ -72,8 +74,11 @@ func card_select(card):
 		card.card_front.visible = true
 		card.card_back.scale.x = 1
 		card.card_back.scale.y = 1
+		if card.currentPosition == card.position.IN_HAND:
+			card.summon_button.visible = true
 	elif inspection_area.get_child(0) == card:
 		card.inspect_view.visible = false
+		card.summon_button.visible = false
 		match (card.currentPosition):
 			card.position.IN_HAND:
 				card.reparent(p_1_hand)
@@ -85,8 +90,22 @@ func card_select(card):
 				if card.exhausted:
 					card.card_back.scale.x = .5
 					card.card_back.scale.y = .5
+			card.position.IN_SUMMON:
+				card.reparent(p_1_summon_zone)
 				
 	
+
+func card_summon(card):
+	if card.currentPosition != card.position.IN_HAND:
+		return
+	if card.cost <= availableMana:
+		availableMana -= card.cost
+		player1summon.push_front(card)
+		player1hand.erase(card)
+		card.reparent(p_1_summon_zone)
+		card.currentPosition  = card.position.IN_SUMMON
+		card.summon_button.visible = false
+		card.inspect_view.visible = false
 
 func card_exhaust(card):
 	if card.exhausted:

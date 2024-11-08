@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://cy6xfsj2qbdjs"]
+[gd_scene load_steps=8 format=3 uid="uid://cy6xfsj2qbdjs"]
 
 [ext_resource type="Script" path="res://Cards/Card.gd" id="1_hmu5p"]
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
 [ext_resource type="FontFile" uid="uid://bquqir84qilxq" path="res://Fonts/Kenney Pixel.ttf" id="2_6gjtp"]
 [ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="2_8rs7r"]
 [ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_gx64q"]
+[ext_resource type="StyleBox" uid="uid://cg5rh6mn7nl38" path="res://Cards/InspectViewStyleBox.tres" id="6_n0a8q"]
+[ext_resource type="Texture2D" uid="uid://b7nwbk5jorkbu" path="res://Art/summonButton.png" id="6_rhvt5"]
 
 [node name="Card" type="Control"]
 layout_mode = 3
@@ -112,6 +114,7 @@ offset_top = -30.0
 offset_right = 115.0
 offset_bottom = 40.0
 theme = ExtResource("3_gx64q")
+theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "An Overly Verbose and long winded test name"
 
 [node name="ExpandedDescription" type="RichTextLabel" parent="InspectView"]
@@ -121,6 +124,7 @@ offset_top = 46.0
 offset_right = 355.0
 offset_bottom = 219.0
 theme = ExtResource("3_gx64q")
+theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "An Overly Verbose and long winded test name"
 
 [node name="LoreText" type="RichTextLabel" parent="InspectView"]
@@ -130,6 +134,7 @@ offset_top = 221.0
 offset_right = 158.0
 offset_bottom = 319.0
 theme = ExtResource("3_gx64q")
+theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "An Overly Verbose and long winded test name"
 
 [node name="TagText" type="RichTextLabel" parent="InspectView"]
@@ -139,7 +144,27 @@ offset_top = -30.0
 offset_right = 338.0
 offset_bottom = 10.0
 theme = ExtResource("3_gx64q")
+theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "List of tagged values"
+
+[node name="SummonButton" type="TextureButton" parent="InspectView"]
+visible = false
+layout_mode = 0
+offset_left = -124.0
+offset_top = 91.0
+offset_right = -35.0
+offset_bottom = 131.0
+texture_normal = ExtResource("6_rhvt5")
+
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/SummonButton"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = -2.0
+offset_right = 120.0
+offset_bottom = 38.0
+mouse_filter = 1
+text = "Summon?"
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="pressed" from="InspectView/SummonButton" to="." method="_on_summon_button_pressed"]

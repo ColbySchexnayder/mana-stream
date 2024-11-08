@@ -44,6 +44,7 @@ var revealed := false
 @onready var lore_text: RichTextLabel = $InspectView/LoreText
 @onready var tag_text: RichTextLabel = $InspectView/TagText
 
+@onready var summon_button: TextureButton = $InspectView/SummonButton
 
 const CARD = preload("res://Cards/Card.tscn")
 static func constructor():
@@ -84,6 +85,8 @@ func _ready() -> void:
 	lore_text.text = cardLore
 	tag_text.text = tags[0] + ", " + tags[1]
 	
+	summon_button.hide()
+	
 	GmManager.connect("_card_exhaust", exhaust)
 	GmManager.connect("_card_activate", action)
 
@@ -109,3 +112,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		elif currentPosition == position.IN_MANA:
 			GmManager.emit_signal("_card_exhaust", self)
 			exhausted = true
+
+
+func _on_summon_button_pressed() -> void:
+	GmManager.emit_signal("_card_summon", self)
