@@ -62,6 +62,9 @@ func mana() -> void:
 func action() -> void:
 	pass
 
+func destroy() -> void:
+	GmManager.emit_signal("_move_to_deck", card)
+
 func exhaust(card)-> void:
 	if card.exhausted:
 		return

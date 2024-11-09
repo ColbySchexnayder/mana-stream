@@ -42,6 +42,7 @@ var attackingCard
 @onready var p_2_mana_zone: HBoxContainer = $Control/Player2Zone/P2ManaZone
 @onready var p_2_summon_zone: HBoxContainer = $Control/Player2Zone/P2SummonZone
 
+@onready var ai: AI_Manager = $AI
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -72,11 +73,27 @@ func _ready() -> void:
 	
 	player1deck = GmManager.Player1Deck
 	player2deck = GmManager.Player2Deck
+	
+	
+	ai.ai_deck = player2deck
+	ai.ai_hand = player2hand
+	ai.ai_mana_zone = player2mana
+	ai.ai_summon_zone = player2summon
+	
+	ai.player_deck = player1deck
+	ai.player_hand = player1hand
+	ai.player_summon_zone = player1summon
+	ai.player_mana_zone = player1mana
+	
 	GmManager.connect("_card_select", card_select)
 	GmManager.connect("_card_to_mana", card_to_mana)
 	GmManager.connect("_card_summon", card_summon)
 	GmManager.connect("_add_to_mana", add_to_mana)
 	GmManager.connect("_card_attack", card_attack)
+	GmManager.connect("_move_to_deck", move_to_deck)
+	GmManager.connect("_card_block", card_block)
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -131,7 +148,13 @@ func card_select(card):
 			if card.currentPosition == card.position.IN_HAND:
 				card.summon_button.visible = true
 			if card.currentPosition == card.position.IN_SUMMON and !card.exhausted:
-				card.attack_button.visible = true
+				if !attacking:
+					card.attack_button.visible = true
+				elif !playersTurn:
+					card.block_button.visible = true
+			if card.currentPosition == card.position.IN_DECK:
+				card.call_deferred("queue_free")
+			
 	elif inspection_area.get_child(0) == card:
 		card.inspect_view.visible = false
 		card.summon_button.visible = false
@@ -150,7 +173,7 @@ func card_select(card):
 					card.reparent(p_2_hand)
 			card.position.IN_MANA:
 				if card.cardOwner == 1:
-					card.reparent(p_1_mana_zone)					
+					card.reparent(p_1_mana_zone)
 					if not card.revealed:
 						card.card_back.visible = true
 						card.card_front.visible = false
@@ -177,7 +200,32 @@ func card_summon(card):
 		card.summon_button.visible = false
 		card.inspect_view.visible = false
 
-
+func move_to_deck(card):
+	if card.cardOwner == 1:
+		player1deck.push_back(card)
+		match card.currentPosition:
+			card.position.IN_SUMMON:
+				player1summon.erase(card)
+			card.position.IN_MANA:
+				player1mana.erase(card)
+			card.position.IN_HAND:
+				player1hand.erase(card)
+	else:
+		player2deck.push_back(card)
+		match card.currentPosition:
+			card.position.IN_SUMMON:
+				player2summon.erase(card)
+			card.position.IN_MANA:
+				player2mana.erase(card)
+			card.position.IN_HAND:
+				player2hand.erase(card)
+	
+	card.currentPosition = Card.position.IN_DECK
+	
+	card.call_deferred("queue_free")
+	
+	for c in player1deck:
+		print(c.cardName)
 
 func add_to_mana(card, manaToAdd):
 	availableMana += manaToAdd
@@ -193,9 +241,16 @@ func card_attack(card):
 		return
 	attackingCard = card
 	attacking = true
+	GmManager.emit_signal("_choose_defense", card)
+	
 
 func card_block(card):
-	pass
+	if (attackingCard.attack > card.health):
+		card.destroy()
+	if (card.attack > attackingCard.health):
+		attackingCard.destroy()
+	
+	attacking = false
 
 func card_battle(attack_card, block_card):
 	pass
