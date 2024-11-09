@@ -10,12 +10,19 @@ var player2hand := []
 var player2summon := []
 var player2mana := []
 
+var health := 10
 var totalMana := 0
 var availableMana := 0
+
+var p2Health := 10
+var p2TotalMana := 0
+var p2AvailableMana := 0
 
 var inspectedCard
 
 var playersTurn := true
+var attacking := false
+var attackingCard
 
 
 @onready var player_1_zone: VBoxContainer = $Control/Player1Zone
@@ -25,6 +32,16 @@ var playersTurn := true
 @onready var p_1_hand: HBoxContainer = $Control/Player1Zone/P1Hand
 @onready var inspection_area: Control = $Control/InspectionArea/CenterContainer
 @onready var p_1_mana: RichTextLabel = $Control/P1Mana
+@onready var p_1_life: RichTextLabel = $Control/P1Life
+
+@onready var p_2_life: RichTextLabel = $Control/P2Life
+@onready var p_2_mana: RichTextLabel = $Control/P2Mana
+@onready var player_2_zone: VBoxContainer = $Control/Player2Zone
+
+@onready var p_2_hand: HBoxContainer = $Control/Player2Zone/P2Hand
+@onready var p_2_mana_zone: HBoxContainer = $Control/Player2Zone/P2ManaZone
+@onready var p_2_summon_zone: HBoxContainer = $Control/Player2Zone/P2SummonZone
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,14 +51,32 @@ func _ready() -> void:
 		player1hand.push_front(drawnCard)
 		p_1_hand.add_child(drawnCard)
 		
+		var opponentsCard = Card.constructor()
+		opponentsCard.cardOwner = 2
+		opponentsCard.currentPosition = Card.position.IN_HAND
+		opponentsCard.revealed = false
 		
+		player2hand.push_front(opponentsCard)
+		p_2_hand.add_child(opponentsCard)
+		opponentsCard.card_front.visible = false
+		opponentsCard.card_back.visible = true
+	
+	var opponentsDefense = Card.constructor()
+	opponentsDefense.cardOwner = 2
+	opponentsDefense.currentPosition = Card.position.IN_SUMMON
+	p_2_summon_zone.add_child(opponentsDefense)
+	player2summon.push_front(opponentsDefense)
+	
+	p_1_life.text = str(health)
+	p_2_life.text = str(p2Health)
+	
 	player1deck = GmManager.Player1Deck
 	player2deck = GmManager.Player2Deck
 	GmManager.connect("_card_select", card_select)
 	GmManager.connect("_card_to_mana", card_to_mana)
-	GmManager.connect("_card_exhaust", card_exhaust)
 	GmManager.connect("_card_summon", card_summon)
-
+	GmManager.connect("_add_to_mana", add_to_mana)
+	GmManager.connect("_card_attack", card_attack)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -56,17 +91,33 @@ func _process(delta: float) -> void:
 	p_1_summon_zone.add_theme_constant_override("separation", p1SummonSeperationRatio)
 	
 	p_1_mana.text = str(availableMana) + "/" + str(totalMana)
+	
+	
+	var p2HandSeperationRatio = player_2_zone.get_global_rect().size.x / (player2hand.size()+1)
+	p_2_hand.add_theme_constant_override("separation", p2HandSeperationRatio)
+	
+	var p2ManaSeperationRatio = player_2_zone.get_global_rect().size.x / (player2mana.size()+1)
+	p_2_mana_zone.add_theme_constant_override("separation", p2ManaSeperationRatio)
+	
+	var p2SummonSeperationRatio = player_2_zone.get_global_rect().size.x / (player2summon.size()+1)
+	p_2_summon_zone.add_theme_constant_override("separation", p2SummonSeperationRatio)
+	
+	p_2_mana.text = str(p2AvailableMana) + "/" + str(p2TotalMana)
 
 func card_to_mana(card):
 	player1mana.push_front(card)
 	player1hand.erase(card)
 	card.reparent(p_1_mana_zone)
 	card.inspect_view.visible = false
+	card.revealed = false
 	
 	
 	totalMana += 1
 
 func card_select(card):
+	if (card.cardOwner == 2 and !card.revealed):
+		return
+		
 	if inspection_area.get_child_count() == 0:
 		card.reparent(inspection_area)
 		card.inspect_view.visible = true
@@ -74,24 +125,43 @@ func card_select(card):
 		card.card_front.visible = true
 		card.card_back.scale.x = 1
 		card.card_back.scale.y = 1
-		if card.currentPosition == card.position.IN_HAND:
-			card.summon_button.visible = true
+		card.card_front.scale.x = 1
+		card.card_front.scale.y = 1
+		if card.cardOwner == 1:
+			if card.currentPosition == card.position.IN_HAND:
+				card.summon_button.visible = true
+			if card.currentPosition == card.position.IN_SUMMON and !card.exhausted:
+				card.attack_button.visible = true
 	elif inspection_area.get_child(0) == card:
 		card.inspect_view.visible = false
 		card.summon_button.visible = false
+		card.attack_button.visible = false
+		card.block_button.visible = false
+		if card.exhausted:
+			card.card_back.scale.x = .5
+			card.card_back.scale.y = .5
+			card.card_front.scale.x = .5
+			card.card_front.scale.y = .5
 		match (card.currentPosition):
 			card.position.IN_HAND:
-				card.reparent(p_1_hand)
+				if card.cardOwner == 1:
+					card.reparent(p_1_hand)
+				else:
+					card.reparent(p_2_hand)
 			card.position.IN_MANA:
-				card.reparent(p_1_mana_zone)
-				if not card.revealed:
-					card.card_back.visible = true
-					card.card_front.visible = false
-				if card.exhausted:
-					card.card_back.scale.x = .5
-					card.card_back.scale.y = .5
+				if card.cardOwner == 1:
+					card.reparent(p_1_mana_zone)					
+					if not card.revealed:
+						card.card_back.visible = true
+						card.card_front.visible = false
+				else:
+					card.reparent(p_2_mana_zone)
+				
 			card.position.IN_SUMMON:
-				card.reparent(p_1_summon_zone)
+				if card.cardOwner == 1:
+					card.reparent(p_1_summon_zone)
+				else:
+					card.reparent(p_2_summon_zone)
 				
 	
 
@@ -107,12 +177,30 @@ func card_summon(card):
 		card.summon_button.visible = false
 		card.inspect_view.visible = false
 
-func card_exhaust(card):
-	if card.exhausted:
+
+
+func add_to_mana(card, manaToAdd):
+	availableMana += manaToAdd
+
+func card_attack(card):
+	card_select(card)
+	if playersTurn and player2summon.size() == 0:
+		GmManager.emit_signal("_card_exhaust", card)
+		p2Health -= card.attack
+		p_2_life.text = str(p2Health)
+		if p2Health == 0:
+			pass #TODO GAME VICTORY CODE HERE
 		return
-		
-	availableMana += 1
-	
+	attackingCard = card
+	attacking = true
+
+func card_block(card):
+	pass
+
+func card_battle(attack_card, block_card):
+	pass
+
+
 func _on_p_1_deck_pressed() -> void:
 	var drawnCard = Card.constructor()
 	drawnCard.currentPosition = Card.position.IN_HAND
@@ -121,4 +209,8 @@ func _on_p_1_deck_pressed() -> void:
 
 
 func _on_node_2d_gui_input(event: InputEvent) -> void:
+	pass # Replace with function body.
+
+
+func _on_pass_button_pressed() -> void:
 	pass # Replace with function body.

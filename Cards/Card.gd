@@ -24,8 +24,8 @@ enum position {
 
 var currentPosition := position.IN_DECK
 var exhausted := false
-var revealed := false
-
+var revealed := true
+var cardOwner := 1
 @onready var card: Card = $"."
 
 @onready var card_front: TextureRect = $CardFront
@@ -45,6 +45,8 @@ var revealed := false
 @onready var tag_text: RichTextLabel = $InspectView/TagText
 
 @onready var summon_button: TextureButton = $InspectView/SummonButton
+@onready var attack_button: TextureButton = $InspectView/AttackButton
+@onready var block_button: TextureButton = $InspectView/BlockButton
 
 const CARD = preload("res://Cards/Card.tscn")
 static func constructor():
@@ -63,8 +65,11 @@ func action() -> void:
 func exhaust(card)-> void:
 	if card.exhausted:
 		return
+	card.exhausted = true
 	card.card_back.scale.x = .5
 	card.card_back.scale.y = .5
+	card.card_front.scale.x = .5
+	card.card_front.scale.y = .5
 	
 func refresh(card)-> void:
 	pass
@@ -86,6 +91,8 @@ func _ready() -> void:
 	tag_text.text = tags[0] + ", " + tags[1]
 	
 	summon_button.hide()
+	attack_button.hide()
+	block_button.hide()
 	
 	GmManager.connect("_card_exhaust", exhaust)
 	GmManager.connect("_card_activate", action)
@@ -103,16 +110,24 @@ func _on_gui_input(event: InputEvent) -> void:
 	if (event.is_action_pressed("activate")):
 		GmManager.emit_signal("_card_select", self)
 		
-	elif (event.is_action_pressed("alternate")):
+	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1:
 		if currentPosition == position.IN_HAND:
 			card_front.visible = false
 			card_back.visible = true
 			currentPosition = position.IN_MANA
 			GmManager.emit_signal("_card_to_mana", self)
-		elif currentPosition == position.IN_MANA:
+		elif currentPosition == position.IN_MANA and !exhausted:
+			GmManager.emit_signal("_add_to_mana", self, 1)
 			GmManager.emit_signal("_card_exhaust", self)
-			exhausted = true
 
 
 func _on_summon_button_pressed() -> void:
 	GmManager.emit_signal("_card_summon", self)
+
+
+func _on_attack_button_pressed() -> void:
+	GmManager.emit_signal("_card_attack", self)
+
+
+func _on_block_button_pressed() -> void:
+	pass # Replace with function body.
