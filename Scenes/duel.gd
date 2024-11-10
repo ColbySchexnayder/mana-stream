@@ -62,6 +62,11 @@ func _ready() -> void:
 		opponentsCard.card_front.visible = false
 		opponentsCard.card_back.visible = true
 	
+	var testSpell = SpellCard.constructor()
+	testSpell.currentPosition = Card.position.IN_HAND
+	player1hand.push_front(testSpell)
+	p_1_hand.add_child(testSpell)
+	
 	var opponentsDefense = Card.constructor()
 	opponentsDefense.cardOwner = 2
 	opponentsDefense.currentPosition = Card.position.IN_SUMMON
@@ -199,6 +204,7 @@ func card_summon(card):
 		card.currentPosition  = card.position.IN_SUMMON
 		card.summon_button.visible = false
 		card.inspect_view.visible = false
+		GmManager.emit_signal("_resolve_summon", card)
 
 func move_to_deck(card):
 	if card.cardOwner == 1:
