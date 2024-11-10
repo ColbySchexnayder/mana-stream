@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://doo2vnqj80csx"]
+
+[ext_resource type="Texture2D" uid="uid://dcexpf3lcwll4" path="res://Art/rainbowgradienthorizontal.png" id="1_k6uca"]
+[ext_resource type="Texture2D" uid="uid://wivjdglbnywb" path="res://Art/titledScreenMonochromelight.png" id="2_s6tup"]
+[ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_mcbiv"]
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.8, 0.8)
+repeat_size = Vector2(640, 480)
+autoscroll = Vector2(-150, -150)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+texture = ExtResource("1_k6uca")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_s6tup")
+
+[node name="NewGameButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 243.0
+offset_right = 281.0
+offset_bottom = 279.0
+theme = ExtResource("3_mcbiv")
+theme_override_font_sizes/font_size = 36
+text = "New Game?"
+
+[node name="DeckEditButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 282.0
+offset_right = 281.0
+offset_bottom = 318.0
+theme = ExtResource("3_mcbiv")
+theme_override_font_sizes/font_size = 36
+text = "Deck Edit?"
+
+[node name="ContinueButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 205.0
+offset_right = 281.0
+offset_bottom = 241.0
+theme = ExtResource("3_mcbiv")
+theme_override_font_sizes/font_size = 36
+text = "Continue?"
