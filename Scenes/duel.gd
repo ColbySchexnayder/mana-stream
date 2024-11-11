@@ -42,6 +42,9 @@ var attackingCard
 @onready var p_2_mana_zone: HBoxContainer = $Control/Player2Zone/P2ManaZone
 @onready var p_2_summon_zone: HBoxContainer = $Control/Player2Zone/P2SummonZone
 
+@onready var p_1_deck: PanelContainer = $Control/P1Deck
+@onready var p_2_deck: PanelContainer = $Control/P2Deck
+
 @onready var ai: AI_Manager = $AI
 
 # Called when the node enters the scene tree for the first time.
@@ -207,8 +210,16 @@ func card_summon(card):
 		GmManager.emit_signal("_resolve_summon", card)
 
 func move_to_deck(card):
+	if card.currentPosition == Card.position.IN_DECK:
+		return
+		
+	card.card_front.visible = false
+	card.card_back.visible = true
+	card.inspect_view.visible = false
+	
 	if card.cardOwner == 1:
 		player1deck.push_back(card)
+		card.reparent(p_1_deck)
 		match card.currentPosition:
 			card.position.IN_SUMMON:
 				player1summon.erase(card)
@@ -218,6 +229,7 @@ func move_to_deck(card):
 				player1hand.erase(card)
 	else:
 		player2deck.push_back(card)
+		card.reparent(p_2_deck)
 		match card.currentPosition:
 			card.position.IN_SUMMON:
 				player2summon.erase(card)
@@ -227,8 +239,8 @@ func move_to_deck(card):
 				player2hand.erase(card)
 	
 	card.currentPosition = Card.position.IN_DECK
-	
-	card.call_deferred("queue_free")
+	card.hide()
+	#card.call_deferred("queue_free")
 	
 	for c in player1deck:
 		print(c.cardName)

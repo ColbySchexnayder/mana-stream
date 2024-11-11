@@ -118,19 +118,25 @@ layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="P1Deck" type="TextureButton" parent="Control"]
+[node name="P1Deck" type="PanelContainer" parent="Control"]
 layout_mode = 0
 offset_left = 525.0
 offset_top = 307.0
-offset_right = 638.0
+offset_right = 635.0
 offset_bottom = 482.0
+
+[node name="P1DeckButton" type="TextureButton" parent="Control/P1Deck"]
+layout_mode = 2
 texture_normal = ExtResource("6_8c1q3")
 
-[node name="P1Deck2" type="TextureButton" parent="Control"]
+[node name="P2Deck" type="PanelContainer" parent="Control"]
 layout_mode = 0
 offset_left = 1.0
-offset_right = 114.0
-offset_bottom = 175.0
+offset_right = 104.0
+offset_bottom = 181.0
+
+[node name="P2DeckButton" type="TextureButton" parent="Control/P2Deck"]
+layout_mode = 2
 texture_normal = ExtResource("6_8c1q3")
 
 [node name="P1LifeIcon" type="TextureRect" parent="Control"]
@@ -221,5 +227,5 @@ offset_bottom = 7.0
 [node name="AI" type="Node" parent="."]
 script = ExtResource("10_qiwog")
 
-[connection signal="pressed" from="Control/P1Deck" to="." method="_on_p_1_deck_pressed"]
+[connection signal="pressed" from="Control/P1Deck/P1DeckButton" to="." method="_on_p_1_deck_pressed"]
 [connection signal="pressed" from="Control/PassButton" to="." method="_on_pass_button_pressed"]

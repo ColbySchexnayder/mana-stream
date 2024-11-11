@@ -17,6 +17,8 @@ func _ready() -> void:
 
 func resolve_cast(card):
 	await 1
+	if card.tags[0] != "spell":
+		return
 	if card.currentPosition == Card.position.IN_SUMMON:
 		print('success')
 		destroy()
