@@ -14,7 +14,7 @@ Accusamus in et doloremque ex. Laudantium aut animi quidem sint expedita volupta
 
 Sed soluta non velit quae. Pariatur et corrupti illum neque quis. Reprehenderit id quisquam vero harum ipsum commodi quisquam cupiditate."
 var cardLore := "An interesting and curious experience to peer behind the current and glimpse the unknowable"
-var tags = ['creature', 'testbug']
+var tags = ['Creature', 'testbug']
 enum position {
 	IN_DECK,
 	IN_HAND,
@@ -59,7 +59,13 @@ func summon() -> void:
 func mana() -> void:
 	pass
 
+func attacking() -> void:
+	pass
+
 func action() -> void:
+	pass
+	
+func block() -> void:
 	pass
 
 func destroy() -> void:
@@ -126,11 +132,13 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func _on_summon_button_pressed() -> void:
 	GmManager.emit_signal("_card_summon", self)
+	summon()
 
 
 func _on_attack_button_pressed() -> void:
 	GmManager.emit_signal("_card_attack", self)
+	attacking()
 
 
 func _on_block_button_pressed() -> void:
-	pass # Replace with function body.
+	block() # Replace with function body.
