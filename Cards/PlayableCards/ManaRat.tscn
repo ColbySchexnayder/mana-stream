@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c0wwisl22lkk2"]
 
 [ext_resource type="PackedScene" uid="uid://cy6xfsj2qbdjs" path="res://Cards/Card.tscn" id="1_p1td6"]
-[ext_resource type="Script" path="res://Cards/PlayableCards/ManaRat.gd" id="2_dy61x"]
+[ext_resource type="Script" path="res://Cards/CardScripts/ManaRat.gd" id="2_dy61x"]
 [ext_resource type="Texture2D" uid="uid://dqv33n4pntr1g" path="res://Cards/CardArt/manarat2.png" id="2_f813s"]
 
 [node name="Card" instance=ExtResource("1_p1td6")]

@@ -54,6 +54,8 @@ static func constructor():
 	return obj
 
 func summon() -> void:
+	await GmManager._interrupt_resolved
+	print("summoned")
 	pass
 
 func mana() -> void:
