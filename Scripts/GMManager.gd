@@ -18,6 +18,6 @@ signal _move_to_deck(card)
 signal _choose_defense(card)
 signal _resolve_summon(card)
 
-signal _interrupt()
+signal _interrupt(card)
 signal _interrupt_resolved()
 signal _pass()

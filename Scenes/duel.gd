@@ -24,6 +24,7 @@ var playersTurn := true
 var attacking := false
 var attackingCard
 
+var cardIndex
 
 @onready var player_1_zone: VBoxContainer = $Control/Player1Zone
 
@@ -45,6 +46,8 @@ var attackingCard
 @onready var p_1_deck: PanelContainer = $Control/P1Deck
 @onready var p_2_deck: PanelContainer = $Control/P2Deck
 
+@onready var interrupt_choice: Control = $Control/InterruptChoice
+
 @onready var ai: AI_Manager = $AI
 
 # Called when the node enters the scene tree for the first time.
@@ -65,7 +68,7 @@ func _ready() -> void:
 		opponentsCard.card_front.visible = false
 		opponentsCard.card_back.visible = true
 	
-	var testSpell = SpellCard.constructor()
+	var testSpell = Briarpatch.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
 	p_1_hand.add_child(testSpell)
@@ -100,6 +103,7 @@ func _ready() -> void:
 	GmManager.connect("_card_attack", card_attack)
 	GmManager.connect("_move_to_deck", move_to_deck)
 	GmManager.connect("_card_block", card_block)
+	GmManager.connect("_interrupt", interrupt)
 	
 	
 
@@ -144,10 +148,12 @@ func card_select(card):
 		return
 		
 	if inspection_area.get_child_count() == 0:
+		cardIndex = card.get_index()
 		card.reparent(inspection_area)
 		card.inspect_view.visible = true
 		card.card_back.visible = false
 		card.card_front.visible = true
+		card.card_art.visible = true
 		card.card_back.scale.x = 1
 		card.card_back.scale.y = 1
 		card.card_front.scale.x = 1
@@ -177,22 +183,28 @@ func card_select(card):
 			card.position.IN_HAND:
 				if card.cardOwner == 1:
 					card.reparent(p_1_hand)
+					p_1_hand.move_child(card, cardIndex)
 				else:
 					card.reparent(p_2_hand)
+					p_2_hand.move_child(card, cardIndex)
 			card.position.IN_MANA:
 				if card.cardOwner == 1:
 					card.reparent(p_1_mana_zone)
+					p_1_mana_zone.move_child(card, cardIndex)
 					if not card.revealed:
 						card.card_back.visible = true
 						card.card_front.visible = false
+						card.card_art.visible = false
 				else:
 					card.reparent(p_2_mana_zone)
 				
 			card.position.IN_SUMMON:
 				if card.cardOwner == 1:
 					card.reparent(p_1_summon_zone)
+					p_1_summon_zone.move_child(card, cardIndex)
 				else:
 					card.reparent(p_2_summon_zone)
+					p_2_summon_zone.move_child(card, cardIndex)
 				
 	
 
@@ -273,6 +285,17 @@ func card_block(card):
 func card_battle(attack_card, block_card):
 	pass
 
+func interrupt(card):
+	"""
+	Present interrupt options
+	IF interruptButtonPressed
+	SELECT VALID CARD TO INTERRUPT
+	IF passButtonPressed
+	PROCEED WITH TURN
+	"""
+	interrupt_choice.show()
+	
+	pass
 
 func _on_p_1_deck_pressed() -> void:
 	var drawnCard = Card.constructor()
@@ -287,3 +310,11 @@ func _on_node_2d_gui_input(event: InputEvent) -> void:
 
 func _on_pass_button_pressed() -> void:
 	pass # Replace with function body.
+
+
+func _on_interrupt_button_pressed() -> void:
+	interrupt_choice.hide()
+
+
+func _on_interrupt_pass_button_pressed() -> void:
+	interrupt_choice.hide()

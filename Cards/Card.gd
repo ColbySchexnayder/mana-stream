@@ -48,6 +48,8 @@ var cardOwner := 1
 @onready var attack_button: TextureButton = $InspectView/AttackButton
 @onready var block_button: TextureButton = $InspectView/BlockButton
 
+@onready var card_art: TextureRect = $CardArt
+
 const CARD = preload("res://Cards/Card.tscn")
 static func constructor():
 	var obj = CARD.instantiate()
@@ -81,9 +83,19 @@ func exhaust(card)-> void:
 	card.card_back.scale.y = .5
 	card.card_front.scale.x = .5
 	card.card_front.scale.y = .5
+	card.card_art.scale.x = .5
+	card.card_art.scale.y = .5
+
+func refresh(card)->void:
+	card.exhausted = false
+	card.card_back.scale.x = 1
+	card.card_back.scale.y = 1
+	card.card_front.scale.x = 1
+	card.card_front.scale.y = 1
+	card.card_art.scale.x = 1
+	card.card_art.scale.y = 1
 	
-func refresh(card)-> void:
-	pass
+
 
 func react() -> void:
 	pass
@@ -124,6 +136,7 @@ func _on_gui_input(event: InputEvent) -> void:
 	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1:
 		if currentPosition == position.IN_HAND:
 			card_front.visible = false
+			card_art.visible = false
 			card_back.visible = true
 			currentPosition = position.IN_MANA
 			GmManager.emit_signal("_card_to_mana", self)

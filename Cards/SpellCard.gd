@@ -7,13 +7,14 @@ static func constructor():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	super._ready()
+	GmManager.connect("_resolve_summon", resolve_cast)
+
+func set_card_info():
 	cost = 0
 	tags = ["spell", "testbugspell"]
 	cardName = "Spell Card Name That is Also Overlong"
-	name_text.text = cardName
-	tag_text.text = tags[0] + ", " + tags[1]
-	cost_text.text = str(cost)
-	GmManager.connect("_resolve_summon", resolve_cast)
 
 func resolve_cast(card):
 	await 1

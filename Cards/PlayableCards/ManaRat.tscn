@@ -7,11 +7,5 @@
 [node name="Card" instance=ExtResource("1_p1td6")]
 script = ExtResource("2_dy61x")
 
-[node name="CardArt" type="TextureRect" parent="CardFront" index="5"]
-z_index = -1
-layout_mode = 0
-offset_left = 16.0
-offset_top = 14.0
-offset_right = 96.0
-offset_bottom = 78.0
+[node name="CardArt" parent="." index="0"]
 texture = ExtResource("2_f813s")

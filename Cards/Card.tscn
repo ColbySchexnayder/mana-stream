@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cy6xfsj2qbdjs"]
+[gd_scene load_steps=11 format=3 uid="uid://cy6xfsj2qbdjs"]
 
 [ext_resource type="Script" path="res://Cards/Card.gd" id="1_hmu5p"]
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
 [ext_resource type="FontFile" uid="uid://bquqir84qilxq" path="res://Fonts/Kenney Pixel.ttf" id="2_6gjtp"]
 [ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="2_8rs7r"]
 [ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_gx64q"]
+[ext_resource type="Texture2D" uid="uid://cqgbuaan4vy6m" path="res://Cards/CardArt/blackcat.png" id="5_xiqwp"]
 [ext_resource type="StyleBox" uid="uid://cg5rh6mn7nl38" path="res://Cards/InspectViewStyleBox.tres" id="6_n0a8q"]
 [ext_resource type="Texture2D" uid="uid://b7nwbk5jorkbu" path="res://Art/summonButton.png" id="6_rhvt5"]
 [ext_resource type="Texture2D" uid="uid://daac1ug2rwurg" path="res://Art/attack_icon.png" id="8_eyrls"]
@@ -19,6 +20,14 @@ offset_bottom = -0.200012
 pivot_offset = Vector2(56, 87)
 mouse_default_cursor_shape = 2
 script = ExtResource("1_hmu5p")
+
+[node name="CardArt" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 98.0
+offset_bottom = 80.0
+texture = ExtResource("5_xiqwp")
 
 [node name="CardFront" type="TextureRect" parent="."]
 layout_mode = 0
