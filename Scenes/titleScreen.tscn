@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://doo2vnqj80csx"]
 
-[ext_resource type="Texture2D" uid="uid://dcexpf3lcwll4" path="res://Art/rainbowgradienthorizontal.png" id="1_k6uca"]
-[ext_resource type="Texture2D" uid="uid://wivjdglbnywb" path="res://Art/titledScreenMonochromelight.png" id="2_s6tup"]
-[ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_mcbiv"]
+[ext_resource type="Texture2D" uid="uid://dcexpf3lcwll4" path="res://Art/rainbowgradienthorizontal.png" id="1_600nb"]
+[ext_resource type="Texture2D" uid="uid://wivjdglbnywb" path="res://Art/titledScreenMonochromelight.png" id="2_tmt8w"]
+[ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_4rc84"]
 
 [node name="TitleScreen" type="Control"]
 layout_mode = 3
@@ -19,13 +19,13 @@ autoscroll = Vector2(-150, -150)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
-texture = ExtResource("1_k6uca")
+texture = ExtResource("1_600nb")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("2_s6tup")
+texture = ExtResource("2_tmt8w")
 
 [node name="NewGameButton" type="Button" parent="."]
 layout_mode = 0
@@ -33,7 +33,7 @@ offset_left = 150.0
 offset_top = 243.0
 offset_right = 281.0
 offset_bottom = 279.0
-theme = ExtResource("3_mcbiv")
+theme = ExtResource("3_4rc84")
 theme_override_font_sizes/font_size = 36
 text = "New Game?"
 
@@ -43,7 +43,7 @@ offset_left = 150.0
 offset_top = 282.0
 offset_right = 281.0
 offset_bottom = 318.0
-theme = ExtResource("3_mcbiv")
+theme = ExtResource("3_4rc84")
 theme_override_font_sizes/font_size = 36
 text = "Deck Edit?"
 
@@ -53,6 +53,6 @@ offset_left = 150.0
 offset_top = 205.0
 offset_right = 281.0
 offset_bottom = 241.0
-theme = ExtResource("3_mcbiv")
+theme = ExtResource("3_4rc84")
 theme_override_font_sizes/font_size = 36
 text = "Continue?"

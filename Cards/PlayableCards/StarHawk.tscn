@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://dt45iw8wwjkla"]
+
+[ext_resource type="PackedScene" uid="uid://cy6xfsj2qbdjs" path="res://Cards/Card.tscn" id="1_lr4u5"]
+[ext_resource type="Script" path="res://Cards/CardScripts/star_hawk.gd" id="2_n65tj"]
+[ext_resource type="Texture2D" uid="uid://bh4chdtfkftt8" path="res://Cards/CardArt/starhawk.png" id="3_w0q8l"]
+
+[node name="StarHawk" instance=ExtResource("1_lr4u5")]
+script = ExtResource("2_n65tj")
+
+[node name="CardArt" parent="." index="0"]
+texture = ExtResource("3_w0q8l")

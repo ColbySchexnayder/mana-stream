@@ -10,12 +10,7 @@ static func constructor():
 func _ready() -> void:
 	# NEED THIS FOR OTHER CARDS super._ready()
 	set_card_info()
-	"""
-	name_text.text = cardName
-	cost_text.text = str(cost)
-	tag_text.text = tags[0] + ", " + tags[1]
-	description_text.text = cardDescription
-	"""
+	
 	super._ready()
 	GmManager.connect("_card_attack", card_attacks)
 

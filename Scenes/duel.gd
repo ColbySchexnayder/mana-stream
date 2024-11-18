@@ -10,6 +10,8 @@ var player2hand := []
 var player2summon := []
 var player2mana := []
 
+var interruptStack := []
+
 var health := 10
 var totalMana := 0
 var availableMana := 0
@@ -68,7 +70,7 @@ func _ready() -> void:
 		opponentsCard.card_front.visible = false
 		opponentsCard.card_back.visible = true
 	
-	var testSpell = Briarpatch.constructor()
+	var testSpell = GuardianBear.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
 	p_1_hand.add_child(testSpell)

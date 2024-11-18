@@ -7,7 +7,7 @@
 [node name="Card" instance=ExtResource("1_ni5tl")]
 script = ExtResource("2_xdl6u")
 
-[node name="CardFront" parent="." index="0"]
+[node name="CardFront" parent="." index="1"]
 texture = ExtResource("2_5scjt")
 
 [node name="Health" parent="CardFront" index="1"]

@@ -1,8 +1,15 @@
-extends Card
+class_name BlackCat extends Card
 
-
+const BLACKCAT = preload("res://Cards/PlayableCards/BlackCat.tscn")
+static func constructor():
+	var obj = BLACKCAT.instantiate()
+	return obj
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	set_card_info()
+	super._ready()
+
+func set_card_info():
 	cardName = "Black Cat"
 	tags[1] = "Familiar"
 	cardDescription = ""
@@ -11,14 +18,6 @@ func _ready() -> void:
 	health = 2
 	attack = 2
 	
-	name_text.text = cardName
-	attack_text.text = str(attack)
-	health_text.text = str(health)
-	cost_text.text = str(cost)
-	tag_text.text = tags[0] + ", " + tags[1]
-	description_text.text = cardDescription
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
