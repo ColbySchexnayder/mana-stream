@@ -11,6 +11,7 @@ func _ready() -> void:
 
 func set_card_info():
 	cardName = "Shrine of the Traveler"
+	tags[0] = "Spell"
 	tags[1] = "Boon"
 	cardDescription = "This card must be played face down in the Mana Zone. When a card leaves your field reveal this card and refresh one Mana other than Shrine of the Traveler."
 	cardLore = '"It is common for mages to give a bit of their magic to shrines on their journey. A token offering to those on long journeys."'

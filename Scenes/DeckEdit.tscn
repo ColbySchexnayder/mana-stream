@@ -1,4 +1,9 @@
-[gd_scene format=3 uid="uid://yn3i761xwbvs"]
+[gd_scene load_steps=5 format=3 uid="uid://yn3i761xwbvs"]
+
+[ext_resource type="Script" path="res://Scenes/deck_edit.gd" id="1_ppinb"]
+[ext_resource type="Texture2D" uid="uid://dcexpf3lcwll4" path="res://Art/rainbowgradienthorizontal.png" id="2_m1c1t"]
+[ext_resource type="Texture2D" uid="uid://cxlnyx77yc0lh" path="res://Art/BackgroundScreenMonochromelight.png" id="3_fulho"]
+[ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_gjju6"]
 
 [node name="DeckEdit" type="Control"]
 layout_mode = 3
@@ -7,18 +12,58 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ppinb")
+
+[node name="Cards" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.8, 0.8)
+repeat_size = Vector2(640, 480)
+autoscroll = Vector2(-150, -150)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+texture = ExtResource("2_m1c1t")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 640.0
+offset_bottom = 480.0
+texture = ExtResource("3_fulho")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
-offset_right = 640.0
+offset_right = 469.0
 offset_bottom = 481.0
+theme = ExtResource("3_gjju6")
 current_tab = 0
 
-[node name="All Cards" type="Tree" parent="TabContainer"]
+[node name="CardList" type="ItemList" parent="TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Deck1" type="Tree" parent="TabContainer"]
+[node name="DeckList" type="ItemList" parent="TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/DeckList"]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 414.0
+offset_right = 456.0
+offset_bottom = 441.0
+theme = ExtResource("3_gjju6")
+text = "0/0
+"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 310.0
+offset_top = -1.0
+offset_right = 434.0
+offset_bottom = 29.0
+theme = ExtResource("3_gjju6")
+text = "Save and Exit"

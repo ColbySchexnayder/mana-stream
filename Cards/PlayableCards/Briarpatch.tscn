@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Cards/CardScripts/BriarPatch.gd" id="2_cs2xp"]
 [ext_resource type="Texture2D" uid="uid://b60vian235d7c" path="res://Cards/CardArt/briarpatch.png" id="3_6e87h"]
 
-[node name="Card" instance=ExtResource("1_vtumi")]
+[node name="Briarpatch" instance=ExtResource("1_vtumi")]
 script = ExtResource("2_cs2xp")
 
 [node name="CardArt" type="TextureRect" parent="CardFront" index="5"]

@@ -11,6 +11,7 @@ func _ready() -> void:
 
 func set_card_info():
 	cardName = "Infused Egg"
+	tags[0] = "Spell"
 	tags[1] = "Totemism"
 	cardDescription = "Search your deck for 1 familiar, place it face down in your Mana Zone"
 	cardLore = '"The egg of a being infused with the raw magic of the Mana Stream creates the most fantastic of creatures"'

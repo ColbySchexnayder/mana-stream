@@ -11,6 +11,7 @@ func _ready() -> void:
 
 func set_card_info():
 	cardName = "Shrine of the Forge"
+	tags[0] = "Spell"
 	tags[1] = "Boon"
 	cardDescription = "This card must be played face down in the Mana Zone. When a card enters your field reveal this card and refresh one Mana other than Shrine of the Forge"
 	cardLore = '"Powerful mages passively release magic all around them. Even the simplest of items they make has ambient magic. Work they pour themselves into can turn even the are they work in to magic"'

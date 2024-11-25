@@ -70,7 +70,7 @@ func _ready() -> void:
 		opponentsCard.card_front.visible = false
 		opponentsCard.card_back.visible = true
 	
-	var testSpell = GuardianBear.constructor()
+	var testSpell = Briarpatch.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
 	p_1_hand.add_child(testSpell)
@@ -160,6 +160,8 @@ func card_select(card):
 		card.card_back.scale.y = 1
 		card.card_front.scale.x = 1
 		card.card_front.scale.y = 1
+		card.card_art.scale.x = 1
+		card.card_art.scale.y = 1
 		if card.cardOwner == 1:
 			if card.currentPosition == card.position.IN_HAND:
 				card.summon_button.visible = true
@@ -181,6 +183,8 @@ func card_select(card):
 			card.card_back.scale.y = .5
 			card.card_front.scale.x = .5
 			card.card_front.scale.y = .5
+			card.card_art.scale.x = .5
+			card.card_art.scale.y = .5
 		match (card.currentPosition):
 			card.position.IN_HAND:
 				if card.cardOwner == 1:

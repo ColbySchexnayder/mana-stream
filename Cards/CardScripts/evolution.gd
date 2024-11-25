@@ -11,6 +11,7 @@ func _ready() -> void:
 
 func set_card_info():
 	cardName = "Evolution"
+	tags[0] = "Spell"
 	tags[1] = "Totemism"
 	cardDescription = "Select one face down Creature from the Mana Zone, place it face up in the Summon Zone"
 	cardLore = '"The guiding hand of an expert mage can bring out the best in their familiars"'

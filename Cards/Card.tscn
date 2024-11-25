@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cy6xfsj2qbdjs"]
+[gd_scene load_steps=13 format=3 uid="uid://cy6xfsj2qbdjs"]
 
 [ext_resource type="Script" path="res://Cards/Card.gd" id="1_hmu5p"]
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://b7nwbk5jorkbu" path="res://Art/summonButton.png" id="6_rhvt5"]
 [ext_resource type="Texture2D" uid="uid://daac1ug2rwurg" path="res://Art/attack_icon.png" id="8_eyrls"]
 [ext_resource type="Texture2D" uid="uid://cta5y8uos343y" path="res://Art/blockIcon.png" id="9_oeuk8"]
+[ext_resource type="Texture2D" uid="uid://sh0jg283udom" path="res://Art/add.png" id="11_yrf87"]
+[ext_resource type="Texture2D" uid="uid://dwavn4d1505jc" path="res://Art/passIcon.png" id="12_pmnv2"]
 
 [node name="Card" type="Control"]
 layout_mode = 3
@@ -212,6 +214,46 @@ mouse_filter = 2
 theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "Block?"
+
+[node name="AddButton" type="TextureButton" parent="InspectView"]
+visible = false
+layout_mode = 0
+offset_left = -133.0
+offset_top = 85.0
+offset_right = -12.0
+offset_bottom = 125.0
+texture_normal = ExtResource("11_yrf87")
+stretch_mode = 4
+
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/AddButton"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 8.0
+offset_right = 111.0
+offset_bottom = 32.0
+theme = ExtResource("3_gx64q")
+theme_override_styles/normal = ExtResource("6_n0a8q")
+text = " Add?"
+
+[node name="RemoveButton" type="TextureButton" parent="InspectView"]
+visible = false
+layout_mode = 0
+offset_left = -130.0
+offset_top = 90.0
+offset_right = -3.0
+offset_bottom = 124.0
+texture_normal = ExtResource("12_pmnv2")
+stretch_mode = 4
+
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/RemoveButton"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 2.0
+offset_right = 127.0
+offset_bottom = 26.0
+theme = ExtResource("3_gx64q")
+theme_override_styles/normal = ExtResource("6_n0a8q")
+text = " Remove?"
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
