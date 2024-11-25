@@ -29,6 +29,7 @@ repeat_times = 3
 texture = ExtResource("2_m1c1t")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
 offset_right = 640.0
 offset_bottom = 480.0
 texture = ExtResource("3_fulho")
@@ -49,9 +50,9 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/DeckList"]
+[node name="CardLimitText" type="RichTextLabel" parent="TabContainer/DeckList"]
 layout_mode = 0
-offset_left = 416.0
+offset_left = 393.0
 offset_top = 414.0
 offset_right = 456.0
 offset_bottom = 441.0
@@ -59,7 +60,7 @@ theme = ExtResource("3_gjju6")
 text = "0/0
 "
 
-[node name="Button" type="Button" parent="."]
+[node name="SaveDeckButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 310.0
 offset_top = -1.0
@@ -67,3 +68,15 @@ offset_right = 434.0
 offset_bottom = 29.0
 theme = ExtResource("3_gjju6")
 text = "Save and Exit"
+
+[node name="InspectView" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_left = 181.0
+offset_top = 134.0
+offset_right = 201.0
+offset_bottom = 157.0
+
+[connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
+[connection signal="item_clicked" from="TabContainer/CardList" to="." method="_on_card_list_item_clicked"]
+[connection signal="item_clicked" from="TabContainer/DeckList" to="." method="_on_deck_list_item_clicked"]
+[connection signal="pressed" from="SaveDeckButton" to="." method="_on_save_deck_button_pressed"]

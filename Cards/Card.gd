@@ -49,6 +49,8 @@ var cardOwner := 1
 @onready var block_button: TextureButton = $InspectView/BlockButton
 
 @onready var card_art: TextureRect = $CardArt
+@onready var add_button: TextureButton = $InspectView/AddButton
+@onready var remove_button: TextureButton = $InspectView/RemoveButton
 
 const CARD = preload("res://Cards/Card.tscn")
 static func constructor():
@@ -157,3 +159,11 @@ func _on_attack_button_pressed() -> void:
 
 func _on_block_button_pressed() -> void:
 	block() # Replace with function body.
+
+
+func _on_add_button_pressed() -> void:
+	GmManager.emit_signal("_card_add", self)
+
+
+func _on_remove_button_pressed() -> void:
+	GmManager.emit_signal("_card_remove", self)

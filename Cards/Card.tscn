@@ -114,7 +114,6 @@ offset_bottom = 175.0
 texture = ExtResource("2_8rs7r")
 
 [node name="InspectView" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 offset_top = -44.0
 offset_right = 310.0
@@ -161,6 +160,7 @@ theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "List of tagged values"
 
 [node name="SummonButton" type="TextureButton" parent="InspectView"]
+visible = false
 layout_mode = 0
 offset_left = -124.0
 offset_top = 91.0
@@ -180,6 +180,7 @@ theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "Summon?"
 
 [node name="AttackButton" type="TextureButton" parent="InspectView"]
+visible = false
 layout_mode = 0
 offset_left = -124.0
 offset_top = 126.0
@@ -198,6 +199,7 @@ theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "Attack?"
 
 [node name="BlockButton" type="TextureButton" parent="InspectView"]
+visible = false
 layout_mode = 0
 offset_left = -124.0
 offset_top = 165.0
@@ -260,3 +262,5 @@ text = " Remove?"
 [connection signal="pressed" from="InspectView/SummonButton" to="." method="_on_summon_button_pressed"]
 [connection signal="pressed" from="InspectView/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="pressed" from="InspectView/BlockButton" to="." method="_on_block_button_pressed"]
+[connection signal="pressed" from="InspectView/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="InspectView/RemoveButton" to="." method="_on_remove_button_pressed"]
