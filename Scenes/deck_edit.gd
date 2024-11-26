@@ -15,6 +15,7 @@ var selectedIndex = -1
 
 const CAST_BUTTON = preload("res://Art/castButton.png")
 const SUMMON_BUTTON = preload("res://Art/summonButton.png")
+const DECK_PATH = "res://Save/Deck.txt"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var path := "res://Cards/PlayableCards/"
@@ -56,7 +57,17 @@ func _process(delta: float) -> void:
 
 
 func _on_save_deck_button_pressed() -> void:
-	pass # Replace with function body.
+	if len(deck) != 30:
+		print("Invalid deck")
+		return
+	
+	
+	var string = ""
+	for card in deck:
+		string += card.cardName + "\n"
+	var deckFile = FileAccess.open(DECK_PATH, FileAccess.WRITE)
+	deckFile.store_string(string)
+	deckFile.close()
 
 
 func _on_card_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
