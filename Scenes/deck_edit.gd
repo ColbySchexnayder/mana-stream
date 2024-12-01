@@ -34,8 +34,6 @@ func _ready() -> void:
 			cards.push_back(ResourceLoader.load(path+fileName).instantiate())
 			
 			cardsControl.add_child(cards[count])
-			#card_list.add_child(cards[count])
-			#card_list.add_item(cards[count].cardName)#fileName.substr(0, fileName.length()-5))
 			
 			if cards[count].tags[0] == "Creature":
 				card_list.add_item(cards[count].cardName, SUMMON_BUTTON)
@@ -46,7 +44,11 @@ func _ready() -> void:
 
 	dir.list_dir_end()
 	
-	print(cards[0].cardName)
+	for card in GmManager.Player1Deck:
+		if card.tags[0] == "Creature":
+			deck_list.add_item(card.cardName, SUMMON_BUTTON)
+		else:
+			deck_list.add_item(card.cardName, CAST_BUTTON)
 	
 	GmManager.connect("_card_add", add_card)
 	GmManager.connect("_card_remove", remove_card)
@@ -57,17 +59,20 @@ func _process(delta: float) -> void:
 
 
 func _on_save_deck_button_pressed() -> void:
-	if len(deck) != 30:
+	if len(deck) != 5:
 		print("Invalid deck")
 		return
 	
 	
 	var string = ""
 	for card in deck:
-		string += card.cardName + "\n"
+		string += card.get_script().get_global_name() + "\n"
 	var deckFile = FileAccess.open(DECK_PATH, FileAccess.WRITE)
 	deckFile.store_string(string)
 	deckFile.close()
+	GmManager.Player1Deck = deck
+	
+	get_tree().change_scene_to_file("res://Scenes/titleScreen.tscn")
 
 
 func _on_card_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:

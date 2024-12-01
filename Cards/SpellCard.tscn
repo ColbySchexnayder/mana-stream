@@ -18,9 +18,3 @@ visible = false
 
 [node name="ButtonText" parent="InspectView/SummonButton" index="0"]
 text = "Cast?"
-
-[node name="AttackButton" parent="InspectView" index="5"]
-visible = false
-
-[node name="BlockButton" parent="InspectView" index="6"]
-visible = false
