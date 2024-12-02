@@ -23,3 +23,20 @@ signal _resolve_summon(card)
 signal _interrupt(card)
 signal _interrupt_resolved()
 signal _pass()
+
+func load_deck(saveFile: String):
+	var deckFile := FileAccess.open("res://Save/"+saveFile, FileAccess.READ)
+	var deck = []
+	var cardFileName := ""
+	
+	var count := 0
+	while true:
+		cardFileName = deckFile.get_line()
+		if cardFileName == "":
+			break
+			
+		deck.push_back(cardFileName)
+		count += 1
+	deckFile.close()
+
+	return deck

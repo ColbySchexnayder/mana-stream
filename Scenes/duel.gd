@@ -54,6 +54,16 @@ var cardIndex
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	for cardFileName in GmManager.Player1Deck:
+		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+		player1deck.push_back(card)
+		p_1_deck.add_child(card)
+	
+	for cardFileName in GmManager.Player2Deck:
+		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+		player2deck.push_back(card)
+		p_2_deck.add_child(card)
+	
 	for i in range(5):
 		var drawnCard = Card.constructor()
 		drawnCard.currentPosition = Card.position.IN_HAND
@@ -134,6 +144,7 @@ func _process(delta: float) -> void:
 	p_2_summon_zone.add_theme_constant_override("separation", p2SummonSeperationRatio)
 	
 	p_2_mana.text = str(p2AvailableMana) + "/" + str(p2TotalMana)
+	
 
 func card_to_mana(card):
 	player1mana.push_front(card)
@@ -144,7 +155,7 @@ func card_to_mana(card):
 	
 	
 	totalMana += 1
-
+	
 func card_select(card):
 	if (card.cardOwner == 2 and !card.revealed):
 		return

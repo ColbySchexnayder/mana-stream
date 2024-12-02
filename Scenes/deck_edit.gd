@@ -49,6 +49,7 @@ func _ready() -> void:
 	for cardName in GmManager.Player1Deck:
 		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
 		deck_cards.add_child(card)
+		deck.push_back(card)
 		if card.tags[0] == "Creature":
 			deck_list.add_item(card.cardName, SUMMON_BUTTON)
 		else:
@@ -127,7 +128,7 @@ func remove_card(card):
 func _on_deck_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
 	selectedIndex = index
 	
-	var card = cards[index]
+	var card = deck[index]
 	
 	for inspected in inspect_view.get_children():
 		inspected.reparent(cardsControl)
