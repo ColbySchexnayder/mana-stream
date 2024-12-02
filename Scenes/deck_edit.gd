@@ -104,7 +104,11 @@ func _on_card_list_item_clicked(index: int, at_position: Vector2, mouse_button_i
 	card.add_button.visible = true
 
 func add_card(card):
-	var copies = deck.count(card)
+	var copies := 0
+	for copy in deck:
+		if card.cardName == copy.cardName:
+			copies += 1
+	
 	if copies >= 3 or len(deck) >= 30:
 		return
 	

@@ -155,6 +155,9 @@ func card_to_mana(card):
 	
 	
 	totalMana += 1
+
+func draw():
+	pass
 	
 func card_select(card):
 	if (card.cardOwner == 2 and !card.revealed):
