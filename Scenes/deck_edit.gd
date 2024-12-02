@@ -10,8 +10,8 @@ var selectedIndex = -1
 @onready var deck_list: ItemList = $TabContainer/DeckList
 @onready var cardsControl: Control = $Cards
 @onready var card_limit_text: RichTextLabel = $TabContainer/DeckList/CardLimitText
-#@onready var inspect_view: Control = $InspectView
 @onready var inspect_view: CenterContainer = $InspectView
+@onready var deck_cards: Control = $DeckCards
 
 const CAST_BUTTON = preload("res://Art/castButton.png")
 const SUMMON_BUTTON = preload("res://Art/summonButton.png")
@@ -44,7 +44,11 @@ func _ready() -> void:
 
 	dir.list_dir_end()
 	
-	for card in GmManager.Player1Deck:
+	#var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+	#GmManager.Player1Deck.push_back(card)
+	for cardName in GmManager.Player1Deck:
+		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+		deck_cards.add_child(card)
 		if card.tags[0] == "Creature":
 			deck_list.add_item(card.cardName, SUMMON_BUTTON)
 		else:

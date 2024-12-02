@@ -19,6 +19,11 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="DeckCards" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="Parallax2D" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.8, 0.8)
 repeat_size = Vector2(640, 480)

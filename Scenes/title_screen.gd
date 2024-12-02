@@ -14,16 +14,17 @@ func _ready() -> void:
 			if cardFileName == "":
 				break
 			
+			GmManager.Player1Deck.push_back(cardFileName)
+			#var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+			#GmManager.Player1Deck.push_back(card)
 			
-			var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
-			GmManager.Player1Deck.push_back(card)
+			#card_loader.add_child(GmManager.Player1Deck.back())
 			
-			card_loader.add_child(GmManager.Player1Deck.back())
 			count += 1
 		deckFile.close()
 
 	for card in GmManager.Player1Deck:
-		print(card.cardName + "\n")
+		print(card + "\n")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
