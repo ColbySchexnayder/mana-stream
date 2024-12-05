@@ -64,4 +64,6 @@ theme = ExtResource("3_4rc84")
 theme_override_font_sizes/font_size = 36
 text = "Duel!"
 
+[connection signal="pressed" from="NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="DeckEditButton" to="." method="_on_deck_edit_button_pressed"]
+[connection signal="pressed" from="ContinueButton" to="." method="_on_continue_button_pressed"]

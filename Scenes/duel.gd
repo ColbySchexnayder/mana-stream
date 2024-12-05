@@ -47,6 +47,8 @@ var cardIndex
 
 @onready var p_1_deck: PanelContainer = $Control/P1Deck
 @onready var p_2_deck: PanelContainer = $Control/P2Deck
+@onready var p_1_deck_holder: Control = $P1DeckHolder
+@onready var p_2_deck_holder: Control = $P2DeckHolder
 
 @onready var interrupt_choice: Control = $Control/InterruptChoice
 
@@ -55,30 +57,25 @@ var cardIndex
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for cardFileName in GmManager.Player1Deck:
-		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate().constructor()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
 		player1deck.push_back(card)
-		p_1_deck.add_child(card)
+		p_1_deck_holder.add_child(card)
+	
+	if GmManager.Player2Deck.is_empty():
+		GmManager.Player2Deck = GmManager.Player1Deck.duplicate(true)
 	
 	for cardFileName in GmManager.Player2Deck:
 		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+		card.cardOwner = 2
 		player2deck.push_back(card)
-		p_2_deck.add_child(card)
+		p_2_deck_holder.add_child(card)
+	
+	player1deck.shuffle()
+	player2deck.shuffle()
 	
 	for i in range(5):
-		var drawnCard = Card.constructor()
-		drawnCard.currentPosition = Card.position.IN_HAND
-		player1hand.push_front(drawnCard)
-		p_1_hand.add_child(drawnCard)
-		
-		var opponentsCard = Card.constructor()
-		opponentsCard.cardOwner = 2
-		opponentsCard.currentPosition = Card.position.IN_HAND
-		opponentsCard.revealed = false
-		
-		player2hand.push_front(opponentsCard)
-		p_2_hand.add_child(opponentsCard)
-		opponentsCard.card_front.visible = false
-		opponentsCard.card_back.visible = true
+		draw(1)
+		draw(2)
 	
 	var testSpell = Briarpatch.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
@@ -145,7 +142,6 @@ func _process(delta: float) -> void:
 	
 	p_2_mana.text = str(p2AvailableMana) + "/" + str(p2TotalMana)
 	
-
 func card_to_mana(card):
 	player1mana.push_front(card)
 	player1hand.erase(card)
@@ -156,8 +152,23 @@ func card_to_mana(card):
 	
 	totalMana += 1
 
-func draw():
-	pass
+func draw(player: int):
+	match player:
+		1:
+			var card = player1deck.pop_front()
+			player1hand.push_back(card)
+			card.reparent(p_1_hand)
+			card.currentPosition = Card.position.IN_HAND
+			
+		2:
+			var card = player2deck.pop_front()
+			player2hand.push_back(card)
+			card.reparent(p_2_hand)
+			card.currentPosition = Card.position.IN_HAND
+			card.revealed = false
+			card.card_front.visible = false
+			card.card_back.visible = true
+
 	
 func card_select(card):
 	if (card.cardOwner == 2 and !card.revealed):
@@ -273,9 +284,7 @@ func move_to_deck(card):
 	card.currentPosition = Card.position.IN_DECK
 	card.hide()
 	#card.call_deferred("queue_free")
-	
-	for c in player1deck:
-		print(c.cardName)
+
 
 func add_to_mana(card, manaToAdd):
 	availableMana += manaToAdd

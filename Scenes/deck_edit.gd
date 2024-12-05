@@ -64,7 +64,7 @@ func _process(delta: float) -> void:
 
 
 func _on_save_deck_button_pressed() -> void:
-	if len(deck) != 5:
+	if len(deck) != 30:
 		print("Invalid deck")
 		return
 	
@@ -81,6 +81,9 @@ func _on_save_deck_button_pressed() -> void:
 
 
 func _on_card_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+	if mouse_button_index != 1:
+		return
+		
 	selectedIndex = index
 	var card = cards[index]
 	
@@ -130,6 +133,9 @@ func remove_card(card):
 
 
 func _on_deck_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+	if mouse_button_index != 1:
+		return
+	
 	selectedIndex = index
 	
 	var card = deck[index]

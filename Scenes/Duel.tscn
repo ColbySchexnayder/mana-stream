@@ -15,6 +15,18 @@
 [node name="Duel" type="Node2D"]
 script = ExtResource("1_ljhtk")
 
+[node name="P1DeckHolder" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="P2DeckHolder" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="Parallax" type="Node2D" parent="."]
 
 [node name="PFar" type="Parallax2D" parent="Parallax"]
