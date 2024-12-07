@@ -24,6 +24,9 @@ signal _interrupt(card)
 signal _interrupt_resolved()
 signal _pass()
 
+signal _ai_turn()
+signal _player_turn()
+
 func load_deck(saveFile: String):
 	var deckFile := FileAccess.open("res://Save/"+saveFile, FileAccess.READ)
 	var deck = []

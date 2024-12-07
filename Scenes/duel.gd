@@ -22,7 +22,7 @@ var p2AvailableMana := 0
 
 var inspectedCard
 
-var playersTurn := true
+var currentTurn := 1
 var attacking := false
 var attackingCard
 
@@ -57,7 +57,7 @@ var cardIndex
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for cardFileName in GmManager.Player1Deck:
-		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate().constructor()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
+		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
 		player1deck.push_back(card)
 		p_1_deck_holder.add_child(card)
 	
@@ -193,7 +193,7 @@ func card_select(card):
 			if card.currentPosition == card.position.IN_SUMMON and !card.exhausted:
 				if !attacking:
 					card.attack_button.visible = true
-				elif !playersTurn:
+				elif currentTurn != 1:
 					card.block_button.visible = true
 			if card.currentPosition == card.position.IN_DECK:
 				card.call_deferred("queue_free")
@@ -291,7 +291,7 @@ func add_to_mana(card, manaToAdd):
 
 func card_attack(card):
 	card_select(card)
-	if playersTurn and player2summon.size() == 0:
+	if currentTurn == 1 and player2summon.size() == 0:
 		GmManager.emit_signal("_card_exhaust", card)
 		p2Health -= card.attack
 		p_2_life.text = str(p2Health)
@@ -304,6 +304,7 @@ func card_attack(card):
 	
 
 func card_block(card):
+	attackingCard.exhaust(attackingCard)
 	if (attackingCard.attack > card.health):
 		card.destroy()
 	if (card.attack > attackingCard.health):
@@ -311,8 +312,24 @@ func card_block(card):
 	
 	attacking = false
 
-func card_battle(attack_card, block_card):
-	pass
+func change_turn():
+	currentTurn = -currentTurn + 3
+	
+	print (bool(currentTurn-2))
+	
+	match currentTurn:
+		1:
+			for card in player1mana:
+				card.refresh()
+			for card in player1summon:
+				card.refresh()
+		2: 
+			for card in player2mana:
+				card.refresh()
+			for card in player2summon:
+				card.refresh()
+			
+	
 
 func interrupt(card):
 	"""
@@ -338,7 +355,7 @@ func _on_node_2d_gui_input(event: InputEvent) -> void:
 
 
 func _on_pass_button_pressed() -> void:
-	pass # Replace with function body.
+	change_turn()
 
 
 func _on_interrupt_button_pressed() -> void:

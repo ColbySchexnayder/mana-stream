@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cx5b2r46v00uw"]
+[gd_scene load_steps=13 format=3 uid="uid://cx5b2r46v00uw"]
 
 [ext_resource type="Texture2D" uid="uid://dsc3ly3yyje2k" path="res://Backgrounds/starbackground0.png" id="1_ku1mf"]
 [ext_resource type="Script" path="res://Scenes/duel.gd" id="1_ljhtk"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bx1fpjvc0fhqe" path="res://Art/heart16.png" id="6_rwkrb"]
 [ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="7_o1sjj"]
 [ext_resource type="Texture2D" uid="uid://dwavn4d1505jc" path="res://Art/passIcon.png" id="8_3ou88"]
+[ext_resource type="Texture2D" uid="uid://bjrpll86l131l" path="res://Art/arrow.png" id="8_lj5r5"]
 [ext_resource type="StyleBox" uid="uid://cg5rh6mn7nl38" path="res://Cards/InspectViewStyleBox.tres" id="9_yk5x5"]
 [ext_resource type="Script" path="res://Scenes/ai_manager.gd" id="10_qiwog"]
 [ext_resource type="Texture2D" uid="uid://bj0dvj3qv6nt3" path="res://Art/exclaimIcon.png" id="10_yyo3b"]
@@ -211,9 +212,9 @@ text = "0/0"
 layout_mode = 0
 offset_left = 537.0
 offset_top = 215.0
-offset_right = 586.0
+offset_right = 623.0
 offset_bottom = 236.0
-texture_normal = ExtResource("8_3ou88")
+texture_normal = ExtResource("8_lj5r5")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control/PassButton"]
 layout_mode = 0
@@ -221,6 +222,7 @@ offset_left = 26.0
 offset_top = -3.0
 offset_right = 91.0
 offset_bottom = 24.0
+mouse_filter = 2
 theme = ExtResource("7_o1sjj")
 theme_override_styles/normal = ExtResource("9_yk5x5")
 text = "Pass?"

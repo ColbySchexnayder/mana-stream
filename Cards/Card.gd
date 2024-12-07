@@ -88,15 +88,14 @@ func exhaust(card)-> void:
 	card.card_art.scale.x = .5
 	card.card_art.scale.y = .5
 
-func refresh(card)->void:
-	card.exhausted = false
-	card.card_back.scale.x = 1
-	card.card_back.scale.y = 1
-	card.card_front.scale.x = 1
-	card.card_front.scale.y = 1
-	card.card_art.scale.x = 1
-	card.card_art.scale.y = 1
-	
+func refresh()->void:
+	exhausted = false
+	card_back.scale.x = 1
+	card_back.scale.y = 1
+	card_front.scale.x = 1
+	card_front.scale.y = 1
+	card_art.scale.x = 1
+	card_art.scale.y = 1
 
 
 func react() -> void:

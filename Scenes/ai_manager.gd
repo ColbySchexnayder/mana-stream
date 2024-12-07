@@ -15,12 +15,16 @@ var players_turn = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GmManager.connect("_choose_defense", choose_defense)
+	GmManager.connect("_ai_turn", ai_turn)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
+func ai_turn():
+	pass
+	
 func choose_defense(card):
 	if players_turn:
 		if ai_summon_zone.size() > 0:

@@ -75,7 +75,7 @@ func _on_save_deck_button_pressed() -> void:
 	var deckFile = FileAccess.open(DECK_PATH, FileAccess.WRITE)
 	deckFile.store_string(string)
 	deckFile.close()
-	GmManager.Player1Deck = deck
+	GmManager.Player1Deck = []
 	
 	get_tree().change_scene_to_file("res://Scenes/titleScreen.tscn")
 
