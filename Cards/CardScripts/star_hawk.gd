@@ -22,3 +22,9 @@ func set_card_info():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+func destroy(cause: int) -> void:
+	if cause == 1:
+		return
+	
+	super.destroy(cause)

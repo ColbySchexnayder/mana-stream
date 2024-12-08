@@ -74,7 +74,8 @@ func action() -> void:
 func block() -> void:
 	pass
 
-func destroy() -> void:
+#Tentatively @cause. 0: from card effect. 1: from battle. more to be added?
+func destroy(cause: int) -> void:
 	GmManager.emit_signal("_move_to_deck", card)
 
 func exhaust(card)-> void:
