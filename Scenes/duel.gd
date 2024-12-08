@@ -1,14 +1,14 @@
 extends Node2D
 
-var player1deck := []
-var player1hand := []
-var player1summon := []
-var player1mana := []
+var player1deck : Array[Card]= []
+var player1hand : Array[Card]= []
+var player1summon : Array[Card]= []
+var player1mana : Array[Card]= []
 
-var player2deck := []
-var player2hand := []
-var player2summon := []
-var player2mana := []
+var player2deck  : Array[Card]= []
+var player2hand : Array[Card]= []
+var player2summon : Array[Card]= []
+var player2mana : Array[Card]= []
 
 var interruptStack := []
 
@@ -91,8 +91,7 @@ func _ready() -> void:
 	p_1_life.text = str(health)
 	p_2_life.text = str(p2Health)
 	
-	player1deck = GmManager.Player1Deck
-	player2deck = GmManager.Player2Deck
+	
 	
 	
 	ai.ai_deck = player2deck
@@ -298,17 +297,26 @@ func card_attack(card):
 		if p2Health == 0:
 			pass #TODO GAME VICTORY CODE HERE
 		return
+	if currentTurn == 2 and player1summon.size() == 0:
+		GmManager.emit_signal("_card_exhaust", card)
+		
+		health -= card.attack
+		p_1_life.text = str(p2Health)
+		if health == 0:
+			pass #TODO GAME OVER CODE HERE
+		return
 	attackingCard = card
 	attacking = true
 	GmManager.emit_signal("_choose_defense", card)
+	
 	
 
 func card_block(card):
 	attackingCard.exhaust(attackingCard)
 	if (attackingCard.attack > card.health):
-		card.destroy()
+		card.destroy(1)
 	if (card.attack > attackingCard.health):
-		attackingCard.destroy()
+		attackingCard.destroy(1)
 	
 	attacking = false
 
@@ -319,11 +327,14 @@ func change_turn():
 	
 	match currentTurn:
 		1:
+			draw(1)
 			for card in player1mana:
 				card.refresh()
 			for card in player1summon:
 				card.refresh()
+			
 		2: 
+			draw(2)
 			for card in player2mana:
 				card.refresh()
 			for card in player2summon:

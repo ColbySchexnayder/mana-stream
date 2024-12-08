@@ -1,8 +1,8 @@
 extends Node
 class_name GMManager
 
-var Player1Deck = []
-var Player2Deck = []
+var Player1Deck : Array[String] = []
+var Player2Deck : Array[String] = []
 
 signal _card_select(card)
 signal _card_to_mana(card)
@@ -27,9 +27,9 @@ signal _pass()
 signal _ai_turn()
 signal _player_turn()
 
-func load_deck(saveFile: String):
+func load_deck(saveFile: String) -> Array[String]:
 	var deckFile := FileAccess.open("res://Save/"+saveFile, FileAccess.READ)
-	var deck = []
+	var deck : Array[String] = []
 	var cardFileName := ""
 	
 	var count := 0

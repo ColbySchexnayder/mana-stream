@@ -22,7 +22,7 @@ func resolve_cast(card):
 		return
 	if card.currentPosition == Card.position.IN_SUMMON:
 		print('success')
-		destroy()
+		destroy(0)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
