@@ -28,6 +28,14 @@ var attackingCard
 
 var cardIndex
 
+enum phase {
+	REFRESH,
+	PLAY,
+	ATTACK
+}
+
+var currentPhase = phase.PLAY
+
 @onready var player_1_zone: VBoxContainer = $Control/Player1Zone
 
 @onready var p_1_summon_zone: HBoxContainer = $Control/Player1Zone/P1SummonZone
