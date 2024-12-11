@@ -28,12 +28,7 @@ var attackingCard
 
 var cardIndex
 
-enum phase {
-	REFRESH,
-	PLAY
-}
 
-var currentPhase = phase.PLAY
 
 @onready var player_1_zone: VBoxContainer = $Control/Player1Zone
 
@@ -195,15 +190,15 @@ func card_select(card):
 		card.card_art.scale.x = 1
 		card.card_art.scale.y = 1
 		if card.cardOwner == 1:
-			if card.currentPosition == card.position.IN_HAND:
+			if card.currentPosition == card.position.IN_HAND and GmManager.currentPhase == GMManager.phase.PLAY:
 				card.summon_button.visible = true
 			if card.currentPosition == card.position.IN_SUMMON and !card.exhausted:
-				if currentPhase == phase.PLAY:
+				if GmManager.currentPhase == GmManager.phase.PLAY:
 					if !attacking:
 						card.attack_button.visible = true
 					elif currentTurn != 1:
 						card.block_button.visible = true
-				elif currentPhase == phase.REFRESH and !card.paid:
+				elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid:
 					card.keep_button.visible = true
 			if card.currentPosition == card.position.IN_DECK:
 				card.call_deferred("queue_free")
@@ -342,7 +337,7 @@ func change_turn():
 	currentTurn = -currentTurn + 3
 	
 	print (bool(currentTurn-2))
-	currentPhase = phase.REFRESH
+	GmManager.currentPhase = GmManager.phase.REFRESH
 	match currentTurn:
 		1:
 			draw(1)
@@ -384,7 +379,7 @@ func _on_node_2d_gui_input(event: InputEvent) -> void:
 
 
 func _on_pass_button_pressed() -> void:
-	if currentPhase == phase.REFRESH:
+	if GmManager.currentPhase == GmManager.phase.REFRESH:
 		if currentTurn == 1:
 			var i = 0
 			while i < (player1summon.size()):
@@ -399,8 +394,8 @@ func _on_pass_button_pressed() -> void:
 					player2summon[i].destroy(3)
 					i -= 1
 				i += 1
-		currentPhase = phase.PLAY
-	elif currentPhase == phase.PLAY:
+		GmManager.currentPhase = GmManager.phase.PLAY
+	elif GmManager.currentPhase == GmManager.phase.PLAY:
 		change_turn()
 
 
