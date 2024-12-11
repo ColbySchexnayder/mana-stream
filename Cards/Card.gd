@@ -23,6 +23,7 @@ enum position {
 }
 
 var currentPosition := position.IN_DECK
+var paid := false
 var exhausted := false
 var revealed := true
 var cardOwner := 1
@@ -47,6 +48,7 @@ var cardOwner := 1
 @onready var summon_button: TextureButton = $InspectView/SummonButton
 @onready var attack_button: TextureButton = $InspectView/AttackButton
 @onready var block_button: TextureButton = $InspectView/BlockButton
+@onready var keep_button: TextureButton = $InspectView/KeepButton
 
 @onready var card_art: TextureRect = $CardArt
 @onready var add_button: TextureButton = $InspectView/AddButton
@@ -74,7 +76,7 @@ func action() -> void:
 func block() -> void:
 	pass
 
-#Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. more to be added?
+#Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:
 	GmManager.emit_signal("_move_to_deck", card)
 
@@ -90,6 +92,7 @@ func exhaust(card)-> void:
 	card.card_art.scale.y = .5
 
 func refresh()->void:
+	paid = false
 	exhausted = false
 	card_back.scale.x = 1
 	card_back.scale.y = 1
@@ -167,3 +170,7 @@ func _on_add_button_pressed() -> void:
 
 func _on_remove_button_pressed() -> void:
 	GmManager.emit_signal("_card_remove", self)
+
+
+func _on_keep_button_pressed() -> void:
+	GmManager.emit_signal("_card_keep", self)

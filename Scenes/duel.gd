@@ -30,8 +30,7 @@ var cardIndex
 
 enum phase {
 	REFRESH,
-	PLAY,
-	ATTACK
+	PLAY
 }
 
 var currentPhase = phase.PLAY
@@ -120,6 +119,7 @@ func _ready() -> void:
 	GmManager.connect("_move_to_deck", move_to_deck)
 	GmManager.connect("_card_block", card_block)
 	GmManager.connect("_interrupt", interrupt)
+	GmManager.connect("_card_keep", card_keep)
 	
 	
 
@@ -198,10 +198,13 @@ func card_select(card):
 			if card.currentPosition == card.position.IN_HAND:
 				card.summon_button.visible = true
 			if card.currentPosition == card.position.IN_SUMMON and !card.exhausted:
-				if !attacking:
-					card.attack_button.visible = true
-				elif currentTurn != 1:
-					card.block_button.visible = true
+				if currentPhase == phase.PLAY:
+					if !attacking:
+						card.attack_button.visible = true
+					elif currentTurn != 1:
+						card.block_button.visible = true
+				elif currentPhase == phase.REFRESH and !card.paid:
+					card.keep_button.visible = true
 			if card.currentPosition == card.position.IN_DECK:
 				card.call_deferred("queue_free")
 			
@@ -210,6 +213,7 @@ func card_select(card):
 		card.summon_button.visible = false
 		card.attack_button.visible = false
 		card.block_button.visible = false
+		card.keep_button.visible = false
 		if card.exhausted:
 			card.card_back.scale.x = .5
 			card.card_back.scale.y = .5
@@ -246,7 +250,7 @@ func card_select(card):
 				
 	
 
-func card_summon(card):
+func card_summon(card: Card) -> void:
 	if card.currentPosition != card.position.IN_HAND:
 		return
 	if card.cost <= availableMana:
@@ -259,7 +263,13 @@ func card_summon(card):
 		card.inspect_view.visible = false
 		GmManager.emit_signal("_resolve_summon", card)
 
-func move_to_deck(card):
+func card_keep(card: Card) -> void:
+	if card.cost <= availableMana:
+		availableMana -= card.cost
+		card.paid = true
+		card_select(card)
+
+func move_to_deck(card: Card) -> void:
 	if card.currentPosition == Card.position.IN_DECK:
 		return
 		
@@ -332,7 +342,7 @@ func change_turn():
 	currentTurn = -currentTurn + 3
 	
 	print (bool(currentTurn-2))
-	
+	currentPhase = phase.REFRESH
 	match currentTurn:
 		1:
 			draw(1)
@@ -374,7 +384,24 @@ func _on_node_2d_gui_input(event: InputEvent) -> void:
 
 
 func _on_pass_button_pressed() -> void:
-	change_turn()
+	if currentPhase == phase.REFRESH:
+		if currentTurn == 1:
+			var i = 0
+			while i < (player1summon.size()):
+				if !player1summon[i].paid:
+					player1summon[i].destroy(3)
+					i -= 1
+				i += 1
+		else:
+			var i = 0
+			while i < (player2summon.size()):
+				if !player2summon[i].paid:
+					player2summon[i].destroy(3)
+					i -= 1
+				i += 1
+		currentPhase = phase.PLAY
+	elif currentPhase == phase.PLAY:
+		change_turn()
 
 
 func _on_interrupt_button_pressed() -> void:
