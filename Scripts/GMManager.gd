@@ -36,6 +36,9 @@ signal _pass()
 signal _request_field(card: Card, zone: int)
 signal _request_hand(card: Card)
 
+signal _change_phase()
+signal _change_turn()
+
 signal _ai_turn()
 signal _player_turn()
 

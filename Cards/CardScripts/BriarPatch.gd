@@ -37,5 +37,5 @@ func pass_interrupt():
 func complete_interrupt():
 	pass
 
-func resolve_cast(card):
-	super.resolve_cast(card)
+func resolve_summon():
+	super.resolve_summon()

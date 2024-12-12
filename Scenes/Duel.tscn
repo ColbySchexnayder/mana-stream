@@ -287,6 +287,12 @@ offset_bottom = 63.5
 mouse_filter = 2
 text = "Pass?"
 
+[node name="SelectionList" type="ItemList" parent="Control"]
+visible = false
+layout_mode = 0
+offset_right = 638.0
+offset_bottom = 482.0
+
 [node name="AI" type="Node" parent="."]
 script = ExtResource("10_qiwog")
 

@@ -22,8 +22,18 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+#TODO: This all needs to be changed!
+#TODO: Seriously don't ignore this
 func ai_turn():
-	pass
+	if GmManager.currentPhase == GmManager.phase.REFRESH:
+		await ai_hand[0].mana()
+		await ai_mana_zone[0].mana()
+		await GmManager.emit_signal("_card_keep", ai_summon_zone[0])
+		GmManager.emit_signal("_change_phase")
+	if GmManager.currentPhase == GmManager.phase.PLAY:
+		if !ai_summon_zone.is_empty():
+			GmManager.emit_signal("_card_attack", ai_summon_zone[0])
+		GmManager.emit_signal("_change_turn")
 	
 func choose_defense(card):
 	if players_turn:

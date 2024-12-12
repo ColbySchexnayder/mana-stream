@@ -65,7 +65,15 @@ func summon() -> void:
 	pass
 
 func mana() -> void:
-	pass
+	if currentPosition == position.IN_HAND:
+			card_front.visible = false
+			card_art.visible = false
+			card_back.visible = true
+			currentPosition = position.IN_MANA
+			GmManager.emit_signal("_card_to_mana", self)
+	elif currentPosition == position.IN_MANA and !exhausted:
+			GmManager.emit_signal("_add_to_mana", self, 1)
+			GmManager.emit_signal("_card_exhaust", self)
 
 func attacking() -> void:
 	pass
@@ -91,6 +99,9 @@ func exhaust(card)-> void:
 	card.card_art.scale.x = .5
 	card.card_art.scale.y = .5
 
+func resolve_summon()->void:
+	return
+	
 func refresh()->void:
 	paid = false
 	exhausted = false
@@ -139,15 +150,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		GmManager.emit_signal("_card_select", self)
 		
 	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1 and GmManager.currentPhase == GmManager.phase.PLAY:
-		if currentPosition == position.IN_HAND:
-			card_front.visible = false
-			card_art.visible = false
-			card_back.visible = true
-			currentPosition = position.IN_MANA
-			GmManager.emit_signal("_card_to_mana", self)
-		elif currentPosition == position.IN_MANA and !exhausted:
-			GmManager.emit_signal("_add_to_mana", self, 1)
-			GmManager.emit_signal("_card_exhaust", self)
+		mana()
 
 
 func _on_summon_button_pressed() -> void:

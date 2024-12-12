@@ -9,17 +9,15 @@ static func constructor():
 func _ready() -> void:
 	
 	super._ready()
-	GmManager.connect("_resolve_summon", resolve_cast)
+	#GmManager.connect("_resolve_summon", resolve_cast)
 
 func set_card_info():
 	cost = 0
 	tags = ["Spell", "testbugspell"]
 	cardName = "Spell Card Name That is Also Overlong"
 
-func resolve_cast(card):
-	await 1
-	if card.tags[0] != "spell":
-		return
+func resolve_summon():
+	
 	if card.currentPosition == Card.position.IN_SUMMON:
 		print('success')
 		destroy(0)

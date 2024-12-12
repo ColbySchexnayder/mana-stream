@@ -10,7 +10,8 @@ var player2hand : Array[Card]= []
 var player2summon : Array[Card]= []
 var player2mana : Array[Card]= []
 
-var interruptStack := []
+#TODO: This will be required before AI can be worked on
+var interruptStack : Array[Card] = []
 
 var health := 10
 var totalMana := 0
@@ -83,6 +84,12 @@ func _ready() -> void:
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
 	p_1_hand.add_child(testSpell)
+
+	testSpell = SpellCard.constructor()
+	testSpell.currentPosition = Card.position.IN_HAND
+	player1hand.push_front(testSpell)
+	p_1_hand.add_child(testSpell)
+	
 	
 	var opponentsDefense = Card.constructor()
 	opponentsDefense.cardOwner = 2
@@ -115,7 +122,8 @@ func _ready() -> void:
 	GmManager.connect("_card_block", card_block)
 	GmManager.connect("_interrupt", interrupt)
 	GmManager.connect("_card_keep", card_keep)
-	
+	GmManager.connect("_change_turn", change_turn)
+	GmManager.connect("_change_phase", change_phase)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -145,14 +153,22 @@ func _process(delta: float) -> void:
 	p_2_mana.text = str(p2AvailableMana) + "/" + str(p2TotalMana)
 	
 func card_to_mana(card):
-	player1mana.push_front(card)
-	player1hand.erase(card)
-	card.reparent(p_1_mana_zone)
-	card.inspect_view.visible = false
-	card.revealed = false
+	if card.cardOwner == 1:
+		player1mana.push_front(card)
+		player1hand.erase(card)
+		card.reparent(p_1_mana_zone)
+		card.inspect_view.visible = false
+		card.revealed = false
+		
+		totalMana += 1
+	else:
+		player2mana.push_front(card)
+		player2hand.erase(card)
+		card.reparent(p_2_mana_zone)
+		card.inspect_view.visible = false
+		card.revealed = false
+		p2TotalMana += 1
 	
-	
-	totalMana += 1
 
 func draw(player: int):
 	match player:
@@ -256,13 +272,21 @@ func card_summon(card: Card) -> void:
 		card.currentPosition  = card.position.IN_SUMMON
 		card.summon_button.visible = false
 		card.inspect_view.visible = false
+		interruptStack.push_back(card)
+		card.resolve_summon()
 		GmManager.emit_signal("_resolve_summon", card)
 
 func card_keep(card: Card) -> void:
-	if card.cost <= availableMana:
-		availableMana -= card.cost
-		card.paid = true
-		card_select(card)
+	if card.cardOwner == 1:
+		if card.cost <= availableMana:
+			availableMana -= card.cost
+			card.paid = true
+			card_select(card)
+	else:
+		if card.cost <= p2AvailableMana:
+			p2AvailableMana -= card.cost
+			card.paid = true
+			card_select(card)
 
 func move_to_deck(card: Card) -> void:
 	if card.currentPosition == Card.position.IN_DECK:
@@ -299,7 +323,10 @@ func move_to_deck(card: Card) -> void:
 
 
 func add_to_mana(card, manaToAdd):
-	availableMana += manaToAdd
+	if card.cardOwner == 1:
+		availableMana += manaToAdd
+	else:
+		p2AvailableMana += manaToAdd
 
 func card_attack(card):
 	card_select(card)
@@ -314,7 +341,7 @@ func card_attack(card):
 		GmManager.emit_signal("_card_exhaust", card)
 		
 		health -= card.attack
-		p_1_life.text = str(p2Health)
+		p_1_life.text = str(health)
 		if health == 0:
 			pass #TODO GAME OVER CODE HERE
 		return
@@ -352,9 +379,25 @@ func change_turn():
 				card.refresh()
 			for card in player2summon:
 				card.refresh()
-			
+			ai.ai_turn()
 	
-
+func change_phase():
+	if currentTurn == 1:
+		var i = 0
+		while i < (player1summon.size()):
+			if !player1summon[i].paid:
+				player1summon[i].destroy(3)
+				i -= 1
+			i += 1
+	else:
+		var i = 0
+		while i < (player2summon.size()):
+			if !player2summon[i].paid:
+				player2summon[i].destroy(3)
+				i -= 1
+			i += 1
+	GmManager.currentPhase = GmManager.phase.PLAY
+	
 func interrupt(card):
 	"""
 	Present interrupt options
@@ -380,21 +423,7 @@ func _on_node_2d_gui_input(event: InputEvent) -> void:
 
 func _on_pass_button_pressed() -> void:
 	if GmManager.currentPhase == GmManager.phase.REFRESH:
-		if currentTurn == 1:
-			var i = 0
-			while i < (player1summon.size()):
-				if !player1summon[i].paid:
-					player1summon[i].destroy(3)
-					i -= 1
-				i += 1
-		else:
-			var i = 0
-			while i < (player2summon.size()):
-				if !player2summon[i].paid:
-					player2summon[i].destroy(3)
-					i -= 1
-				i += 1
-		GmManager.currentPhase = GmManager.phase.PLAY
+		change_phase()
 	elif GmManager.currentPhase == GmManager.phase.PLAY:
 		change_turn()
 
