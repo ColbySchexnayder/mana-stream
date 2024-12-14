@@ -65,7 +65,7 @@ func summon() -> void:
 	pass
 
 func mana() -> void:
-	if currentPosition == position.IN_HAND:
+	if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
 			card_front.visible = false
 			card_art.visible = false
 			card_back.visible = true
@@ -82,7 +82,8 @@ func action() -> void:
 	pass
 	
 func block() -> void:
-	pass
+	GmManager.emit_signal("_card_block", self)
+	exhaust(self)
 
 #Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:
@@ -149,7 +150,7 @@ func _on_gui_input(event: InputEvent) -> void:
 	if (event.is_action_pressed("activate")):
 		GmManager.emit_signal("_card_select", self)
 		
-	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1 and GmManager.currentPhase == GmManager.phase.PLAY:
+	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1:
 		mana()
 
 

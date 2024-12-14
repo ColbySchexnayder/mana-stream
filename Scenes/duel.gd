@@ -113,6 +113,8 @@ func _ready() -> void:
 	ai.player_summon_zone = player1summon
 	ai.player_mana_zone = player1mana
 	
+	
+	
 	GmManager.connect("_card_select", card_select)
 	GmManager.connect("_card_to_mana", card_to_mana)
 	GmManager.connect("_card_summon", card_summon)
@@ -124,6 +126,8 @@ func _ready() -> void:
 	GmManager.connect("_card_keep", card_keep)
 	GmManager.connect("_change_turn", change_turn)
 	GmManager.connect("_change_phase", change_phase)
+	
+	player2hand[0].mana()
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -330,13 +334,15 @@ func add_to_mana(card, manaToAdd):
 
 func card_attack(card):
 	card_select(card)
-	if currentTurn == 1 and player2summon.size() == 0:
-		GmManager.emit_signal("_card_exhaust", card)
-		p2Health -= card.attack
-		p_2_life.text = str(p2Health)
-		if p2Health == 0:
-			pass #TODO GAME VICTORY CODE HERE
-		return
+	if currentTurn == 1:
+		if player2summon.size() == 0:
+			GmManager.emit_signal("_card_exhaust", card)
+			p2Health -= card.attack
+			p_2_life.text = str(p2Health)
+			if p2Health == 0:
+				pass #TODO GAME VICTORY CODE HERE
+			return
+		ai.choose_defense(card)
 	if currentTurn == 2 and player1summon.size() == 0:
 		GmManager.emit_signal("_card_exhaust", card)
 		
@@ -347,7 +353,7 @@ func card_attack(card):
 		return
 	attackingCard = card
 	attacking = true
-	GmManager.emit_signal("_choose_defense", card)
+	
 	
 	
 
@@ -357,8 +363,9 @@ func card_block(card):
 		card.destroy(1)
 	if (card.attack > attackingCard.health):
 		attackingCard.destroy(1)
-	
+	card_select(card)
 	attacking = false
+	GmManager.emit_signal("_interrupt_resolved")
 
 func change_turn():
 	currentTurn = -currentTurn + 3
