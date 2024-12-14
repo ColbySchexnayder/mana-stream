@@ -27,6 +27,7 @@ var paid := false
 var exhausted := false
 var revealed := true
 var cardOwner := 1
+
 @onready var card: Card = $"."
 
 @onready var card_front: TextureRect = $CardFront
@@ -45,6 +46,7 @@ var cardOwner := 1
 @onready var lore_text: RichTextLabel = $InspectView/LoreText
 @onready var tag_text: RichTextLabel = $InspectView/TagText
 
+@onready var mana_button: TextureButton = $InspectView/ManaButton
 @onready var summon_button: TextureButton = $InspectView/SummonButton
 @onready var attack_button: TextureButton = $InspectView/AttackButton
 @onready var block_button: TextureButton = $InspectView/BlockButton
@@ -73,7 +75,7 @@ func mana() -> void:
 			GmManager.emit_signal("_card_to_mana", self)
 	elif currentPosition == position.IN_MANA and !exhausted:
 			GmManager.emit_signal("_add_to_mana", self, 1)
-			GmManager.emit_signal("_card_exhaust", self)
+			exhaust(self)
 
 func attacking() -> void:
 	pass
@@ -178,3 +180,8 @@ func _on_remove_button_pressed() -> void:
 
 func _on_keep_button_pressed() -> void:
 	GmManager.emit_signal("_card_keep", self)
+
+
+func _on_mana_button_pressed() -> void:
+	GmManager.emit_signal("_card_select", self)
+	mana()

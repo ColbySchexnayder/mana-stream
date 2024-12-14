@@ -162,6 +162,7 @@ func card_to_mana(card):
 		player1hand.erase(card)
 		card.reparent(p_1_mana_zone)
 		card.inspect_view.visible = false
+		card.summon_button.visible = false
 		card.revealed = false
 		
 		totalMana += 1
@@ -212,16 +213,19 @@ func card_select(card):
 		if card.cardOwner == 1:
 			if card.currentPosition == card.position.IN_HAND and GmManager.currentPhase == GMManager.phase.PLAY:
 				card.summon_button.visible = true
-			if card.currentPosition == card.position.IN_SUMMON and !card.exhausted:
-				if GmManager.currentPhase == GmManager.phase.PLAY:
+				card.mana_button.visible = true
+			if card.currentPosition == card.position.IN_SUMMON:
+				if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
 					if !attacking:
 						card.attack_button.visible = true
 					elif currentTurn != 1:
 						card.block_button.visible = true
-				elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid:
+				elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid and currentTurn == 1:
 					card.keep_button.visible = true
+			if card.currentPosition == card.position.IN_MANA and !card.exhausted:
+				card.mana_button.visible = true
 			if card.currentPosition == card.position.IN_DECK:
-				card.call_deferred("queue_free")
+				card.destroy(card)#card.call_deferred("queue_free")
 			
 	elif inspection_area.get_child(0) == card:
 		card.inspect_view.visible = false
@@ -229,6 +233,7 @@ func card_select(card):
 		card.attack_button.visible = false
 		card.block_button.visible = false
 		card.keep_button.visible = false
+		card.mana_button.visible = false
 		if card.exhausted:
 			card.card_back.scale.x = .5
 			card.card_back.scale.y = .5
@@ -275,6 +280,7 @@ func card_summon(card: Card) -> void:
 		card.reparent(p_1_summon_zone)
 		card.currentPosition  = card.position.IN_SUMMON
 		card.summon_button.visible = false
+		card.mana_button.visible = false
 		card.inspect_view.visible = false
 		interruptStack.push_back(card)
 		card.resolve_summon()
@@ -334,8 +340,11 @@ func add_to_mana(card, manaToAdd):
 
 func card_attack(card):
 	card_select(card)
+	attackingCard = card
+	attacking = true
 	if currentTurn == 1:
 		if player2summon.size() == 0:
+			attacking = false
 			GmManager.emit_signal("_card_exhaust", card)
 			p2Health -= card.attack
 			p_2_life.text = str(p2Health)
@@ -344,6 +353,7 @@ func card_attack(card):
 			return
 		ai.choose_defense(card)
 	if currentTurn == 2 and player1summon.size() == 0:
+		attacking = false
 		GmManager.emit_signal("_card_exhaust", card)
 		
 		health -= card.attack
@@ -351,8 +361,7 @@ func card_attack(card):
 		if health == 0:
 			pass #TODO GAME OVER CODE HERE
 		return
-	attackingCard = card
-	attacking = true
+	
 	
 	
 	
@@ -365,7 +374,7 @@ func card_block(card):
 		attackingCard.destroy(1)
 	card_select(card)
 	attacking = false
-	GmManager.emit_signal("_interrupt_resolved")
+	GmManager.emit_signal("_block_resolved")
 
 func change_turn():
 	currentTurn = -currentTurn + 3
