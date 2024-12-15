@@ -33,7 +33,8 @@ func ai_turn():
 	if GmManager.currentPhase == GmManager.phase.PLAY:
 		if !ai_summon_zone.is_empty():
 			GmManager.emit_signal("_card_attack", ai_summon_zone[0])
-			await GmManager._block_resolved
+			if !player_summon_zone.is_empty():
+				await GmManager._block_resolved
 		GmManager.emit_signal("_change_turn")
 	
 func choose_defense(card):

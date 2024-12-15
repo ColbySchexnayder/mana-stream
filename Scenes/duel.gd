@@ -276,7 +276,50 @@ func card_select(card):
 					card.reparent(p_2_summon_zone)
 					p_2_summon_zone.move_child(card, cardIndex)
 				
-	
+func deselect():
+	if inspection_area.get_child_count() == 0:
+		return
+		
+	var card = inspection_area.get_child(0)
+	card.inspect_view.visible = false
+	card.summon_button.visible = false
+	card.attack_button.visible = false
+	card.block_button.visible = false
+	card.keep_button.visible = false
+	card.mana_button.visible = false
+	if card.exhausted:
+		card.card_back.scale.x = .5
+		card.card_back.scale.y = .5
+		card.card_front.scale.x = .5
+		card.card_front.scale.y = .5
+		card.card_art.scale.x = .5
+		card.card_art.scale.y = .5
+	match (card.currentPosition):
+		card.position.IN_HAND:
+			if card.cardOwner == 1:
+				card.reparent(p_1_hand)
+				p_1_hand.move_child(card, cardIndex)
+			else:
+				card.reparent(p_2_hand)
+				p_2_hand.move_child(card, cardIndex)
+		card.position.IN_MANA:
+			if card.cardOwner == 1:
+				card.reparent(p_1_mana_zone)
+				p_1_mana_zone.move_child(card, cardIndex)
+				if not card.revealed:
+					card.card_back.visible = true
+					card.card_front.visible = false
+					card.card_art.visible = false
+			else:
+				card.reparent(p_2_mana_zone)
+			
+		card.position.IN_SUMMON:
+			if card.cardOwner == 1:
+				card.reparent(p_1_summon_zone)
+				p_1_summon_zone.move_child(card, cardIndex)
+			else:
+				card.reparent(p_2_summon_zone)
+				p_2_summon_zone.move_child(card, cardIndex)
 
 func card_summon(card: Card) -> void:
 	if card.currentPosition != card.position.IN_HAND:
@@ -356,10 +399,11 @@ func card_attack(card):
 			GmManager.emit_signal("_card_exhaust", card)
 			p2Health -= card.attack
 			p_2_life.text = str(p2Health)
-			GmManager.emit_signal("_block_resolved")
+			
 			attacking = false
 			if p2Health == 0:
 				pass #TODO GAME VICTORY CODE HERE
+			GmManager.emit_signal("_block_resolved")
 			return
 		ai.choose_defense(card)
 	if currentTurn == 2 and player1summon.size() == 0:
@@ -367,15 +411,12 @@ func card_attack(card):
 		
 		health -= card.attack
 		p_1_life.text = str(health)
-		GmManager.emit_signal("_block_resolved")
 		attacking = false
 		if health == 0:
 			pass #TODO GAME OVER CODE HERE
+		GmManager.emit_signal("_block_resolved")
 		return
-	
-	
-	
-	
+
 
 func card_block(card):
 	attackingCard.exhaust(attackingCard)
@@ -386,11 +427,14 @@ func card_block(card):
 #	card_select(card)
 	attacking = false
 	GmManager.emit_signal("_block_resolved")
+	deselect()
 
 func change_turn():
-	currentTurn = -currentTurn + 3
 	
-	print (bool(currentTurn-2))
+	currentTurn = -currentTurn + 3
+	GmManager.currentTurn = currentTurn
+	
+	#print (bool(currentTurn-2))
 	GmManager.currentPhase = GmManager.phase.REFRESH
 	match currentTurn:
 		1:

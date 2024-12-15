@@ -152,7 +152,7 @@ func _on_gui_input(event: InputEvent) -> void:
 	if (event.is_action_pressed("activate")):
 		GmManager.emit_signal("_card_select", self)
 		
-	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1:
+	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1 and GmManager.currentTurn == 1:
 		mana()
 
 

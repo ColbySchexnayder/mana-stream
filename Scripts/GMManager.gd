@@ -4,12 +4,15 @@ class_name GMManager
 var Player1Deck : Array[String] = []
 var Player2Deck : Array[String] = []
 
+
+
 enum phase {
 	REFRESH,
 	PLAY
 }
 
 var currentPhase = phase.PLAY
+var currentTurn = 1
 
 signal _card_select(card: Card)
 signal _clear_selection()
