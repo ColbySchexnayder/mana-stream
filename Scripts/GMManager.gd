@@ -12,6 +12,7 @@ enum phase {
 var currentPhase = phase.PLAY
 
 signal _card_select(card: Card)
+signal _clear_selection()
 
 signal _card_to_mana(card: Card)
 signal _card_exhaust(card: Card)

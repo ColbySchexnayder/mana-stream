@@ -293,6 +293,26 @@ layout_mode = 0
 offset_right = 638.0
 offset_bottom = 482.0
 
+[node name="TurnLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 246.0
+offset_right = 101.0
+offset_bottom = 271.0
+mouse_filter = 2
+theme = ExtResource("7_o1sjj")
+text = "Turn 1"
+
+[node name="PhaseLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 275.0
+offset_right = 122.0
+offset_bottom = 302.0
+mouse_filter = 2
+theme = ExtResource("7_o1sjj")
+text = "Play Phase"
+
 [node name="AI" type="Node" parent="."]
 script = ExtResource("10_qiwog")
 

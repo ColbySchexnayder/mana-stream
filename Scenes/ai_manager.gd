@@ -25,9 +25,10 @@ func _process(delta: float) -> void:
 #TODO: Seriously don't ignore this
 func ai_turn():
 	if GmManager.currentPhase == GmManager.phase.REFRESH:
-		ai_hand[0].mana()
-		ai_mana_zone[0].mana()
-		await GmManager.emit_signal("_card_keep", ai_summon_zone[0])
+		if !ai_summon_zone.is_empty():
+			ai_hand[0].mana()
+			ai_mana_zone[0].mana()
+			await GmManager.emit_signal("_card_keep", ai_summon_zone[0])
 		GmManager.emit_signal("_change_phase")
 	if GmManager.currentPhase == GmManager.phase.PLAY:
 		if !ai_summon_zone.is_empty():

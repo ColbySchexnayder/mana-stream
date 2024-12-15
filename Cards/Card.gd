@@ -164,6 +164,7 @@ func _on_summon_button_pressed() -> void:
 func _on_attack_button_pressed() -> void:
 	GmManager.emit_signal("_card_attack", self)
 	attacking()
+	#GmManager.emit_signal("_card_select", self)
 
 
 func _on_block_button_pressed() -> void:

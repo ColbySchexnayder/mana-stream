@@ -55,6 +55,9 @@ var cardIndex
 
 @onready var interrupt_choice: Control = $Control/InterruptChoice
 
+@onready var turn_label: RichTextLabel = $Control/TurnLabel
+@onready var phase_label: RichTextLabel = $Control/PhaseLabel
+
 @onready var ai: AI_Manager = $AI
 
 # Called when the node enters the scene tree for the first time.
@@ -155,6 +158,8 @@ func _process(delta: float) -> void:
 	p_2_summon_zone.add_theme_constant_override("separation", p2SummonSeperationRatio)
 	
 	p_2_mana.text = str(p2AvailableMana) + "/" + str(p2TotalMana)
+	turn_label.text = "Player " + str(currentTurn)
+	phase_label.text = str(GmManager.phase.keys()[GmManager.currentPhase])
 	
 func card_to_mana(card):
 	if card.cardOwner == 1:
@@ -192,7 +197,7 @@ func draw(player: int):
 			card.card_front.visible = false
 			card.card_back.visible = true
 
-	
+#Attack and AI block are both selecting cards
 func card_select(card):
 	if (card.cardOwner == 2 and !card.revealed):
 		return
@@ -211,19 +216,22 @@ func card_select(card):
 		card.card_art.scale.x = 1
 		card.card_art.scale.y = 1
 		if card.cardOwner == 1:
-			if card.currentPosition == card.position.IN_HAND and GmManager.currentPhase == GMManager.phase.PLAY:
-				card.summon_button.visible = true
-				card.mana_button.visible = true
-			if card.currentPosition == card.position.IN_SUMMON:
-				if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
-					if !attacking:
-						card.attack_button.visible = true
-					elif currentTurn != 1:
+			if currentTurn == 1:
+				if card.currentPosition == card.position.IN_HAND and GmManager.currentPhase == GMManager.phase.PLAY:
+					card.summon_button.visible = true
+					card.mana_button.visible = true
+				if card.currentPosition == card.position.IN_SUMMON:
+					if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
+						if !attacking:
+							card.attack_button.visible = true
+					elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid and currentTurn == 1:
+						card.keep_button.visible = true
+				if card.currentPosition == card.position.IN_MANA and !card.exhausted:
+					card.mana_button.visible = true
+			else:
+				if card.currentPosition == card.position.IN_SUMMON:
+					if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
 						card.block_button.visible = true
-				elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid and currentTurn == 1:
-					card.keep_button.visible = true
-			if card.currentPosition == card.position.IN_MANA and !card.exhausted:
-				card.mana_button.visible = true
 			if card.currentPosition == card.position.IN_DECK:
 				card.destroy(card)#card.call_deferred("queue_free")
 			
@@ -344,20 +352,23 @@ func card_attack(card):
 	attacking = true
 	if currentTurn == 1:
 		if player2summon.size() == 0:
-			attacking = false
+			
 			GmManager.emit_signal("_card_exhaust", card)
 			p2Health -= card.attack
 			p_2_life.text = str(p2Health)
+			GmManager.emit_signal("_block_resolved")
+			attacking = false
 			if p2Health == 0:
 				pass #TODO GAME VICTORY CODE HERE
 			return
 		ai.choose_defense(card)
 	if currentTurn == 2 and player1summon.size() == 0:
-		attacking = false
 		GmManager.emit_signal("_card_exhaust", card)
 		
 		health -= card.attack
 		p_1_life.text = str(health)
+		GmManager.emit_signal("_block_resolved")
+		attacking = false
 		if health == 0:
 			pass #TODO GAME OVER CODE HERE
 		return
@@ -372,7 +383,7 @@ func card_block(card):
 		card.destroy(1)
 	if (card.attack > attackingCard.health):
 		attackingCard.destroy(1)
-	card_select(card)
+#	card_select(card)
 	attacking = false
 	GmManager.emit_signal("_block_resolved")
 

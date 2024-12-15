@@ -30,7 +30,8 @@ func card_attacks(card):
 	if !revealed and currentPosition == Card.position.IN_MANA:
 		if card.owner != owner:
 			GmManager.emit_signal("_interrupt", self)
-
+			#doesn't work await GmManager._interrupt_resolved
+			
 func pass_interrupt():
 	pass
 	
