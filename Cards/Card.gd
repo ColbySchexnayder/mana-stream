@@ -84,8 +84,9 @@ func action() -> void:
 	pass
 	
 func block() -> void:
-	GmManager.emit_signal("_card_block", self)
 	exhaust(self)
+	GmManager.emit_signal("_card_block", self)
+	
 
 #Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:

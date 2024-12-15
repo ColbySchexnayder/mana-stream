@@ -1,5 +1,6 @@
 extends Node2D
 
+#The field. Easier to access arrays than getting children from the control nodes
 var player1deck : Array[Card]= []
 var player1hand : Array[Card]= []
 var player1summon : Array[Card]= []
@@ -13,6 +14,7 @@ var player2mana : Array[Card]= []
 #TODO: This will be required before AI can be worked on
 var interruptStack : Array[Card] = []
 
+#Player stat values
 var health := 10
 var totalMana := 0
 var availableMana := 0
@@ -21,16 +23,19 @@ var p2Health := 10
 var p2TotalMana := 0
 var p2AvailableMana := 0
 
+#A place to store the currently selected card
 var inspectedCard
 
+#Turn managment variables
 var currentTurn := 1
 var attacking := false
 var attackingCard
 
+#Used to return a card to it's position in a given zone when no longer selected
 var cardIndex
 
 
-
+#Script accessible screen nodes
 @onready var player_1_zone: VBoxContainer = $Control/Player1Zone
 
 @onready var p_1_summon_zone: HBoxContainer = $Control/Player1Zone/P1SummonZone
@@ -60,13 +65,15 @@ var cardIndex
 
 @onready var ai: AI_Manager = $AI
 
-# Called when the node enters the scene tree for the first time.
+# Prepare the duel
 func _ready() -> void:
+	#region Load Decks
 	for cardFileName in GmManager.Player1Deck:
 		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
 		player1deck.push_back(card)
 		p_1_deck_holder.add_child(card)
 	
+	#If the computer doesn't have a deck to load just copy the players
 	if GmManager.Player2Deck.is_empty():
 		GmManager.Player2Deck = GmManager.Player1Deck.duplicate(true)
 	
@@ -75,14 +82,18 @@ func _ready() -> void:
 		card.cardOwner = 2
 		player2deck.push_back(card)
 		p_2_deck_holder.add_child(card)
+	#endregion
 	
+	#Shuffle the decks
 	player1deck.shuffle()
 	player2deck.shuffle()
 	
+	#Draw the starting hand
 	for i in range(5):
 		draw(1)
 		draw(2)
 	
+	#region Add Test Cards
 	var testSpell = Briarpatch.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
@@ -99,13 +110,13 @@ func _ready() -> void:
 	opponentsDefense.currentPosition = Card.position.IN_SUMMON
 	p_2_summon_zone.add_child(opponentsDefense)
 	player2summon.push_front(opponentsDefense)
+	#endregion
 	
+	#initialize the text that shows health
 	p_1_life.text = str(health)
 	p_2_life.text = str(p2Health)
 	
-	
-	
-	
+	#Give the ai a copy of the field
 	ai.ai_deck = player2deck
 	ai.ai_hand = player2hand
 	ai.ai_mana_zone = player2mana
@@ -116,8 +127,7 @@ func _ready() -> void:
 	ai.player_summon_zone = player1summon
 	ai.player_mana_zone = player1mana
 	
-	
-	
+	#Initialize signals
 	GmManager.connect("_card_select", card_select)
 	GmManager.connect("_card_to_mana", card_to_mana)
 	GmManager.connect("_card_summon", card_summon)
@@ -130,12 +140,14 @@ func _ready() -> void:
 	GmManager.connect("_change_turn", change_turn)
 	GmManager.connect("_change_phase", change_phase)
 	
+	#Give AI mana for testing
+	#Needs to be done after signals are connected otherwise "card_to_mana" won't work
 	player2hand[0].mana()
 	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Keep the text up to date and cards organized
 func _process(delta: float) -> void:
-	
+	#Keep player 1 cards the right distance apart
 	var p1HandSeperationRatio = player_1_zone.get_global_rect().size.x / (player1hand.size()+1)
 	p_1_hand.add_theme_constant_override("separation", p1HandSeperationRatio)
 	
@@ -145,9 +157,10 @@ func _process(delta: float) -> void:
 	var p1SummonSeperationRatio = player_1_zone.get_global_rect().size.x / (player1summon.size()+1)
 	p_1_summon_zone.add_theme_constant_override("separation", p1SummonSeperationRatio)
 	
+	#Show player 1 available mana out of total mana
 	p_1_mana.text = str(availableMana) + "/" + str(totalMana)
 	
-	
+	#Keep player 2 cards the right distance apart
 	var p2HandSeperationRatio = player_2_zone.get_global_rect().size.x / (player2hand.size()+1)
 	p_2_hand.add_theme_constant_override("separation", p2HandSeperationRatio)
 	
@@ -157,10 +170,17 @@ func _process(delta: float) -> void:
 	var p2SummonSeperationRatio = player_2_zone.get_global_rect().size.x / (player2summon.size()+1)
 	p_2_summon_zone.add_theme_constant_override("separation", p2SummonSeperationRatio)
 	
+	#Show player 2 available mana out of total mana
 	p_2_mana.text = str(p2AvailableMana) + "/" + str(p2TotalMana)
+	
+	#Show current turn and phase
 	turn_label.text = "Player " + str(currentTurn)
 	phase_label.text = str(GmManager.phase.keys()[GmManager.currentPhase])
 	
+	p_1_life.text = str(health)
+	p_2_life.text = str(p2Health)
+
+#Move given card from HAND to MANA
 func card_to_mana(card):
 	if card.cardOwner == 1:
 		player1mana.push_front(card)
@@ -180,6 +200,7 @@ func card_to_mana(card):
 		p2TotalMana += 1
 	
 
+#Draw card from @player deck. Place it in hand
 func draw(player: int):
 	match player:
 		1:
@@ -193,11 +214,13 @@ func draw(player: int):
 			player2hand.push_back(card)
 			card.reparent(p_2_hand)
 			card.currentPosition = Card.position.IN_HAND
+			
+			#Keep the player from seeing the computer's hand
 			card.revealed = false
 			card.card_front.visible = false
 			card.card_back.visible = true
 
-#Attack and AI block are both selecting cards
+#Select @card and move it to the center of the screen with its inspection window viewable
 func card_select(card):
 	if (card.cardOwner == 2 and !card.revealed):
 		return
@@ -236,45 +259,7 @@ func card_select(card):
 				card.destroy(card)#card.call_deferred("queue_free")
 			
 	elif inspection_area.get_child(0) == card:
-		card.inspect_view.visible = false
-		card.summon_button.visible = false
-		card.attack_button.visible = false
-		card.block_button.visible = false
-		card.keep_button.visible = false
-		card.mana_button.visible = false
-		if card.exhausted:
-			card.card_back.scale.x = .5
-			card.card_back.scale.y = .5
-			card.card_front.scale.x = .5
-			card.card_front.scale.y = .5
-			card.card_art.scale.x = .5
-			card.card_art.scale.y = .5
-		match (card.currentPosition):
-			card.position.IN_HAND:
-				if card.cardOwner == 1:
-					card.reparent(p_1_hand)
-					p_1_hand.move_child(card, cardIndex)
-				else:
-					card.reparent(p_2_hand)
-					p_2_hand.move_child(card, cardIndex)
-			card.position.IN_MANA:
-				if card.cardOwner == 1:
-					card.reparent(p_1_mana_zone)
-					p_1_mana_zone.move_child(card, cardIndex)
-					if not card.revealed:
-						card.card_back.visible = true
-						card.card_front.visible = false
-						card.card_art.visible = false
-				else:
-					card.reparent(p_2_mana_zone)
-				
-			card.position.IN_SUMMON:
-				if card.cardOwner == 1:
-					card.reparent(p_1_summon_zone)
-					p_1_summon_zone.move_child(card, cardIndex)
-				else:
-					card.reparent(p_2_summon_zone)
-					p_2_summon_zone.move_child(card, cardIndex)
+		deselect()
 				
 func deselect():
 	if inspection_area.get_child_count() == 0:
@@ -417,6 +402,11 @@ func card_attack(card):
 		GmManager.emit_signal("_block_resolved")
 		return
 
+func direct_damage(damage: int, player: int):
+	if player == 1:
+		health -= damage
+	else:
+		p2Health -= damage
 
 func card_block(card):
 	attackingCard.exhaust(attackingCard)
@@ -426,8 +416,9 @@ func card_block(card):
 		attackingCard.destroy(1)
 #	card_select(card)
 	attacking = false
-	GmManager.emit_signal("_block_resolved")
 	deselect()
+	GmManager.emit_signal("_block_resolved")
+	
 
 func change_turn():
 	
@@ -436,6 +427,7 @@ func change_turn():
 	
 	#print (bool(currentTurn-2))
 	GmManager.currentPhase = GmManager.phase.REFRESH
+	
 	match currentTurn:
 		1:
 			draw(1)
@@ -496,7 +488,12 @@ func _on_pass_button_pressed() -> void:
 	if GmManager.currentPhase == GmManager.phase.REFRESH:
 		change_phase()
 	elif GmManager.currentPhase == GmManager.phase.PLAY:
-		change_turn()
+		if (attacking):
+			attacking = false
+			direct_damage(attackingCard.attack, 1)
+			GmManager.emit_signal("_block_resolved")
+		else:
+			change_turn()
 
 
 func _on_interrupt_button_pressed() -> void:
