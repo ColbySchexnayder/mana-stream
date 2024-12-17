@@ -1,6 +1,8 @@
 class_name Briarpatch extends SpellCard
 
 
+var attackingCard: Card
+
 const BRIARPATCHCARD = preload("res://Cards/PlayableCards/Briarpatch.tscn")
 static func constructor():
 	var obj = BRIARPATCHCARD.instantiate()
@@ -30,7 +32,12 @@ func card_attacks(card):
 	if !revealed and currentPosition == Card.position.IN_MANA:
 		if card.cardOwner != cardOwner:
 			GmManager.emit_signal("_interrupt", self)
+			attackingCard = card
 			
+func action():
+	GmManager.emit_signal("_move_to_hand", attackingCard)
+	resolved = true
+	
 
 func resolve_summon():
 	super.resolve_summon()

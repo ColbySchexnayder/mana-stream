@@ -181,6 +181,26 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = " Summon?"
 
+[node name="ActionButton" type="TextureButton" parent="InspectView"]
+visible = false
+layout_mode = 0
+offset_left = -124.0
+offset_top = 91.0
+offset_right = -13.0
+offset_bottom = 125.0
+texture_normal = ExtResource("6_rhvt5")
+
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/ActionButton"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = -2.0
+offset_right = 111.0
+offset_bottom = 28.0
+mouse_filter = 1
+theme = ExtResource("3_gx64q")
+theme_override_styles/normal = ExtResource("6_n0a8q")
+text = " Play?"
+
 [node name="ManaButton" type="TextureButton" parent="InspectView"]
 visible = false
 layout_mode = 0
@@ -304,6 +324,7 @@ text = " Remove?"
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="pressed" from="InspectView/SummonButton" to="." method="_on_summon_button_pressed"]
+[connection signal="pressed" from="InspectView/ActionButton" to="." method="_on_action_button_pressed"]
 [connection signal="pressed" from="InspectView/ManaButton" to="." method="_on_mana_button_pressed"]
 [connection signal="pressed" from="InspectView/KeepButton" to="." method="_on_keep_button_pressed"]
 [connection signal="pressed" from="InspectView/AttackButton" to="." method="_on_attack_button_pressed"]

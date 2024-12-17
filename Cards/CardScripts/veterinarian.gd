@@ -16,6 +16,3 @@ func set_card_info():
 	cardDescription = "This card must be played face down in the Mana Zone. After a Familiar you control with a cost of 2 or more is destroyed you may reveal this card, shuffle your deck then draw 2 cards, then destroy this card"
 	cardLore = '"Most familiars can be returned to the Mana Stream and recalled nice and healthy. Not all familiars are so lucky."'
 	cost = 0
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass

@@ -130,13 +130,16 @@ func _ready() -> void:
 	ai.player_summon_zone = player1summon
 	ai.player_mana_zone = player1mana
 	
-	#Initialize signals
+	ai.interruptStack = interruptStack
+	
+	#region Initialize signals
 	GmManager.connect("_card_select", card_select)
 	GmManager.connect("_card_to_mana", card_to_mana)
 	GmManager.connect("_card_summon", card_summon)
 	GmManager.connect("_add_to_mana", add_to_mana)
 	GmManager.connect("_card_attack", card_attack)
 	GmManager.connect("_move_to_deck", move_to_deck)
+	GmManager.connect("_move_to_hand", move_to_hand)
 	GmManager.connect("_card_block", card_block)
 	
 	GmManager.connect("_card_keep", card_keep)
@@ -145,6 +148,7 @@ func _ready() -> void:
 	
 	GmManager.connect("_interrupt", interrupt)
 	GmManager.connect("_check_interrupt", check_interrupt)
+	#endregion
 	
 	#Give AI mana for testing
 	#Needs to be done after signals are connected otherwise "card_to_mana" won't work
@@ -258,6 +262,8 @@ func card_select(card):
 		#If it's the player's card show the appropriate buttons
 		if card.cardOwner == 1:
 			#Most buttons are only valid on the player's turn
+			if interruptStack.has(card):
+					card.action_button.visible = true
 			if currentTurn == 1:
 				#A card in the hand can be sent to MANA or SUMMON in the PLAY phase
 				if card.currentPosition == card.position.IN_HAND and GmManager.currentPhase == GMManager.phase.PLAY:
@@ -275,6 +281,7 @@ func card_select(card):
 				#A card in MANA can be exhausted to increase available mana
 				if card.currentPosition == card.position.IN_MANA and !card.exhausted:
 					card.mana_button.visible = true
+				
 			#Block button is only shown when the AI is attacking the player
 			else:
 				if card.currentPosition == card.position.IN_SUMMON:
@@ -303,6 +310,8 @@ func deselect():
 	card.block_button.visible = false
 	card.keep_button.visible = false
 	card.mana_button.visible = false
+	card.action_button.visible = false
+	
 	
 	#If the card is exhausted put it back at the right scale
 	if card.exhausted:
@@ -411,6 +420,31 @@ func move_to_deck(card: Card) -> void:
 	card.currentPosition = Card.position.IN_DECK
 	card.hide()
 
+#Moves the card from the field to it's owners hand
+func move_to_hand(card: Card) -> void:
+	if card.cardOwner == 1:
+		if card.currentPosition == Card.position.IN_DECK:
+			player1deck.erase(card)
+		elif card.currentPosition == Card.position.IN_MANA:
+			player1mana.erase(card)
+		elif card.currentPosition == Card.position.IN_SUMMON:
+			player1summon.erase(card)
+			
+		player1hand.push_back(card)
+		card.reparent(p_1_hand)
+	else:
+		if card.currentPosition == Card.position.IN_DECK:
+			player2deck.erase(card)
+		elif card.currentPosition == Card.position.IN_MANA:
+			player2mana.erase(card)
+		elif card.currentPosition == Card.position.IN_SUMMON:
+			player2summon.erase(card)
+			
+		player2hand.push_back(card)
+		card.reparent(p_2_hand)
+	
+	card.currentPosition = Card.position.IN_HAND
+
 #Add to the card owner's available mana
 func add_to_mana(card, manaToAdd):
 	if card.cardOwner == 1:
@@ -429,6 +463,7 @@ func card_attack(card):
 	attacking = true
 	
 	check_interrupt()
+	await GmManager._interrupt_resolved
 	if card.currentPosition == card.position.IN_DECK:
 		attacking = false
 		return
@@ -477,7 +512,8 @@ func card_block(card):
 	attacking = false
 	
 	GmManager.emit_signal("_block_resolved")
-	
+
+
 #End the current turn and refreshes the currentTurn's player's cards
 #Also activates the AI's turn. This may change
 func change_turn():
@@ -534,11 +570,12 @@ func interrupt(card):
 	interruptStack.push_back(card)
 	GmManager.currentPhase = GmManager.phase.INTERRUPT
 	print("Interrupt added")
-	#interrupt_choice.show()
+	interrupt_choice.show()
 	
 func check_interrupt():
 	if interruptStack.is_empty():
 		GmManager.currentPhase = GmManager.phase.PLAY
+		GmManager.emit_signal("_interrupt_resolved")
 		return
 	print("interrupt here")
 	
@@ -571,4 +608,6 @@ func _on_interrupt_button_pressed() -> void:
 
 
 func _on_interrupt_pass_button_pressed() -> void:
+	GmManager.currentPhase = GmManager.phase.PLAY
+	GmManager.emit_signal("_interrupt_resolved")
 	interrupt_choice.hide()

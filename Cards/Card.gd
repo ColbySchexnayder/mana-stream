@@ -27,6 +27,7 @@ var paid := false
 var exhausted := false
 var revealed := false
 var cardOwner := 1
+var resolved := false
 
 @onready var card: Card = $"."
 
@@ -51,6 +52,8 @@ var cardOwner := 1
 @onready var attack_button: TextureButton = $InspectView/AttackButton
 @onready var block_button: TextureButton = $InspectView/BlockButton
 @onready var keep_button: TextureButton = $InspectView/KeepButton
+@onready var action_button: TextureButton = $InspectView/ActionButton
+
 
 @onready var card_art: TextureRect = $CardArt
 @onready var add_button: TextureButton = $InspectView/AddButton
@@ -62,8 +65,6 @@ static func constructor():
 	return obj
 
 func summon() -> void:
-	await GmManager._interrupt_resolved
-	print("summoned")
 	pass
 
 func mana() -> void:
@@ -159,7 +160,6 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func _on_summon_button_pressed() -> void:
 	GmManager.emit_signal("_card_summon", self)
-	summon()
 
 
 func _on_attack_button_pressed() -> void:
@@ -186,3 +186,7 @@ func _on_keep_button_pressed() -> void:
 func _on_mana_button_pressed() -> void:
 	GmManager.emit_signal("_card_select", self)
 	mana()
+
+
+func _on_action_button_pressed() -> void:
+	action()

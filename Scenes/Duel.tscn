@@ -27,6 +27,7 @@ offset_bottom = 41.0
 
 [node name="P2DeckHolder" type="Control" parent="."]
 layout_mode = 3
+anchors_preset = 0
 offset_left = -179.0
 offset_right = -139.0
 offset_bottom = 40.0
@@ -252,6 +253,14 @@ offset_left = 189.0
 offset_top = 175.0
 offset_right = 446.0
 offset_bottom = 312.0
+
+[node name="Panel" type="Panel" parent="Control/InterruptChoice"]
+layout_mode = 0
+offset_left = -53.0
+offset_right = 281.0
+offset_bottom = 166.0
+theme = ExtResource("7_o1sjj")
+theme_override_styles/panel = ExtResource("9_yk5x5")
 
 [node name="InterruptButton" type="TextureButton" parent="Control/InterruptChoice"]
 layout_mode = 0

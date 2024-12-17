@@ -10,6 +10,8 @@ var player_mana_zone := []
 var player_summon_zone := []
 var player_deck := []
 
+var interruptStack : Array[Card] = []
+
 var players_turn = true
 
 # Called when the node enters the scene tree for the first time.
@@ -33,8 +35,11 @@ func ai_turn():
 	if GmManager.currentPhase == GmManager.phase.PLAY:
 		if !ai_summon_zone.is_empty():
 			GmManager.emit_signal("_card_attack", ai_summon_zone[0])
+			#if !interruptStack.is_empty():
+				#await GmManager._interrupt_resolved
 			if !player_summon_zone.is_empty():
 				await GmManager._block_resolved
+		
 		GmManager.emit_signal("_change_turn")
 	
 func choose_defense(card):
