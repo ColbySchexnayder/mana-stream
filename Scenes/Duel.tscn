@@ -14,18 +14,21 @@
 [ext_resource type="Texture2D" uid="uid://bj0dvj3qv6nt3" path="res://Art/exclaimIcon.png" id="10_yyo3b"]
 
 [node name="Duel" type="Node2D"]
+position = Vector2(1, 0)
 script = ExtResource("1_ljhtk")
 
 [node name="P1DeckHolder" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -159.0
+offset_top = 1.0
+offset_right = -119.0
+offset_bottom = 41.0
 
 [node name="P2DeckHolder" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
+offset_left = -179.0
+offset_right = -139.0
 offset_bottom = 40.0
 
 [node name="Parallax" type="Node2D" parent="."]

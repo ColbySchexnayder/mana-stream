@@ -8,7 +8,8 @@ var Player2Deck : Array[String] = []
 
 enum phase {
 	REFRESH,
-	PLAY
+	PLAY,
+	INTERRUPT
 }
 
 var currentPhase = phase.PLAY
@@ -36,6 +37,7 @@ signal _card_keep(card: Card)
 
 
 signal _interrupt(card: Card)
+signal _check_interrupt()
 signal _interrupt_resolved()
 signal _pass()
 

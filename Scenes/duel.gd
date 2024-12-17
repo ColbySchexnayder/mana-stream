@@ -138,10 +138,13 @@ func _ready() -> void:
 	GmManager.connect("_card_attack", card_attack)
 	GmManager.connect("_move_to_deck", move_to_deck)
 	GmManager.connect("_card_block", card_block)
-	GmManager.connect("_interrupt", interrupt)
+	
 	GmManager.connect("_card_keep", card_keep)
 	GmManager.connect("_change_turn", change_turn)
 	GmManager.connect("_change_phase", change_phase)
+	
+	GmManager.connect("_interrupt", interrupt)
+	GmManager.connect("_check_interrupt", check_interrupt)
 	
 	#Give AI mana for testing
 	#Needs to be done after signals are connected otherwise "card_to_mana" won't work
@@ -185,6 +188,7 @@ func _process(delta: float) -> void:
 
 #Move given card from HAND to MANA
 func card_to_mana(card):
+	card.currentPosition = Card.position.IN_MANA
 	if card.cardOwner == 1:
 		player1mana.push_front(card)
 		player1hand.erase(card)
@@ -354,7 +358,6 @@ func card_summon(card: Card) -> void:
 		card.summon_button.visible = false
 		card.mana_button.visible = false
 		card.inspect_view.visible = false
-		interruptStack.push_back(card)
 		card.resolve_summon()
 		GmManager.emit_signal("_resolve_summon", card)
 
@@ -420,10 +423,16 @@ func card_attack(card):
 	#The player had to select the card to attack with it so deselect it
 	deselect()
 	
+	
 	#Store the attacking card so block() can reference it
 	attackingCard = card
 	attacking = true
 	
+	check_interrupt()
+	if card.currentPosition == card.position.IN_DECK:
+		attacking = false
+		return
+		
 	#If there are no card in the opposing player's SUMMON do direct damage
 	if currentTurn == 1:
 		if player2summon.size() == 0:
@@ -522,10 +531,17 @@ func interrupt(card):
 	IF passButtonPressed
 	PROCEED WITH TURN
 	"""
-	interrupt_choice.show()
+	interruptStack.push_back(card)
+	GmManager.currentPhase = GmManager.phase.INTERRUPT
+	print("Interrupt added")
+	#interrupt_choice.show()
 	
-	pass
-
+func check_interrupt():
+	if interruptStack.is_empty():
+		GmManager.currentPhase = GmManager.phase.PLAY
+		return
+	print("interrupt here")
+	
 #Draw test card. This will be disable eventually
 func _on_p_1_deck_pressed() -> void:
 	var drawnCard = Card.constructor()

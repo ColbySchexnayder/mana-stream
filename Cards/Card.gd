@@ -25,7 +25,7 @@ enum position {
 var currentPosition := position.IN_DECK
 var paid := false
 var exhausted := false
-var revealed := true
+var revealed := false
 var cardOwner := 1
 
 @onready var card: Card = $"."
@@ -164,7 +164,6 @@ func _on_summon_button_pressed() -> void:
 
 func _on_attack_button_pressed() -> void:
 	GmManager.emit_signal("_card_attack", self)
-	attacking()
 	#GmManager.emit_signal("_card_select", self)
 
 

@@ -28,15 +28,9 @@ func _process(delta: float) -> void:
 
 func card_attacks(card):
 	if !revealed and currentPosition == Card.position.IN_MANA:
-		if card.owner != owner:
+		if card.cardOwner != cardOwner:
 			GmManager.emit_signal("_interrupt", self)
-			#doesn't work await GmManager._interrupt_resolved
 			
-func pass_interrupt():
-	pass
-	
-func complete_interrupt():
-	pass
 
 func resolve_summon():
 	super.resolve_summon()
