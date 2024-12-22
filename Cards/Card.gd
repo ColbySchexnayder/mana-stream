@@ -190,3 +190,4 @@ func _on_mana_button_pressed() -> void:
 
 func _on_action_button_pressed() -> void:
 	action()
+	GmManager.emit_signal("_clear_selection")

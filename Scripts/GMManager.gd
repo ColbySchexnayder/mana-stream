@@ -15,6 +15,7 @@ enum phase {
 var currentPhase = phase.PLAY
 var currentTurn = 1
 
+
 signal _card_select(card: Card)
 signal _clear_selection()
 

@@ -35,8 +35,8 @@ func ai_turn():
 	if GmManager.currentPhase == GmManager.phase.PLAY:
 		if !ai_summon_zone.is_empty():
 			GmManager.emit_signal("_card_attack", ai_summon_zone[0])
-			#if !interruptStack.is_empty():
-				#await GmManager._interrupt_resolved
+			if !interruptStack.is_empty():
+				await GmManager._interrupt_resolved
 			if !player_summon_zone.is_empty():
 				await GmManager._block_resolved
 		

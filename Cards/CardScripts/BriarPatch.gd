@@ -37,6 +37,7 @@ func card_attacks(card):
 func action():
 	GmManager.emit_signal("_move_to_hand", attackingCard)
 	resolved = true
+	revealed = true
 	
 
 func resolve_summon():

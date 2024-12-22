@@ -134,6 +134,8 @@ func _ready() -> void:
 	
 	#region Initialize signals
 	GmManager.connect("_card_select", card_select)
+	GmManager.connect("_clear_selection", deselect)
+	
 	GmManager.connect("_card_to_mana", card_to_mana)
 	GmManager.connect("_card_summon", card_summon)
 	GmManager.connect("_add_to_mana", add_to_mana)
@@ -433,6 +435,11 @@ func move_to_hand(card: Card) -> void:
 		player1hand.push_back(card)
 		card.reparent(p_1_hand)
 	else:
+		card.revealed = false
+		card.card_front.visible = false
+		card.card_back.visible = true
+		card.card_art.visible = false
+		
 		if card.currentPosition == Card.position.IN_DECK:
 			player2deck.erase(card)
 		elif card.currentPosition == Card.position.IN_MANA:
@@ -464,7 +471,7 @@ func card_attack(card):
 	
 	check_interrupt()
 	await GmManager._interrupt_resolved
-	if card.currentPosition == card.position.IN_DECK:
+	if card.currentPosition != card.position.IN_SUMMON:
 		attacking = false
 		return
 		
@@ -573,11 +580,19 @@ func interrupt(card):
 	interrupt_choice.show()
 	
 func check_interrupt():
+	var count := 0
+	while count < len(interruptStack):
+		var card := interruptStack[count]
+		if card.resolved:
+			interruptStack.erase(card)
+			count -= 1
+		count += 1
 	if interruptStack.is_empty():
 		GmManager.currentPhase = GmManager.phase.PLAY
 		GmManager.emit_signal("_interrupt_resolved")
 		return
-	print("interrupt here")
+	
+	
 	
 #Draw test card. This will be disable eventually
 func _on_p_1_deck_pressed() -> void:
