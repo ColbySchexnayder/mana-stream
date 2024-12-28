@@ -38,6 +38,7 @@ func action():
 	GmManager.emit_signal("_move_to_hand", attackingCard)
 	resolved = true
 	revealed = true
+	GmManager.attacking = false
 	GmManager.emit_signal("_interrupt_resolved")
 	
 

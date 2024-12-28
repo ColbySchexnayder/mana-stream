@@ -12,9 +12,9 @@ enum phase {
 	INTERRUPT
 }
 
-var currentPhase = phase.PLAY
-var currentTurn = 1
-
+var currentPhase := phase.PLAY
+var currentTurn := 1
+var attacking := false
 
 signal _card_select(card: Card)
 signal _clear_selection()

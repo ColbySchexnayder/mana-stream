@@ -7,10 +7,5 @@
 [node name="Briarpatch" instance=ExtResource("1_vtumi")]
 script = ExtResource("2_cs2xp")
 
-[node name="CardArt" type="TextureRect" parent="CardFront" index="5"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 15.0
-offset_right = 96.0
-offset_bottom = 79.0
+[node name="CardArt" parent="." index="0"]
 texture = ExtResource("3_6e87h")

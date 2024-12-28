@@ -30,7 +30,6 @@ var inspectedCard
 
 #Turn managment variables
 var currentTurn := 1
-var attacking := false
 var attackingCard
 
 #Used to return a card to it's position in a given zone when no longer selected
@@ -275,7 +274,7 @@ func card_select(card):
 				if card.currentPosition == card.position.IN_SUMMON:
 					#A card in SUMMON can ATTACK during the PLAY phase
 					if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
-						if !attacking:
+						if !GmManager.attacking:
 							card.attack_button.visible = true
 					#A card in SUMMON can be SUSTAINED in the REFRESH phase
 					elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid and currentTurn == 1:
@@ -467,12 +466,12 @@ func card_attack(card):
 	
 	#Store the attacking card so block() can reference it
 	attackingCard = card
-	attacking = true
+	GmManager.attacking = true
 	
 	check_interrupt()
-	await GmManager._interrupt_resolved
+	#await GmManager._interrupt_resolved
 	if card.currentPosition != card.position.IN_SUMMON:
-		attacking = false
+		GmManager.attacking = false
 		return
 		
 	#If there are no card in the opposing player's SUMMON do direct damage
@@ -483,7 +482,7 @@ func card_attack(card):
 			p2Health -= card.attack
 			p_2_life.text = str(p2Health)
 			
-			attacking = false
+			GmManager.attacking = false
 			if p2Health == 0:
 				pass #TODO GAME VICTORY CODE HERE
 			GmManager.emit_signal("_block_resolved")
@@ -494,7 +493,7 @@ func card_attack(card):
 		
 		health -= card.attack
 		p_1_life.text = str(health)
-		attacking = false
+		GmManager.attacking = false
 		if health == 0:
 			pass #TODO GAME OVER CODE HERE
 		GmManager.emit_signal("_block_resolved")
@@ -510,14 +509,14 @@ func direct_damage(damage: int, player: int):
 
 #A response to being attacked. Destroy any card involved that takes more damage than it has health
 func card_block(card):
-	deselect()
 	attackingCard.exhaust(attackingCard)
+	deselect()
 	if (attackingCard.attack > card.health):
 		card.destroy(1)
 	if (card.attack > attackingCard.health):
 		attackingCard.destroy(1)
-	attacking = false
 	
+	GmManager.attacking = false
 	GmManager.emit_signal("_block_resolved")
 
 
@@ -589,9 +588,10 @@ func check_interrupt():
 		count += 1
 	if interruptStack.is_empty():
 		GmManager.currentPhase = GmManager.phase.PLAY
-		GmManager.emit_signal("_interrupt_resolved")
+		#GmManager.emit_signal("_interrupt_resolved")
 		return
-	
+	else:
+		await GmManager._interrupt_resolved
 	
 	
 #Draw test card. This will be disable eventually
@@ -610,8 +610,8 @@ func _on_pass_button_pressed() -> void:
 	if GmManager.currentPhase == GmManager.phase.REFRESH:
 		change_phase()
 	elif GmManager.currentPhase == GmManager.phase.PLAY:
-		if (attacking):
-			attacking = false
+		if (GmManager.attacking):
+			GmManager.attacking = false
 			direct_damage(attackingCard.attack, 1)
 			GmManager.emit_signal("_block_resolved")
 		else:
