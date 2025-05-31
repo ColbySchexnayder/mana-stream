@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://yn3i761xwbvs"]
 
-[ext_resource type="Script" path="res://Scenes/deck_edit.gd" id="1_ppinb"]
+[ext_resource type="Script" uid="uid://lcmmxghtpete" path="res://Scenes/deck_edit.gd" id="1_ppinb"]
 [ext_resource type="Texture2D" uid="uid://dcexpf3lcwll4" path="res://Art/rainbowgradienthorizontal.png" id="2_m1c1t"]
 [ext_resource type="Texture2D" uid="uid://cxlnyx77yc0lh" path="res://Art/BackgroundScreenMonochromelight.png" id="3_fulho"]
 [ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_gjju6"]

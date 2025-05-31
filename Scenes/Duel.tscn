@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://cx5b2r46v00uw"]
 
 [ext_resource type="Texture2D" uid="uid://dsc3ly3yyje2k" path="res://Backgrounds/starbackground0.png" id="1_ku1mf"]
-[ext_resource type="Script" path="res://Scenes/duel.gd" id="1_ljhtk"]
+[ext_resource type="Script" uid="uid://cmxvls1bkqmjx" path="res://Scenes/duel.gd" id="1_ljhtk"]
 [ext_resource type="Texture2D" uid="uid://dr7x5xbprtx2w" path="res://Backgrounds/starbackground1.png" id="2_mkbtj"]
 [ext_resource type="Texture2D" uid="uid://dhmbvsr0g6yvu" path="res://Backgrounds/starbackground2.png" id="3_luy51"]
 [ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="6_8c1q3"]
@@ -10,11 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://dwavn4d1505jc" path="res://Art/passIcon.png" id="8_3ou88"]
 [ext_resource type="Texture2D" uid="uid://bjrpll86l131l" path="res://Art/arrow.png" id="8_lj5r5"]
 [ext_resource type="StyleBox" uid="uid://cg5rh6mn7nl38" path="res://Cards/InspectViewStyleBox.tres" id="9_yk5x5"]
-[ext_resource type="Script" path="res://Scenes/ai_manager.gd" id="10_qiwog"]
+[ext_resource type="Script" uid="uid://dpgam1mn1u4ke" path="res://Scenes/ai_manager.gd" id="10_qiwog"]
 [ext_resource type="Texture2D" uid="uid://bj0dvj3qv6nt3" path="res://Art/exclaimIcon.png" id="10_yyo3b"]
 
 [node name="Duel" type="Node2D"]
-position = Vector2(1, 0)
 script = ExtResource("1_ljhtk")
 
 [node name="P1DeckHolder" type="Control" parent="."]

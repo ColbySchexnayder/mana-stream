@@ -6,8 +6,8 @@ extends Control
 func _ready() -> void:
 	if GmManager.Player1Deck.is_empty():
 		GmManager.Player1Deck = GmManager.load_deck("Deck.txt")
-
 	
+	TranslationServer.set_locale("en")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

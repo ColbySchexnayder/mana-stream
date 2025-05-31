@@ -1,0 +1,167 @@
+KEYS,en
+,
+PLAYER,Player
+,
+PHASE,Phase
+,
+REFRESH,Refresh
+,
+PLAY,Play
+,
+INTERRUPT,Interrupt
+,
+PASS,Pass
+,
+BLACK_CAT_NAME,Black Cat
+,
+BLACK_CAT_TYPE,Familiar
+,
+BLACK_CAT_ABILITY,
+,
+BLACK_CAT_LORE, Black cats are known for bringing misfortune upon those whose path they cross but their intelligence and affinity for magic make them the most common familiar of witches. 
+,
+BLACK_CAT_COST,1
+,
+BLACK_CAT_HEALTH,2
+,
+BLACK_CAT_ATTACK,2
+,
+MANA_RAT_NAME,Mana Rat
+,
+MANA_RAT_TYPE,Familiar
+,
+MANA_RAT_ABILITY,"On Summon: You may search your deck for one familiar with a cost of 2 or less, add it to your hand"
+,
+MANA_RAT_LORE,  The mana rat makes its burrows in the mana stream itself making them useful for guiding it along a Mages whims.  
+,
+MANA_RAT_COST,1
+,
+MANA_RAT_HEALTH,1
+,
+MANA_RAT_ATTACK,1
+,
+STAR_HAWK_NAME,Star Hawk
+,
+STAR_HAWK_TYPE,Familiar
+,
+STAR_HAWK_ABILITY,This card cannot be destroyed by battle.
+,
+STAR_HAWK_LORE,"  Born of the Mana Stream itself, a fully grown Star Hawk can envelop whole cities in night as it flies overhead.  "
+,
+STAR_HAWK_COST,4
+,
+STAR_HAWK_HEALTH,5
+,
+STAR_HAWK_ATTACK,5
+,
+GUARDIAN_BEAR_NAME,Guardian Bear
+,
+GUARDIAN_BEAR_TYPE,Familiar
+,
+GUARDIAN_BEAR_ABILITY,Reduce the cost of this card by 1 for each Familiar on the field
+,
+GUARDIAN_BEAR_LORE,  A beast known for it s undying loyalty to those who prove themselves.  
+,
+GUARDIAN_BEAR_COST,4
+,
+GUARDIAN_BEAR_HEALTH,4
+,
+GUARDIAN_BEAR_ATTACK,4
+,
+SPELLWEAVER_PHOENIX_NAME,Spellweaver Phoenix
+,
+SPELLWEAVER_PHOENIX_TYPE,Familiar
+,
+SPELLWEAVER_PHOENIX_ABILITY,"On Summon: You may search your deck for one spell, add it to your hand"
+,
+SPELLWEAVER_PHOENIX_LORE,  The feathers of a spellweaver phoenix are infused in potent magic making them sought after by many a Mage.  
+,
+SPELLWEAVER_PHOENIX_COST,2
+,
+SPELLWEAVER_PHOENIX_HEALTH,3
+,
+SPELLWEAVER_PHOENIX_ATTACK,3
+,
+SKELETON_SERF_NAME,Skeleton Serf of the Grand Necropolis
+,
+SKELETON_SERF_TYPE,Undead
+,
+SKELETON_SERF_ABILITY,"On Destruction: Place this card face-up in the Mana Zone, While in this zone this card can be used as mana"
+,
+SKELETON_SERF_LORE,"  Aged and weathered, skeletons shamble through the Grand Necropolis performing laborious tasks on behalf of those Mages trained in the magic of death.  "
+,
+SKELETON_SERF_COST,1
+,
+SKELETON_SERF_HEALTH,1
+,
+SKELETON_SERF_ATTACK,1
+,
+MANA_BURST_NAME,Mana Burst
+,
+MANA_BURST_TYPE,Raw
+,
+MANA_BURST_ABILITY,"Destroy one card in your Mana Zone, destroy one card your opponent controls"
+,
+MANA_BURST_LORE,  Wild magic is a dangerous thing.  
+,
+MANA_BURST_COST,1
+,
+INFUSED_EGG_NAME,Infused Egg
+,
+INFUSED_EGG_TYPE,Familiar
+,
+INFUSED_EGG_ABILITY,"Search your deck for 1 familiar, place it face down in your Mana Zone"
+,
+INFUSED_EGG_LORE,  The egg of a being infused with the raw magic of the mana stream creates the most fantastic of creatures.  
+,
+INFUSED_EGG_COST,2
+,
+EVOLUTION_NAME,Evolution
+,
+EVOLUTION_TYPE,Familiar
+,
+EVOLUTION_ABILITY,"Select one face down Creature from the Mana Zone, place it face up in the Summon Zone"
+,
+EVOLUTION_LORE,  The guiding hand of an expert mage can bring out the best in their familiars.  
+,
+EVOLUTION_COST,1
+,
+SHRINE_OF_THE_FORGE_NAME,Shrine of the Forge
+,
+SHRINE_OF_THE_FORGE_TYPE,Boon
+,
+SHRINE_OF_THE_FORGE_ABILITY,This card must be played face down in the Mana Zone. When a card enters your field reveal this card and refresh one Mana other than Shrine of the Forge
+,
+SHRINE_OF_THE_FORGE_LORE,  Powerful mages passively release magic all around them. Even the simplest of items they make has ambient magic. Work they pour themselves into can turn even the area they work to magic.  
+,
+SHRINE_OF_THE_FORGE_COST,0
+,
+SHRINE_OF_THE_TRAVELER_NAME,Shrine of the Traveler
+,
+SHRINE_OF_THE_TRAVELER_TYPE,Boon
+,
+SHRINE_OF_THE_TRAVELER_ABILITY,This card must be played face down in the Mana Zone. When a card leaves your field reveal this card and refresh one Mana other than Shrine of the Traveler
+,
+SHRINE_OF_THE_TRAVELER_LORE,  It is common for mages to give a bit of their magic to shrines on their journey. A token offering to those on long journeys.  
+,
+SHRINE_OF_THE_TRAVELER_COST,0
+,
+BRIARPATCH_NAME,Briar Patch
+,
+BRIARPATCH_TYPE,Fable
+,
+BRIARPATCH_ABILITY,"This card must be played face down in the Mana Zone. When your opponent attacks reveal this card and send one card you control back to your hand, then destroy this card."
+,
+BRIARPATCH_LORE,  Once upon a time there was a hungry fox and a clever rabbit.  
+,
+BRIARPATCH_COST,0
+,
+VETERINARIAN_NAME,Veterinarian the Fantastic
+,
+VETERINARIAN_TYPE,Familiar
+,
+VETERINARIAN_ABILITY,"This card must be played face down in the Mana Zone. After a Familiar you control with a cost of 2 or more is destroyed you may reveal this card, shuffle your deck then draw 2 cards, then destroy this card"
+,
+VETERINARIAN_LORE,  Most familiars can be returned to the Mana Stream and recalled nice and healthy. Not all familiars are so lucky.  
+,
+VETERINARIAN_COST,0

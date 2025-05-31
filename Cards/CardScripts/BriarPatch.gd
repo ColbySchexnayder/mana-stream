@@ -15,14 +15,16 @@ func _ready() -> void:
 	
 	super._ready()
 	GmManager.connect("_card_attack", card_attacks)
+	
 
-func set_card_info():
-	cardName = "Briarpatch"
+
+func set_card_info()->void:
+	cardName = tr("BRIARPATCH_NAME")
 	tags[0] = "Spell"
-	tags[1] = "Fable"
-	cardDescription = "This card must be played face down in the Mana Zone. When your opponent attacks reveal this card and send one card you control back to your hand, then destroy this card."
-	cardLore = '"Once upon a time there was a hungry fox and a clever rabbit."'
-	cost = 0
+	tags[1] = tr("BRIARPATCH_TYPE")
+	cardDescription = tr("BRIARPATCH_ABILITY")#"This card must be played face down in the Mana Zone. When your opponent attacks reveal this card and send one card you control back to your hand, then destroy this card."
+	cardLore = tr("BRIARPATCH_LORE")#'"Once upon a time there was a hungry fox and a clever rabbit."'
+	cost = int(tr("BRIARPATCH_COST"))
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

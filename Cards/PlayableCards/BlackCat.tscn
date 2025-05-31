@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bqhjv627gf1ya"]
 
 [ext_resource type="PackedScene" uid="uid://cy6xfsj2qbdjs" path="res://Cards/Card.tscn" id="1_yano3"]
-[ext_resource type="Script" path="res://Cards/CardScripts/BlackCat.gd" id="2_3clog"]
+[ext_resource type="Script" uid="uid://bh1p2r8bi8kmo" path="res://Cards/CardScripts/BlackCat.gd" id="2_3clog"]
 
 [node name="BlackCat" instance=ExtResource("1_yano3")]
 script = ExtResource("2_3clog")

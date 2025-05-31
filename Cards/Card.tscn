@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://cy6xfsj2qbdjs"]
 
-[ext_resource type="Script" path="res://Cards/Card.gd" id="1_hmu5p"]
+[ext_resource type="Script" uid="uid://c4ulnevqbvheg" path="res://Cards/Card.gd" id="1_hmu5p"]
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
 [ext_resource type="FontFile" uid="uid://bquqir84qilxq" path="res://Fonts/Kenney Pixel.ttf" id="2_6gjtp"]
 [ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="2_8rs7r"]

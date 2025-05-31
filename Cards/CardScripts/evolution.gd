@@ -9,14 +9,10 @@ func _ready() -> void:
 	set_card_info()
 	super._ready()
 
-func set_card_info():
-	cardName = "Evolution"
+func set_card_info()->void:
+	cardName = tr("EVOLUTION_NAME")#"Evolution"
 	tags[0] = "Spell"
-	tags[1] = "Totemism"
-	cardDescription = "Select one face down Creature from the Mana Zone, place it face up in the Summon Zone"
-	cardLore = '"The guiding hand of an expert mage can bring out the best in their familiars"'
-	cost = 1
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	tags[1] = tr("EVOLUTION_TYPE")#Formerly "Totemism", now familiar to match creature types
+	cardDescription = tr("EVOLUTION_ABILITY")#"Select one face down Creature from the Mana Zone, place it face up in the Summon Zone"
+	cardLore = tr("EVOLUTION_LORE")#'"The guiding hand of an expert mage can bring out the best in their familiars"'
+	cost = int(tr("EVOLUTION_COST"))#1

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://doo2vnqj80csx"]
 
 [ext_resource type="Texture2D" uid="uid://dcexpf3lcwll4" path="res://Art/rainbowgradienthorizontal.png" id="1_600nb"]
-[ext_resource type="Script" path="res://Scenes/title_screen.gd" id="1_kyaoj"]
+[ext_resource type="Script" uid="uid://t3bxxl8fnf6y" path="res://Scenes/title_screen.gd" id="1_kyaoj"]
 [ext_resource type="Texture2D" uid="uid://wivjdglbnywb" path="res://Art/titledScreenMonochromelight.png" id="2_tmt8w"]
 [ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_4rc84"]
 

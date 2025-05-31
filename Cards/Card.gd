@@ -64,6 +64,12 @@ static func constructor():
 	var obj = CARD.instantiate()
 	return obj
 
+func preconditions() -> Dictionary:
+	return {}
+
+func get_effects() -> Dictionary:
+	return {}
+
 func summon() -> void:
 	pass
 

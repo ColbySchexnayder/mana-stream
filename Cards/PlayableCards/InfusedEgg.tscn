@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://djfwn1l6uetuv"]
 
 [ext_resource type="PackedScene" uid="uid://bbfkmmw1umb1e" path="res://Cards/SpellCard.tscn" id="1_nh5nf"]
-[ext_resource type="Script" path="res://Cards/CardScripts/infused_egg.gd" id="2_mmgdy"]
+[ext_resource type="Script" uid="uid://cb7umgo14mky8" path="res://Cards/CardScripts/infused_egg.gd" id="2_mmgdy"]
 [ext_resource type="Texture2D" uid="uid://hmtcv5o7mxau" path="res://Cards/CardArt/InfusedEgg.png" id="3_imysp"]
 
 [node name="InfusedEgg" instance=ExtResource("1_nh5nf")]

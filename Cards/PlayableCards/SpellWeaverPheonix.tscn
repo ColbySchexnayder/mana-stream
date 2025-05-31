@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://q5bbtkglp6nc"]
 
 [ext_resource type="PackedScene" uid="uid://cy6xfsj2qbdjs" path="res://Cards/Card.tscn" id="1_yme5f"]
-[ext_resource type="Script" path="res://Cards/CardScripts/spell_weaver_pheonix.gd" id="2_so5wm"]
+[ext_resource type="Script" uid="uid://ptsdclc55cd2" path="res://Cards/CardScripts/spell_weaver_pheonix.gd" id="2_so5wm"]
 [ext_resource type="Texture2D" uid="uid://7f5savvxgsui" path="res://Cards/CardArt/spellweaverphoenix.png" id="3_o2nmy"]
 
 [node name="SpellWeaverPheonix" instance=ExtResource("1_yme5f")]
