@@ -16,7 +16,7 @@ var players_turn = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GmManager.connect("_ai_turn", ai_turn)
+	#GmManager.connect("_ai_turn", ai_turn)
 	GmManager.connect("_interrupt", handle_interrupt)
 
 
@@ -26,23 +26,24 @@ func _process(delta: float) -> void:
 
 #TODO: This all needs to be changed!
 #TODO: Seriously don't ignore this
-func ai_turn():
-	if GmManager.currentPhase == GmManager.phase.REFRESH:
-		if !ai_summon_zone.is_empty():
-			ai_hand[0].mana()
-			ai_mana_zone[0].mana()
-			await GmManager.emit_signal("_card_keep", ai_summon_zone[0])
-		GmManager.emit_signal("_change_phase")
-	if GmManager.currentPhase == GmManager.phase.PLAY:
-		if !ai_summon_zone.is_empty():
-			GmManager.emit_signal("_card_attack", ai_summon_zone[0])
-			if !interruptStack.is_empty():
-				await GmManager._interrupt_resolved
-			elif !player_summon_zone.is_empty():
-				await GmManager._block_resolved
-		
-		GmManager.emit_signal("_change_turn")
+
+func ai_sustain():
+	if !ai_summon_zone.is_empty():
+		ai_hand[0].mana()
+		ai_mana_zone[0].mana()
+		await GmManager.emit_signal("_card_keep", ai_summon_zone[0])
+	GmManager.emit_signal("_change_phase")
+
+func ai_play():
+	if !ai_summon_zone.is_empty():
+		GmManager.emit_signal("_card_attack", ai_summon_zone[0])
+		if !interruptStack.is_empty():
+			await GmManager._interrupt_resolved
+		elif !player_summon_zone.is_empty():
+			await GmManager._block_resolved
 	
+	GmManager.emit_signal("_change_turn")
+
 func choose_defense(card):
 	if players_turn:
 		if ai_summon_zone.size() > 0:

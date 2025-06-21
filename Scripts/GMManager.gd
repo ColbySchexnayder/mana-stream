@@ -50,6 +50,9 @@ signal _change_phase()
 signal _change_turn()
 
 signal _ai_turn()
+signal _ai_sustain()
+signal _ai_play()
+
 signal _player_turn()
 
 func load_deck(saveFile: String) -> Array[String]:

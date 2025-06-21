@@ -65,7 +65,14 @@ var cardIndex
 @onready var phase_label: RichTextLabel = $Control/PhaseLabel
 
 @onready var ai: AI_Manager = $AI
+
+@onready var sfx_player: AudioStreamPlayer = $SFXPlayer
+@onready var phase_change_animation: AnimatedSprite2D = $PhaseChangeAnimation
+
 #endregion
+
+#Preloading necessary files
+const CLICK_3 = preload("res://Sfx/UI Audio/Audio/click3.ogg")
 
 # Prepare the duel
 func _ready() -> void:
@@ -108,6 +115,7 @@ func _ready() -> void:
 	
 	
 	var opponentsDefense = Card.constructor()
+	opponentsDefense.revealed = true
 	opponentsDefense.cardOwner = 2
 	opponentsDefense.currentPosition = Card.position.IN_SUMMON
 	p_2_summon_zone.add_child(opponentsDefense)
@@ -237,65 +245,68 @@ func card_select(card):
 	#The player can't see the AI's card unless it has been revealed
 	if (card.cardOwner == 2 and !card.revealed):
 		return
-	
 	#The player can only inspect one card at a time
-	if inspection_area.get_child_count() == 0:
-		#Remember the position of the card in it's given zone
-		cardIndex = card.get_index()
-		
-		#Move the card to the selection area
-		card.reparent(inspection_area)
-		
-		#Make the front visible if it wasn't already
-		card.inspect_view.visible = true
-		card.card_back.visible = false
-		card.card_front.visible = true
-		card.card_art.visible = true
-		
-		#Even if the card is exhausted we want to see it it full scale when inspected
-		card.card_back.scale.x = 1
-		card.card_back.scale.y = 1
-		card.card_front.scale.x = 1
-		card.card_front.scale.y = 1
-		card.card_art.scale.x = 1
-		card.card_art.scale.y = 1
-		
-		#If it's the player's card show the appropriate buttons
-		if card.cardOwner == 1:
-			#Most buttons are only valid on the player's turn
-			if interruptStack.has(card):
-					card.action_button.visible = true
-			if currentTurn == 1:
-				#A card in the hand can be sent to MANA or SUMMON in the PLAY phase
-				if card.currentPosition == card.position.IN_HAND and GmManager.currentPhase == GMManager.phase.PLAY:
-					card.summon_button.visible = true
-					card.mana_button.visible = true
-				
-				if card.currentPosition == card.position.IN_SUMMON:
-					#A card in SUMMON can ATTACK during the PLAY phase
-					if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
-						if !GmManager.attacking:
-							card.attack_button.visible = true
-					#A card in SUMMON can be SUSTAINED in the REFRESH phase
-					elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid and currentTurn == 1:
-						card.keep_button.visible = true
-				#A card in MANA can be exhausted to increase available mana
-				if card.currentPosition == card.position.IN_MANA and !card.exhausted:
-					card.mana_button.visible = true
-				
-			#Block button is only shown when the AI is attacking the player
-			else:
-				if card.currentPosition == card.position.IN_SUMMON:
-					if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
-						card.block_button.visible = true
-						
-			#If something happens to the card while it's inspected it should still be destroyed properly
-			#I think this is unnessecary but it's here as a safety net
-			if card.currentPosition == card.position.IN_DECK:
-				card.destroy(card)
-	#If the player selects the card again unselect it
-	elif inspection_area.get_child(0) == card:
+	if inspection_area.get_child_count() != 0:
 		deselect()
+		return
+
+	sfx_player.stream = CLICK_3
+	sfx_player.play()
+	
+	#Remember the position of the card in it's given zone
+	cardIndex = card.get_index()
+	
+	#Move the card to the selection area
+	card.reparent(inspection_area)
+	
+	#Make the front visible if it wasn't already
+	card.inspect_view.visible = true
+	card.card_back.visible = false
+	card.card_front.visible = true
+	card.card_art.visible = true
+	
+	#Even if the card is exhausted we want to see it it full scale when inspected
+	card.card_back.scale.x = 1
+	card.card_back.scale.y = 1
+	card.card_front.scale.x = 1
+	card.card_front.scale.y = 1
+	card.card_art.scale.x = 1
+	card.card_art.scale.y = 1
+	
+	#If it's the player's card show the appropriate buttons
+	if card.cardOwner == 1:
+		#Most buttons are only valid on the player's turn
+		if interruptStack.has(card):
+				card.action_button.visible = true
+		if currentTurn == 1:
+			#A card in the hand can be sent to MANA or SUMMON in the PLAY phase
+			if card.currentPosition == card.position.IN_HAND and GmManager.currentPhase == GMManager.phase.PLAY:
+				card.summon_button.visible = true
+				card.mana_button.visible = true
+			
+			if card.currentPosition == card.position.IN_SUMMON:
+				#A card in SUMMON can ATTACK during the PLAY phase
+				if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
+					if !GmManager.attacking:
+						card.attack_button.visible = true
+				#A card in SUMMON can be SUSTAINED in the REFRESH phase
+				elif GmManager.currentPhase == GmManager.phase.REFRESH and !card.paid and currentTurn == 1:
+					card.keep_button.visible = true
+			#A card in MANA can be exhausted to increase available mana
+			if card.currentPosition == card.position.IN_MANA and !card.exhausted:
+				card.mana_button.visible = true
+			
+		#Block button is only shown when the AI is attacking the player
+		else:
+			if card.currentPosition == card.position.IN_SUMMON:
+				if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
+					card.block_button.visible = true
+					
+		#If something happens to the card while it's inspected it should still be destroyed properly
+		#I think this is unnessecary but it's here as a safety net
+		if card.currentPosition == card.position.IN_DECK:
+			card.destroy(card)
+
 
 #Remove a card from the selection area and return it to the appropriate zone
 func deselect():
@@ -303,6 +314,8 @@ func deselect():
 	if inspection_area.get_child_count() == 0:
 		return
 	
+	sfx_player.stream = CLICK_3
+	sfx_player.play()
 	var card = inspection_area.get_child(0)
 	#Turn all the buttons off
 	card.inspect_view.visible = false
@@ -382,7 +395,7 @@ func card_keep(card: Card) -> void:
 		if card.cost <= p2AvailableMana:
 			p2AvailableMana -= card.cost
 			card.paid = true
-			card_select(card)
+			#card_select(card)
 
 #Removes the card from the field and puts it at the bottom of it's owner's deck
 func move_to_deck(card: Card) -> void:
@@ -529,7 +542,10 @@ func change_turn():
 	
 	#print (bool(currentTurn-2))
 	GmManager.currentPhase = GmManager.phase.REFRESH
-	
+	phase_change_animation.visible = true
+	phase_change_animation.play("SustainNotice")
+	await phase_change_animation.animation_finished
+	phase_change_animation.visible = false
 	match currentTurn:
 		1:
 			draw(1)
@@ -544,10 +560,11 @@ func change_turn():
 				card.refresh()
 			for card in player2summon:
 				card.refresh()
-			ai.ai_turn()
+			ai.ai_sustain()
 
 #Changes from REFRESH to PLAY and destroys any unpaid cards
 func change_phase():
+	
 	if currentTurn == 1:
 		var i = 0
 		while i < (player1summon.size()):
@@ -562,7 +579,15 @@ func change_phase():
 				player2summon[i].destroy(3)
 				i -= 1
 			i += 1
+			
+	phase_change_animation.visible = true
+	phase_change_animation.play("PlayNotice")
+	await phase_change_animation.animation_finished
+	phase_change_animation.visible = false
+	
 	GmManager.currentPhase = GmManager.phase.PLAY
+	if currentTurn == 2:
+		ai.ai_play()
 
 #TODO: Add interrupts so cards that work off reactions can be played
 func interrupt(card):

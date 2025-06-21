@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cfu8lr356cato"
+path="res://.godot/imported/click2.ogg-062211d9280f4c058b21ee77640d8c5a.oggvorbisstr"
+
+[deps]
+
+source_file="res://Sfx/UI Audio/Audio/click2.ogg"
+dest_files=["res://.godot/imported/click2.ogg-062211d9280f4c058b21ee77640d8c5a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -59,7 +59,9 @@ var resolved := false
 @onready var add_button: TextureButton = $InspectView/AddButton
 @onready var remove_button: TextureButton = $InspectView/RemoveButton
 
+
 const CARD = preload("res://Cards/Card.tscn")
+
 static func constructor():
 	var obj = CARD.instantiate()
 	return obj
@@ -147,13 +149,9 @@ func _ready() -> void:
 	GmManager.connect("_card_exhaust", exhaust)
 	GmManager.connect("_card_activate", action)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 
 func _on_mouse_entered() -> void:
-	pass # Replace with function body.
+	pass #TODO: Highlight card when hovering?
 
 
 func _on_gui_input(event: InputEvent) -> void:
@@ -162,6 +160,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		
 	elif (event.is_action_pressed("alternate")) and card.cardOwner == 1 and GmManager.currentTurn == 1:
 		mana()
+		
 
 
 func _on_summon_button_pressed() -> void:
@@ -174,7 +173,7 @@ func _on_attack_button_pressed() -> void:
 
 
 func _on_block_button_pressed() -> void:
-	block() # Replace with function body.
+	block() 
 
 
 func _on_add_button_pressed() -> void:
