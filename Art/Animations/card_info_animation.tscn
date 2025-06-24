@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://u6e2sh0anf25"]
+
+[ext_resource type="Texture2D" uid="uid://daac1ug2rwurg" path="res://Art/attack_icon.png" id="1_tnwhp"]
+[ext_resource type="Texture2D" uid="uid://cta5y8uos343y" path="res://Art/blockIcon.png" id="2_ojpch"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rwjr"]
+atlas = ExtResource("1_tnwhp")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60cva"]
+atlas = ExtResource("2_ojpch")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fk12f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2rwjr")
+}],
+"loop": true,
+"name": &"AttackingAnimation",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60cva")
+}],
+"loop": true,
+"name": &"DefendingAnimation",
+"speed": 5.0
+}]
+
+[node name="CardInfoAnimation" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_fk12f")
+animation = &"DefendingAnimation"
