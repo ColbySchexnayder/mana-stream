@@ -59,6 +59,7 @@ var resolved := false
 @onready var add_button: TextureButton = $InspectView/AddButton
 @onready var remove_button: TextureButton = $InspectView/RemoveButton
 
+@onready var card_info_animation: AnimatedSprite2D = $CardInfoAnimation
 
 const CARD = preload("res://Cards/Card.tscn")
 
@@ -73,7 +74,7 @@ func get_effects() -> Dictionary:
 	return {}
 
 func summon() -> void:
-	pass
+	GmManager.emit_signal("_card_summon", self)
 
 func mana() -> void:
 	if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
@@ -87,12 +88,16 @@ func mana() -> void:
 			exhaust(self)
 
 func attacking() -> void:
-	pass
+	card_info_animation.visible = true
+	card_info_animation.play("AttackingAnimation")
+	GmManager.emit_signal("_card_attack", self)
 
 func action() -> void:
 	pass
 	
 func block() -> void:
+	card_info_animation.visible = true
+	card_info_animation.play("DefendingAnimation")
 	exhaust(self)
 	GmManager.emit_signal("_card_block", self)
 	
@@ -164,11 +169,12 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 func _on_summon_button_pressed() -> void:
-	GmManager.emit_signal("_card_summon", self)
+	summon()
 
 
 func _on_attack_button_pressed() -> void:
-	GmManager.emit_signal("_card_attack", self)
+	attacking()
+	
 	#GmManager.emit_signal("_card_select", self)
 
 

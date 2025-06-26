@@ -333,7 +333,9 @@ script = ExtResource("10_qiwog")
 stream = ExtResource("13_8gp5r")
 
 [node name="PhaseChangeAnimation" parent="." instance=ExtResource("14_w8i7p")]
+visible = false
 position = Vector2(320, 240)
+animation = &"PlayNotice"
 
 [connection signal="pressed" from="Control/P1Deck/P1DeckButton" to="." method="_on_p_1_deck_pressed"]
 [connection signal="pressed" from="Control/PassButton" to="." method="_on_pass_button_pressed"]

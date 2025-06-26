@@ -16,3 +16,10 @@ func set_card_info()->void:
 	cardDescription = tr("EVOLUTION_ABILITY")#"Select one face down Creature from the Mana Zone, place it face up in the Summon Zone"
 	cardLore = tr("EVOLUTION_LORE")#'"The guiding hand of an expert mage can bring out the best in their familiars"'
 	cost = int(tr("EVOLUTION_COST"))#1
+
+func summon():
+	
+	print("Prepping Evolution")
+	#TODO: Use ItemList to present acceptable cards to move to SUMMON ZONE
+	super.summon()
+	pass

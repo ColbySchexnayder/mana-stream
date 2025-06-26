@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cy6xfsj2qbdjs"]
+[gd_scene load_steps=15 format=3 uid="uid://cy6xfsj2qbdjs"]
 
 [ext_resource type="Script" uid="uid://c4ulnevqbvheg" path="res://Cards/Card.gd" id="1_hmu5p"]
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cta5y8uos343y" path="res://Art/blockIcon.png" id="9_oeuk8"]
 [ext_resource type="Texture2D" uid="uid://sh0jg283udom" path="res://Art/add.png" id="11_yrf87"]
 [ext_resource type="Texture2D" uid="uid://dwavn4d1505jc" path="res://Art/passIcon.png" id="12_pmnv2"]
+[ext_resource type="PackedScene" uid="uid://u6e2sh0anf25" path="res://Art/Animations/card_info_animation.tscn" id="14_af8jt"]
 
 [node name="Card" type="Control"]
 layout_mode = 3
@@ -320,6 +321,14 @@ mouse_filter = 2
 theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = " Remove?"
+
+[node name="CardInfoAnimation" parent="." instance=ExtResource("14_af8jt")]
+visible = false
+position = Vector2(56, 47)
+scale = Vector2(4.0625, 4.0625)
+animation = &"AttackingAnimation"
+frame = 0
+frame_progress = 0.0
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

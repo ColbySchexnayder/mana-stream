@@ -30,7 +30,7 @@ var inspectedCard
 
 #Turn managment variables
 var currentTurn := 1
-var attackingCard
+var attackingCard : Card
 
 #Used to return a card to it's position in a given zone when no longer selected
 var cardIndex
@@ -103,7 +103,7 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell = Briarpatch.constructor()
+	var testSpell = Evolution.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
 	p_1_hand.add_child(testSpell)
@@ -465,14 +465,14 @@ func move_to_hand(card: Card) -> void:
 	card.currentPosition = Card.position.IN_HAND
 
 #Add to the card owner's available mana
-func add_to_mana(card, manaToAdd):
+func add_to_mana(card : Card, manaToAdd : int):
 	if card.cardOwner == 1:
 		availableMana += manaToAdd
 	else:
 		p2AvailableMana += manaToAdd
 
 #Begin attacking. A card has to be chosen to block or the player has to pass
-func card_attack(card):
+func card_attack(card : Card):
 	#The player had to select the card to attack with it so deselect it
 	deselect()
 	
@@ -499,6 +499,7 @@ func card_attack(card):
 			if p2Health == 0:
 				pass #TODO GAME VICTORY CODE HERE
 			GmManager.emit_signal("_block_resolved")
+			card.card_info_animation.visible = false
 			return
 		ai.choose_defense(card)
 	if currentTurn == 2 and player1summon.size() == 0:
@@ -509,8 +510,8 @@ func card_attack(card):
 		GmManager.attacking = false
 		if health == 0:
 			pass #TODO GAME OVER CODE HERE
+		card.card_info_animation.visible = false
 		GmManager.emit_signal("_block_resolved")
-		return
 
 #Apply direct damage to the given player
 #May want to have card_attack() use this but it works as is
@@ -521,14 +522,22 @@ func direct_damage(damage: int, player: int):
 		p2Health -= damage
 
 #A response to being attacked. Destroy any card involved that takes more damage than it has health
-func card_block(card):
+func card_block(card : Card):
 	attackingCard.exhaust(attackingCard)
 	deselect()
 	if (attackingCard.attack > card.health):
+		card.card_info_animation.play("DefenseFail")
+		await card.card_info_animation.animation_finished
+		card.card_info_animation.visible = false
 		card.destroy(1)
 	if (card.attack > attackingCard.health):
+		attackingCard.card_info_animation.play("AttackFail")
+		await attackingCard.card_info_animation.animation_finished
+		attackingCard.card_info_animation.visible = false
 		attackingCard.destroy(1)
 	
+	attackingCard.card_info_animation.visible = false
+	card.card_info_animation.visible = false
 	GmManager.attacking = false
 	GmManager.emit_signal("_block_resolved")
 
@@ -590,7 +599,7 @@ func change_phase():
 		ai.ai_play()
 
 #TODO: Add interrupts so cards that work off reactions can be played
-func interrupt(card):
+func interrupt(card : Card):
 	"""
 	Present interrupt options
 	IF interruptButtonPressed
@@ -611,6 +620,7 @@ func check_interrupt():
 			interruptStack.erase(card)
 			count -= 1
 		count += 1
+	
 	if interruptStack.is_empty():
 		GmManager.currentPhase = GmManager.phase.PLAY
 		#GmManager.emit_signal("_interrupt_resolved")
@@ -646,7 +656,7 @@ func _on_pass_button_pressed() -> void:
 func _on_interrupt_button_pressed() -> void:
 	interrupt_choice.hide()
 
-
+#NOTICE: Assumes no interrupts happen in the SUSTAIN phase
 func _on_interrupt_pass_button_pressed() -> void:
 	GmManager.currentPhase = GmManager.phase.PLAY
 	GmManager.emit_signal("_interrupt_resolved")

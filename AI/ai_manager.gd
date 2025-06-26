@@ -36,10 +36,10 @@ func ai_sustain():
 
 func ai_play():
 	if !ai_summon_zone.is_empty():
-		GmManager.emit_signal("_card_attack", ai_summon_zone[0])
+		ai_summon_zone[0].attacking()
 		if !interruptStack.is_empty():
 			await GmManager._interrupt_resolved
-		elif !player_summon_zone.is_empty():
+		if !player_summon_zone.is_empty():
 			await GmManager._block_resolved
 	
 	GmManager.emit_signal("_change_turn")
