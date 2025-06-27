@@ -73,6 +73,9 @@ func preconditions() -> Dictionary:
 func get_effects() -> Dictionary:
 	return {}
 
+func effectOtherCard(card: Card):
+	pass
+
 func summon() -> void:
 	GmManager.emit_signal("_card_summon", self)
 
@@ -102,11 +105,11 @@ func block() -> void:
 	GmManager.emit_signal("_card_block", self)
 	
 
-#Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
+#NOTICE Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:
 	GmManager.emit_signal("_move_to_deck", card)
 
-func exhaust(card)-> void:
+func exhaust(card: Card)-> void:
 	if card.exhausted:
 		return
 	card.exhausted = true
@@ -130,6 +133,11 @@ func refresh()->void:
 	card_art.scale.x = 1
 	card_art.scale.y = 1
 
+func reveal() -> void:
+	revealed = true
+	card_back.visible=  false
+	card_front.visible = true
+	card_art.visible = true
 
 func react() -> void:
 	pass

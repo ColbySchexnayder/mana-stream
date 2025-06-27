@@ -11,6 +11,17 @@ var player2deck  : Array[Card]= []
 var player2hand : Array[Card]= []
 var player2summon : Array[Card]= []
 var player2mana : Array[Card]= []
+
+var field = [
+	player1deck, 
+	player1hand, 
+	player1summon, 
+	player1mana,
+	player2deck, 
+	player2hand, 
+	player2summon, 
+	player2mana
+	]
 #endregion
 
 #TODO: This will be required before AI can be worked on
@@ -103,12 +114,12 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell = Evolution.constructor()
-	testSpell.currentPosition = Card.position.IN_HAND
-	player1hand.push_front(testSpell)
-	p_1_hand.add_child(testSpell)
+	var testSpell1 = Evolution.constructor()
+	testSpell1.currentPosition = Card.position.IN_HAND
+	player1hand.push_front(testSpell1)
+	p_1_hand.add_child(testSpell1)
 
-	testSpell = SpellCard.constructor()
+	var testSpell = SpellCard.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
 	p_1_hand.add_child(testSpell)
@@ -143,8 +154,11 @@ func _ready() -> void:
 	GmManager.connect("_card_select", card_select)
 	GmManager.connect("_clear_selection", deselect)
 	
+	GmManager.connect("_offer_selection", offer_selection)
+	
 	GmManager.connect("_card_to_mana", card_to_mana)
 	GmManager.connect("_card_summon", card_summon)
+	GmManager.connect("_move_to_summon", move_to_summon)
 	GmManager.connect("_add_to_mana", add_to_mana)
 	GmManager.connect("_card_attack", card_attack)
 	GmManager.connect("_move_to_deck", move_to_deck)
@@ -374,16 +388,40 @@ func card_summon(card: Card) -> void:
 		return
 	if card.cost <= availableMana:
 		availableMana -= card.cost
-		player1summon.push_front(card)
-		player1hand.erase(card)
-		card.reparent(p_1_summon_zone)
-		card.currentPosition  = card.position.IN_SUMMON
-		card.summon_button.visible = false
-		card.mana_button.visible = false
-		card.inspect_view.visible = false
-		card.resolve_summon()
-		GmManager.emit_signal("_resolve_summon", card)
+		move_to_summon(card)
 
+#Move card to summon zone regardless of previous position or mana
+func move_to_summon(card: Card):
+	match card.currentPosition:
+		Card.position.IN_HAND:
+			if card.cardOwner == 1:
+				player1hand.erase(card)
+			else:
+				player2hand.erase(card)
+		card.position.IN_DECK:
+			if card.cardOwner == 1:
+				player1deck.erase(card)
+			else:
+				player2deck.erase(card)
+		card.position.IN_MANA:
+			if card.cardOwner == 1:
+				player1mana.erase(card)
+			else:
+				player2mana.erase(card)
+		card.position.IN_SUMMON:
+			return
+	card.reveal()
+	player1summon.push_front(card)
+	card.reparent(p_1_summon_zone)
+	card.currentPosition  = card.position.IN_SUMMON
+	card.summon_button.visible = false
+	card.mana_button.visible = false
+	card.inspect_view.visible = false
+	card.refresh()
+	
+	card.resolve_summon()
+	GmManager.emit_signal("_resolve_summon", card)
+	
 #Any card in SUMMON has to be paid for at the start of the turn
 func card_keep(card: Card) -> void:
 	if card.cardOwner == 1:
@@ -597,6 +635,51 @@ func change_phase():
 	GmManager.currentPhase = GmManager.phase.PLAY
 	if currentTurn == 2:
 		ai.ai_play()
+
+#NOTICE: zoneToSearch positions in field to search
+#	0 player1deck, 
+#	1 player1hand, 
+#	2 player1summon, 
+#	3 player1mana,
+#	4 player2deck, 
+#	5 player2hand, 
+#	6 player2summon, 
+#	7 player2mana
+func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditions: Dictionary):
+	var selectionChoices : Array[Card] = []
+	for area in zonesToSearch:
+		selectionChoices += field[area].filter(func(card: Card):
+			for condition in matchConditions.keys():
+				match condition:
+					"health" :
+						if matchConditions["health"] > card.health:
+							return false
+					"cost" :
+						if matchConditions["cost"] > card.cost:
+							return false
+					"revealed":
+						if matchConditions["revealed"] != card.revealed:
+							return false
+					"tags":
+						for tag in matchConditions["tags"]:
+							if !(tag in card.tags):
+								return false
+			return true
+			)
+	
+	for choice in selectionChoices:
+		print(choice.cardName)
+	
+	var chosenCard : Card
+	if triggerCard.cardOwner == 1:
+		chosenCard = playerListSelection(selectionChoices)
+	else:
+		chosenCard = ai.choose_card(selectionChoices)
+	
+	triggerCard.effectOtherCard(chosenCard)
+
+func playerListSelection(list : Array[Card]) -> Card:
+	return list[0]
 
 #TODO: Add interrupts so cards that work off reactions can be played
 func interrupt(card : Card):

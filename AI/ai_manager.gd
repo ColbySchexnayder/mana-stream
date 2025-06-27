@@ -44,12 +44,15 @@ func ai_play():
 	
 	GmManager.emit_signal("_change_turn")
 
-func choose_defense(card):
+func choose_defense(card: Card):
 	if players_turn:
 		if ai_summon_zone.size() > 0:
 			ai_summon_zone[0].block()
 		else:
 			GmManager.emit_signal("_pass")
+
+func choose_card(list: Array[Card]) -> Card:
+	return list[0]
 
 func handle_interrupt(card: Card):
 	if card.cardOwner == 1:

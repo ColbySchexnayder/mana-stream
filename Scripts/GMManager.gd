@@ -19,6 +19,8 @@ var attacking := false
 signal _card_select(card: Card)
 signal _clear_selection()
 
+signal _offer_selection(triggerCard: Card, zonesToSelect: Array[int], matchConditions: Dictionary)
+
 signal _card_to_mana(card: Card)
 signal _card_exhaust(card: Card)
 signal _card_activate(card: Card)
@@ -34,6 +36,7 @@ signal _card_destroy(card: Card)
 signal _add_to_mana(card: Card, manaToAdd: int)
 signal _move_to_deck(card: Card)
 signal _move_to_hand(card: Card)
+signal _move_to_summon(card: Card)
 signal _choose_defense(card: Card)
 signal _card_keep(card: Card)
 
