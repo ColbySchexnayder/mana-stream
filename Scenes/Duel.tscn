@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cx5b2r46v00uw"]
+[gd_scene load_steps=16 format=3 uid="uid://cx5b2r46v00uw"]
 
 [ext_resource type="Texture2D" uid="uid://dsc3ly3yyje2k" path="res://Backgrounds/starbackground0.png" id="1_ku1mf"]
 [ext_resource type="Script" uid="uid://cmxvls1bkqmjx" path="res://Scenes/duel.gd" id="1_ljhtk"]
@@ -12,6 +12,7 @@
 [ext_resource type="StyleBox" uid="uid://cg5rh6mn7nl38" path="res://Cards/InspectViewStyleBox.tres" id="9_yk5x5"]
 [ext_resource type="Script" uid="uid://dpgam1mn1u4ke" path="res://AI/ai_manager.gd" id="10_qiwog"]
 [ext_resource type="Texture2D" uid="uid://bj0dvj3qv6nt3" path="res://Art/exclaimIcon.png" id="10_yyo3b"]
+[ext_resource type="Texture2D" uid="uid://cxlnyx77yc0lh" path="res://Art/BackgroundScreenMonochromelight.png" id="12_lat0q"]
 [ext_resource type="AudioStream" uid="uid://dkyqewcth6rkp" path="res://Sfx/UI Audio/Audio/click3.ogg" id="13_8gp5r"]
 [ext_resource type="PackedScene" uid="uid://ds6i6kfdf8bu8" path="res://Art/Animations/phase_change_animation.tscn" id="14_w8i7p"]
 
@@ -326,6 +327,22 @@ mouse_filter = 2
 theme = ExtResource("7_o1sjj")
 text = "Play Phase"
 
+[node name="SelectionListArea" type="TextureRect" parent="Control"]
+visible = false
+layout_mode = 0
+offset_right = 956.0
+offset_bottom = 480.0
+texture = ExtResource("12_lat0q")
+
+[node name="SelectionList" type="ItemList" parent="Control/SelectionListArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7_o1sjj")
+
 [node name="AI" type="Node" parent="."]
 script = ExtResource("10_qiwog")
 
@@ -341,3 +358,4 @@ animation = &"PlayNotice"
 [connection signal="pressed" from="Control/PassButton" to="." method="_on_pass_button_pressed"]
 [connection signal="pressed" from="Control/InterruptChoice/InterruptButton" to="." method="_on_interrupt_button_pressed"]
 [connection signal="pressed" from="Control/InterruptChoice/InterruptPassButton" to="." method="_on_interrupt_pass_button_pressed"]
+[connection signal="item_clicked" from="Control/SelectionListArea/SelectionList" to="." method="_on_selection_list_item_clicked"]

@@ -80,10 +80,18 @@ var cardIndex
 @onready var sfx_player: AudioStreamPlayer = $SFXPlayer
 @onready var phase_change_animation: AnimatedSprite2D = $PhaseChangeAnimation
 
+@onready var selection_list_area: TextureRect = $Control/SelectionListArea
+@onready var selection_list: ItemList = $Control/SelectionListArea/SelectionList
+
 #endregion
 
 #Preloading necessary files
 const CLICK_3 = preload("res://Sfx/UI Audio/Audio/click3.ogg")
+const CAST_BUTTON = preload("res://Art/castButton.png")
+const SUMMON_BUTTON = preload("res://Art/summonButton.png")
+
+#Signals only used within the duel script
+signal choice_made(num)
 
 # Prepare the duel
 func _ready() -> void:
@@ -672,14 +680,26 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 	
 	var chosenCard : Card
 	if triggerCard.cardOwner == 1:
-		chosenCard = playerListSelection(selectionChoices)
+		chosenCard = await playerListSelection(selectionChoices)
 	else:
 		chosenCard = ai.choose_card(selectionChoices)
 	
 	triggerCard.effectOtherCard(chosenCard)
 
 func playerListSelection(list : Array[Card]) -> Card:
-	return list[0]
+	for card in list:
+		if card.tags[0] == "Creature":
+			selection_list.add_item(card.cardName, SUMMON_BUTTON)
+		else:
+			selection_list.add_item(card.cardName, CAST_BUTTON)
+	selection_list_area.visible = true
+	
+	var num = await choice_made
+	
+	selection_list.clear()
+	selection_list_area.visible = false
+	
+	return list[num]
 
 #TODO: Add interrupts so cards that work off reactions can be played
 func interrupt(card : Card):
@@ -744,3 +764,10 @@ func _on_interrupt_pass_button_pressed() -> void:
 	GmManager.currentPhase = GmManager.phase.PLAY
 	GmManager.emit_signal("_interrupt_resolved")
 	interrupt_choice.hide()
+
+
+func _on_selection_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+	if mouse_button_index != 1:
+		return
+	
+	emit_signal("choice_made", index)

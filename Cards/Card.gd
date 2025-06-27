@@ -29,6 +29,11 @@ var revealed := false
 var cardOwner := 1
 var resolved := false
 
+var boardBreakingVal := 0
+var boardBuildingVal := 0
+var resourceGatheringVal := 0
+
+
 @onready var card: Card = $"."
 
 @onready var card_front: TextureRect = $CardFront
@@ -66,12 +71,6 @@ const CARD = preload("res://Cards/Card.tscn")
 static func constructor():
 	var obj = CARD.instantiate()
 	return obj
-
-func preconditions() -> Dictionary:
-	return {}
-
-func get_effects() -> Dictionary:
-	return {}
 
 func effectOtherCard(card: Card):
 	pass
