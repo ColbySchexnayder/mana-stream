@@ -122,7 +122,8 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell1 = Evolution.constructor()
+	var testSpell1 = GuardianBear.constructor()
+	testSpell1.cardOwner = 1
 	testSpell1.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell1)
 	p_1_hand.add_child(testSpell1)
@@ -179,6 +180,8 @@ func _ready() -> void:
 	
 	GmManager.connect("_interrupt", interrupt)
 	GmManager.connect("_check_interrupt", check_interrupt)
+	
+	GmManager.connect("_request_field", requestField)
 	#endregion
 	
 	#Give AI mana for testing
@@ -644,6 +647,17 @@ func change_phase():
 	if currentTurn == 2:
 		ai.ai_play()
 
+#	0 player1deck, 
+#	1 player1hand, 
+#	2 player1summon, 
+#	3 player1mana,
+#	4 player2deck, 
+#	5 player2hand, 
+#	6 player2summon, 
+#	7 player2mana
+func requestField(card: Card):
+	card.use_field(field)
+
 #NOTICE: zoneToSearch positions in field to search
 #	0 player1deck, 
 #	1 player1hand, 
@@ -675,8 +689,8 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 			return true
 			)
 	
-	for choice in selectionChoices:
-		print(choice.cardName)
+	if selectionChoices.is_empty():
+		return
 	
 	var chosenCard : Card
 	if triggerCard.cardOwner == 1:

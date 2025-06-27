@@ -46,7 +46,7 @@ signal _check_interrupt()
 signal _interrupt_resolved()
 signal _pass()
 
-signal _request_field(card: Card, zone: int)
+signal _request_field(card: Card)
 signal _request_hand(card: Card)
 
 signal _change_phase()

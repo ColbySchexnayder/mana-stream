@@ -3,6 +3,11 @@ class_name Card extends Node
 var cost := 1
 var health := 0
 var attack := 1
+
+var baseCost := 1
+var baseHealth := 0
+var baseAttack := 1
+
 var cardName := "An Overly Verbose And Realy long Text Name Test Name"
 var cardDescription := "Rerum beatae aliquam perferendis neque. Quaerat et quisquam sint corrupti optio quis. Voluptas et non qui vitae rerum sint qui sunt.
 
@@ -138,6 +143,17 @@ func reveal() -> void:
 	card_front.visible = true
 	card_art.visible = true
 
+#	0 player1deck, 
+#	1 player1hand, 
+#	2 player1summon, 
+#	3 player1mana,
+#	4 player2deck, 
+#	5 player2hand, 
+#	6 player2summon, 
+#	7 player2mana
+func use_field(field):
+	pass
+
 func react() -> void:
 	pass
 
@@ -148,6 +164,10 @@ func _ready() -> void:
 	attack_text.text = str(attack)
 	name_text.text = cardName
 	description_text.text = cardDescription
+	
+	baseAttack = attack
+	baseCost = cost
+	baseHealth = health
 	
 	expanded_name.text = cardName
 	expanded_description.text = cardDescription
