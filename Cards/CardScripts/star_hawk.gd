@@ -19,7 +19,7 @@ func set_card_info():
 	health = int(tr("STAR_HAWK_HEALTH"))#5
 	attack = int(tr("STAR_HAWK_ATTACK"))#5
 
-
+#NOTICE Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:
 	if cause == 1:
 		return

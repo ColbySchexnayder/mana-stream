@@ -21,7 +21,24 @@ func set_card_info()->void:
 	health = int(tr("MANA_RAT_HEALTH"))#1
 	attack = int(tr("MANA_RAT_ATTACK"))#1
 
-#TODO IMPLEMENT Search system
-func summon()->void:
-	pass
+#	0 player1deck, 
+#	1 player1hand, 
+#	2 player1summon, 
+#	3 player1mana,
+#	4 player2deck, 
+#	5 player2hand, 
+#	6 player2summon, 
+#	7 player2mana
+func resolve_summon():
+	var conditions = {"tags" : ["Creature", "Familiar"], "cost" : 2}
+	var zones : Array[int]
+	if cardOwner == 1:
+		zones = [0]
+	else:
+		zones = [4]
+	GmManager.emit_signal("_offer_selection", self, zones, conditions)
 	
+	super.resolve_summon()
+
+func effectOtherCard(card: Card):
+	GmManager.emit_signal("_move_to_hand", card)

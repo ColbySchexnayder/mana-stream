@@ -17,3 +17,25 @@ func set_card_info():
 	cost = int(tr("SPELLWEAVER_PHOENIX_COST"))#2
 	health = int(tr("SPELLWEAVER_PHOENIX_HEALTH"))#3
 	attack = int(tr("SPELLWEAVER_PHOENIX_ATTACK"))#3
+
+#	0 player1deck, 
+#	1 player1hand, 
+#	2 player1summon, 
+#	3 player1mana,
+#	4 player2deck, 
+#	5 player2hand, 
+#	6 player2summon, 
+#	7 player2mana
+func resolve_summon():
+	var conditions = {"tags" : ["Spell"]}
+	var zones : Array[int]
+	if cardOwner == 1:
+		zones = [0]
+	else:
+		zones = [4]
+	GmManager.emit_signal("_offer_selection", self, zones, conditions)
+	
+	super.resolve_summon()
+
+func effectOtherCard(card: Card):
+	GmManager.emit_signal("_move_to_hand", card)

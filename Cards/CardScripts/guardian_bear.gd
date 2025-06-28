@@ -12,8 +12,9 @@ func _ready() -> void:
 	super._ready()
 
 func _process(_delta: float) -> void:
-	GmManager.emit_signal("_request_field", self)
-	cost_text.text = str(cost)
+	if currentPosition == position.IN_HAND:
+		GmManager.emit_signal("_request_field", self)
+		cost_text.text = str(cost)
 
 #	0 player1deck, 
 #	1 player1hand, 

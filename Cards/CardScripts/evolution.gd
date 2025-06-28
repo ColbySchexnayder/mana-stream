@@ -17,13 +17,24 @@ func set_card_info()->void:
 	cardLore = tr("EVOLUTION_LORE")#'"The guiding hand of an expert mage can bring out the best in their familiars"'
 	cost = int(tr("EVOLUTION_COST"))#1
 
+#	0 player1deck, 
+#	1 player1hand, 
+#	2 player1summon, 
+#	3 player1mana,
+#	4 player2deck, 
+#	5 player2hand, 
+#	6 player2summon, 
+#	7 player2mana
 func resolve_summon():
 	
-	print("Prepping Evolution")
 	var conditions = {"tags" : ["Creature"], "revealed" : false}
-	var zones : Array[int] = [3]
+	var zones : Array[int]
+	if cardOwner == 1:
+		zones = [3]
+	else:
+		zones = [7]
 	GmManager.emit_signal("_offer_selection", self, zones, conditions)
-	#TODO: Use ItemList to present acceptable cards to move to SUMMON ZONE
+	
 	super.resolve_summon()
 
 func effectOtherCard(card: Card):

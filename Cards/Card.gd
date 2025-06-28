@@ -143,6 +143,12 @@ func reveal() -> void:
 	card_front.visible = true
 	card_art.visible = true
 
+func hide() -> void:
+	revealed = false
+	card_back.visible = true
+	card_front.visible = false
+	card_art.visible = false
+
 #	0 player1deck, 
 #	1 player1hand, 
 #	2 player1summon, 

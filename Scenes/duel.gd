@@ -122,16 +122,16 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell1 = GuardianBear.constructor()
+	var testSpell1 = InfusedEgg.constructor()
 	testSpell1.cardOwner = 1
 	testSpell1.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell1)
 	p_1_hand.add_child(testSpell1)
 
-	var testSpell = SpellCard.constructor()
-	testSpell.currentPosition = Card.position.IN_HAND
-	player1hand.push_front(testSpell)
-	p_1_hand.add_child(testSpell)
+	#var testSpell = StarHawk.constructor()
+	#testSpell.currentPosition = Card.position.IN_HAND
+	#player1hand.push_front(testSpell)
+	#p_1_hand.add_child(testSpell)
 	
 	
 	var opponentsDefense = Card.constructor()
@@ -227,9 +227,9 @@ func _process(delta: float) -> void:
 #Move given card from HAND to MANA
 func card_to_mana(card):
 	card.currentPosition = Card.position.IN_MANA
+	remove_from_x(card)
 	if card.cardOwner == 1:
 		player1mana.push_front(card)
-		player1hand.erase(card)
 		card.reparent(p_1_mana_zone)
 		card.inspect_view.visible = false
 		card.summon_button.visible = false
@@ -238,7 +238,6 @@ func card_to_mana(card):
 		totalMana += 1
 	else:
 		player2mana.push_front(card)
-		player2hand.erase(card)
 		card.reparent(p_2_mana_zone)
 		card.inspect_view.visible = false
 		card.revealed = false
@@ -446,17 +445,7 @@ func card_keep(card: Card) -> void:
 			card.paid = true
 			#card_select(card)
 
-#Removes the card from the field and puts it at the bottom of it's owner's deck
-func move_to_deck(card: Card) -> void:
-	#If it's already in the deck don't do anything
-	if card.currentPosition == Card.position.IN_DECK:
-		return
-	
-	#If it ends up above the deck for some reason, having the back viewed will just make it look like the deck
-	card.card_front.visible = false
-	card.card_back.visible = true
-	card.inspect_view.visible = false
-	
+func remove_from_x(card: Card):
 	#Put the card at the bottom of the deck and remove it from whatever array it was in
 	if card.cardOwner == 1:
 		player1deck.push_back(card)
@@ -478,6 +467,19 @@ func move_to_deck(card: Card) -> void:
 				player2mana.erase(card)
 			card.position.IN_HAND:
 				player2hand.erase(card)
+
+#Removes the card from the field and puts it at the bottom of it's owner's deck
+func move_to_deck(card: Card) -> void:
+	#If it's already in the deck don't do anything
+	if card.currentPosition == Card.position.IN_DECK:
+		return
+	
+	#If it ends up above the deck for some reason, having the back viewed will just make it look like the deck
+	card.card_front.visible = false
+	card.card_back.visible = true
+	card.inspect_view.visible = false
+	
+	remove_from_x(card)
 	
 	#Set the card's current location to be in the deck
 	card.currentPosition = Card.position.IN_DECK
@@ -674,10 +676,10 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 			for condition in matchConditions.keys():
 				match condition:
 					"health" :
-						if matchConditions["health"] > card.health:
+						if card.health > matchConditions["health"]:
 							return false
 					"cost" :
-						if matchConditions["cost"] > card.cost:
+						if card.cost > matchConditions["cost"]:
 							return false
 					"revealed":
 						if matchConditions["revealed"] != card.revealed:
@@ -691,7 +693,7 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 	
 	if selectionChoices.is_empty():
 		return
-	
+
 	var chosenCard : Card
 	if triggerCard.cardOwner == 1:
 		chosenCard = await playerListSelection(selectionChoices)
