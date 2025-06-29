@@ -30,19 +30,44 @@ func set_card_info()->void:
 func _process(delta: float) -> void:
 	summon_button.hide()
 
-func card_attacks(card):
-	if !revealed and currentPosition == Card.position.IN_MANA:
+func card_attacks(card: Card):
+	#only deal with player1 interrupts for now
+	if !revealed and currentPosition == Card.position.IN_MANA and cardOwner == 1:
 		if card.cardOwner != cardOwner:
 			GmManager.emit_signal("_interrupt", self)
 			attackingCard = card
-			
+
+#	0 player1deck, 
+#	1 player1hand, 
+#	2 player1summon, 
+#	3 player1mana,
+#	4 player2deck, 
+#	5 player2hand, 
+#	6 player2summon, 
+#	7 player2mana
 func action():
-	GmManager.emit_signal("_move_to_hand", attackingCard)
+	
 	resolved = true
 	revealed = true
+	attackingCard.exhaust(attackingCard)
+	
+	var conditions = {}
+	var zones : Array[int]= []
+	
+	if cardOwner == 1:
+		zones = [2,3]
+	else:
+		zones = [6,7]
+	
 	GmManager.attacking = false
+	GmManager.emit_signal("_offer_selection", self, zones, conditions)
 	GmManager.emit_signal("_interrupt_resolved")
 	
+
+func effectOtherCard(card: Card):
+	
+	GmManager.emit_signal("_move_to_hand", card)
+	destroy(0)
 
 func resolve_summon():
 	super.resolve_summon()

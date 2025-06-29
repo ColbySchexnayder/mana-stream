@@ -1,9 +1,10 @@
-[gd_scene load_steps=28 format=3 uid="uid://u6e2sh0anf25"]
+[gd_scene load_steps=38 format=3 uid="uid://u6e2sh0anf25"]
 
 [ext_resource type="Texture2D" uid="uid://dl14vuykcug47" path="res://Art/attack_fail.png" id="1_2rwjr"]
 [ext_resource type="Texture2D" uid="uid://daac1ug2rwurg" path="res://Art/attack_icon.png" id="1_tnwhp"]
 [ext_resource type="Texture2D" uid="uid://cta5y8uos343y" path="res://Art/blockIcon.png" id="2_ojpch"]
 [ext_resource type="Texture2D" uid="uid://b17cqq7htnasm" path="res://Art/block_fail.png" id="4_60cva"]
+[ext_resource type="Texture2D" uid="uid://25elea506rn" path="res://Art/explosion16l.png" id="5_60cva"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fk12f"]
 atlas = ExtResource("1_2rwjr")
@@ -93,6 +94,42 @@ region = Rect2(128, 0, 16, 16)
 atlas = ExtResource("4_60cva")
 region = Rect2(144, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqdqt"]
+atlas = ExtResource("5_60cva")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c60cb"]
+atlas = ExtResource("5_60cva")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ea73"]
+atlas = ExtResource("5_60cva")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3kt8"]
+atlas = ExtResource("5_60cva")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb46y"]
+atlas = ExtResource("5_60cva")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q23ue"]
+atlas = ExtResource("5_60cva")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ip4i2"]
+atlas = ExtResource("5_60cva")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gb0d2"]
+atlas = ExtResource("5_60cva")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k38h5"]
+atlas = ExtResource("5_60cva")
+region = Rect2(32, 0, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_fk12f"]
 animations = [{
 "frames": [{
@@ -180,10 +217,40 @@ animations = [{
 "loop": false,
 "name": &"DefenseFail",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jqdqt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c60cb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ea73")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3kt8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb46y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q23ue")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ip4i2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gb0d2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k38h5")
+}],
+"loop": false,
+"name": &"Destroyed",
+"speed": 10.0
 }]
 
 [node name="CardInfoAnimation" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_fk12f")
-animation = &"DefenseFail"
-frame = 9
-frame_progress = 1.0
+animation = &"DefendingAnimation"

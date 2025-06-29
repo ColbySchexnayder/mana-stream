@@ -122,7 +122,7 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell1 = InfusedEgg.constructor()
+	var testSpell1 = Briarpatch.constructor()
 	testSpell1.cardOwner = 1
 	testSpell1.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell1)
@@ -446,27 +446,27 @@ func card_keep(card: Card) -> void:
 			#card_select(card)
 
 func remove_from_x(card: Card):
-	#Put the card at the bottom of the deck and remove it from whatever array it was in
+	# remove it from whatever array it was in
 	if card.cardOwner == 1:
-		player1deck.push_back(card)
-		card.reparent(p_1_deck)
 		match card.currentPosition:
-			card.position.IN_SUMMON:
+			Card.position.IN_SUMMON:
 				player1summon.erase(card)
-			card.position.IN_MANA:
+			Card.position.IN_MANA:
 				player1mana.erase(card)
-			card.position.IN_HAND:
+			Card.position.IN_HAND:
 				player1hand.erase(card)
+			Card.position.IN_DECK:
+				player1deck.erase(card)
 	else:
-		player2deck.push_back(card)
-		card.reparent(p_2_deck)
 		match card.currentPosition:
-			card.position.IN_SUMMON:
+			Card.position.IN_SUMMON:
 				player2summon.erase(card)
-			card.position.IN_MANA:
+			Card.position.IN_MANA:
 				player2mana.erase(card)
-			card.position.IN_HAND:
+			Card.position.IN_HAND:
 				player2hand.erase(card)
+			Card.position.IN_DECK:
+				player2deck.erase(card)
 
 #Removes the card from the field and puts it at the bottom of it's owner's deck
 func move_to_deck(card: Card) -> void:
@@ -478,15 +478,24 @@ func move_to_deck(card: Card) -> void:
 	card.card_front.visible = false
 	card.card_back.visible = true
 	card.inspect_view.visible = false
+	card.refresh()
+	
 	
 	remove_from_x(card)
-	
+	if card.cardOwner == 1:
+		player1deck.push_back(card)
+		card.reparent(p_1_deck)
+	else:
+		player2deck.push_back(card)
+		card.reparent(p_2_deck)
 	#Set the card's current location to be in the deck
 	card.currentPosition = Card.position.IN_DECK
 	card.hide()
 
 #Moves the card from the field to it's owners hand
 func move_to_hand(card: Card) -> void:
+	
+	card.refresh()
 	if card.cardOwner == 1:
 		if card.currentPosition == Card.position.IN_DECK:
 			player1deck.erase(card)
@@ -494,7 +503,8 @@ func move_to_hand(card: Card) -> void:
 			player1mana.erase(card)
 		elif card.currentPosition == Card.position.IN_SUMMON:
 			player1summon.erase(card)
-			
+		
+		card.reveal()
 		player1hand.push_back(card)
 		card.reparent(p_1_hand)
 	else:
@@ -726,10 +736,11 @@ func interrupt(card : Card):
 	IF passButtonPressed
 	PROCEED WITH TURN
 	"""
-	interruptStack.push_back(card)
-	GmManager.currentPhase = GmManager.phase.INTERRUPT
-	print("Interrupt added")
-	interrupt_choice.show()
+	if (card.cardOwner == 1):
+		interruptStack.push_back(card)
+		GmManager.currentPhase = GmManager.phase.INTERRUPT
+		print("Interrupt added")
+		interrupt_choice.show()
 	
 func check_interrupt():
 	var count := 0

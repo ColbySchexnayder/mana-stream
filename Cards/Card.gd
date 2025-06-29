@@ -105,18 +105,24 @@ func action() -> void:
 func block() -> void:
 	card_info_animation.visible = true
 	card_info_animation.play("DefendingAnimation")
+	
 	exhaust(self)
 	GmManager.emit_signal("_card_block", self)
 	
 
 #NOTICE Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:
+	#card_info_animation.visible = true
+	#card_info_animation.play("Destroyed")
+	#await card_info_animation.animation_finished
+	#card_info_animation.visible = false
 	GmManager.emit_signal("_move_to_deck", card)
 
 func exhaust(card: Card)-> void:
 	if card.exhausted:
 		return
 	card.exhausted = true
+	#card.card_info_animation.visible = false
 	card.card_back.scale.x = .5
 	card.card_back.scale.y = .5
 	card.card_front.scale.x = .5

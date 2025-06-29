@@ -9,3 +9,8 @@ script = ExtResource("2_njde4")
 
 [node name="CardArt" parent="." index="0"]
 texture = ExtResource("3_2l4qm")
+
+[node name="CardInfoAnimation" parent="." index="4"]
+animation = &"AttackingAnimation"
+frame = 0
+frame_progress = 0.0

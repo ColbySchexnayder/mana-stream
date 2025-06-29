@@ -326,9 +326,7 @@ text = " Remove?"
 visible = false
 position = Vector2(56, 47)
 scale = Vector2(4.0625, 4.0625)
-animation = &"AttackingAnimation"
-frame = 0
-frame_progress = 0.0
+animation = &"DefenseFail"
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
