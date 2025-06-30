@@ -51,7 +51,7 @@ func action():
 	revealed = true
 	attackingCard.exhaust(attackingCard)
 	
-	var conditions = {}
+	var conditions = {"target self" : false}
 	var zones : Array[int]= []
 	
 	if cardOwner == 1:

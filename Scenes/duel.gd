@@ -685,6 +685,9 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 		selectionChoices += field[area].filter(func(card: Card):
 			for condition in matchConditions.keys():
 				match condition:
+					"target self":
+						if !matchConditions["target self"]:
+							return false
 					"health" :
 						if card.health > matchConditions["health"]:
 							return false

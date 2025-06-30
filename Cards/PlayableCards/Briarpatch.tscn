@@ -12,5 +12,3 @@ texture = ExtResource("3_6e87h")
 
 [node name="CardInfoAnimation" parent="." index="4"]
 animation = &"AttackingAnimation"
-frame = 0
-frame_progress = 0.0
