@@ -32,7 +32,9 @@ signal _card_block(card: Card)
 signal _block_resolved
 signal _card_add(card: Card)
 signal _card_remove(card: Card)
+
 signal _card_destroy(card: Card)
+
 signal _add_to_mana(card: Card, manaToAdd: int)
 signal _move_to_deck(card: Card)
 signal _move_to_hand(card: Card)

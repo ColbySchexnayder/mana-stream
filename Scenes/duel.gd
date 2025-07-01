@@ -122,16 +122,16 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell1 = Briarpatch.constructor()
+	var testSpell1 = ShrineOfTheTraveler.constructor()
 	testSpell1.cardOwner = 1
 	testSpell1.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell1)
 	p_1_hand.add_child(testSpell1)
 
-	#var testSpell = StarHawk.constructor()
-	#testSpell.currentPosition = Card.position.IN_HAND
-	#player1hand.push_front(testSpell)
-	#p_1_hand.add_child(testSpell)
+	var testSpell = ShrineOfTheTraveler.constructor()
+	testSpell.currentPosition = Card.position.IN_HAND
+	player1hand.push_front(testSpell)
+	p_1_hand.add_child(testSpell)
 	
 	
 	var opponentsDefense = Card.constructor()
@@ -190,7 +190,7 @@ func _ready() -> void:
 	
 
 # Keep the text up to date and cards organized
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#Keep player 1 cards the right distance apart
 	var p1HandSeperationRatio = player_1_zone.get_global_rect().size.x / (player1hand.size()+1)
 	p_1_hand.add_theme_constant_override("separation", p1HandSeperationRatio)
@@ -223,6 +223,8 @@ func _process(delta: float) -> void:
 	
 	p_1_life.text = str(health)
 	p_2_life.text = str(p2Health)
+
+	check_interrupt()
 
 #Move given card from HAND to MANA
 func card_to_mana(card):
@@ -327,9 +329,8 @@ func card_select(card):
 					card.block_button.visible = true
 					
 		#If something happens to the card while it's inspected it should still be destroyed properly
-		#I think this is unnessecary but it's here as a safety net
 		if card.currentPosition == card.position.IN_DECK:
-			card.destroy(card)
+			await card.destroy(3)
 
 
 #Remove a card from the selection area and return it to the appropriate zone
@@ -590,12 +591,12 @@ func card_block(card : Card):
 		card.card_info_animation.play("DefenseFail")
 		await card.card_info_animation.animation_finished
 		card.card_info_animation.visible = false
-		card.destroy(1)
+		await card.destroy(1)
 	if (card.attack > attackingCard.health):
 		attackingCard.card_info_animation.play("AttackFail")
 		await attackingCard.card_info_animation.animation_finished
 		attackingCard.card_info_animation.visible = false
-		attackingCard.destroy(1)
+		await attackingCard.destroy(1)
 	
 	attackingCard.card_info_animation.visible = false
 	card.card_info_animation.visible = false
@@ -639,14 +640,14 @@ func change_phase():
 		var i = 0
 		while i < (player1summon.size()):
 			if !player1summon[i].paid:
-				player1summon[i].destroy(3)
+				await player1summon[i].destroy(3)
 				i -= 1
 			i += 1
 	else:
 		var i = 0
 		while i < (player2summon.size()):
 			if !player2summon[i].paid:
-				player2summon[i].destroy(3)
+				await player2summon[i].destroy(3)
 				i -= 1
 			i += 1
 			
@@ -686,7 +687,7 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 			for condition in matchConditions.keys():
 				match condition:
 					"target self":
-						if !matchConditions["target self"]:
+						if !matchConditions["target self"] and triggerCard == card:
 							return false
 					"health" :
 						if card.health > matchConditions["health"]:
@@ -697,6 +698,14 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 					"revealed":
 						if matchConditions["revealed"] != card.revealed:
 							return false
+					"exhausted":
+						if matchConditions["exhausted"] != card.exhausted:
+							return false
+					"name":
+						if matchConditions["name"][0] == "exclude":
+							if matchConditions["name"][1] == card.cardName:
+								print(card.cardName)
+								return false
 					"tags":
 						for tag in matchConditions["tags"]:
 							if !(tag in card.tags):
@@ -705,6 +714,7 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 			)
 	
 	if selectionChoices.is_empty():
+		triggerCard.effectOtherCard(null)
 		return
 
 	var chosenCard : Card
@@ -752,6 +762,7 @@ func check_interrupt():
 		if card.resolved:
 			interruptStack.erase(card)
 			count -= 1
+			
 		count += 1
 	
 	if interruptStack.is_empty():

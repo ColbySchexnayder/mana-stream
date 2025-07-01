@@ -20,7 +20,7 @@ func resolve_summon():
 	
 	if card.currentPosition == Card.position.IN_SUMMON:
 		print('success')
-		destroy(0)
+		await destroy(0)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

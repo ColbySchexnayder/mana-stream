@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 
 func card_attacks(card: Card):
 	#only deal with player1 interrupts for now
-	if !revealed and currentPosition == Card.position.IN_MANA and cardOwner == 1:
+	if !revealed and currentPosition == Card.position.IN_MANA:
 		if card.cardOwner != cardOwner:
 			GmManager.emit_signal("_interrupt", self)
 			attackingCard = card
@@ -50,6 +50,7 @@ func action():
 	resolved = true
 	revealed = true
 	attackingCard.exhaust(attackingCard)
+	attackingCard.card_info_animation.visible = false
 	
 	var conditions = {"target self" : false}
 	var zones : Array[int]= []
@@ -61,13 +62,14 @@ func action():
 	
 	GmManager.attacking = false
 	GmManager.emit_signal("_offer_selection", self, zones, conditions)
-	GmManager.emit_signal("_interrupt_resolved")
+	
 	
 
 func effectOtherCard(card: Card):
-	
-	GmManager.emit_signal("_move_to_hand", card)
-	destroy(0)
+	if card != null:
+		GmManager.emit_signal("_move_to_hand", card)
+	await destroy(0)
+	GmManager.emit_signal("_interrupt_resolved")
 
 func resolve_summon():
 	super.resolve_summon()

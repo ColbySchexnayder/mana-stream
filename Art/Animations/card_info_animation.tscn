@@ -253,4 +253,6 @@ animations = [{
 
 [node name="CardInfoAnimation" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_fk12f")
-animation = &"DefendingAnimation"
+animation = &"Destroyed"
+frame = 8
+frame_progress = 1.0

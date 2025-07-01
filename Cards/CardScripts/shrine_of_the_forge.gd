@@ -17,5 +17,5 @@ func set_card_info():
 	cardLore = tr("SHRINE_OF_THE_FORGE_LORE")#'"Powerful mages passively release magic all around them. Even the simplest of items they make has ambient magic. Work they pour themselves into can turn even the are they work in to magic"'
 	cost = int(tr("SHRINE_OF_THE_FORGE_COST"))#0
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	summon_button.hide()

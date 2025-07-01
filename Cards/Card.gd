@@ -112,10 +112,15 @@ func block() -> void:
 
 #NOTICE Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:
-	#card_info_animation.visible = true
-	#card_info_animation.play("Destroyed")
-	#await card_info_animation.animation_finished
-	#card_info_animation.visible = false
+	#WARNING: The commented code only plays the animation when called with await
+	
+	card_info_animation.visible = true
+	card_info_animation.play("Destroyed")
+	
+	await card_info_animation.animation_finished
+	card_info_animation.visible = false
+	
+	GmManager.emit_signal("_card_destroy", self)
 	GmManager.emit_signal("_move_to_deck", card)
 
 func exhaust(card: Card)-> void:
@@ -136,6 +141,7 @@ func resolve_summon()->void:
 func refresh()->void:
 	paid = false
 	exhausted = false
+	resolved = false #NOTICE: Keep an eye on this
 	card_back.scale.x = 1
 	card_back.scale.y = 1
 	card_front.scale.x = 1
@@ -166,7 +172,7 @@ func hide() -> void:
 func use_field(field):
 	pass
 
-func react() -> void:
+func react(card: Card) -> void:
 	pass
 
 # Called when the node enters the scene tree for the first time.
