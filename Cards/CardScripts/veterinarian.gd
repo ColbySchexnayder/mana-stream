@@ -8,6 +8,7 @@ static func constructor():
 func _ready() -> void:
 	set_card_info()
 	super._ready()
+	GmManager.connect("_card_destroy", react)
 
 func set_card_info():
 	cardName = tr("VETERINARIAN_NAME")#"Veterinarian the Fantastic"
@@ -19,3 +20,27 @@ func set_card_info():
 
 func _process(_delta: float) -> void:
 	summon_button.hide()
+
+func react(card: Card):
+	if revealed:
+		return
+	if currentPosition != Card.position.IN_MANA:
+		return
+	if card.cardOwner != cardOwner:
+		return
+	if !(tags[1] in card.tags):
+		return
+	if card.cost < 2:
+		return
+	
+	GmManager.emit_signal("_interrupt", self)
+
+func action():
+	reveal()
+	GmManager.emit_signal("_shuffle", cardOwner)
+	GmManager.emit_signal("_draw", cardOwner)
+	GmManager.emit_signal("_draw", cardOwner)
+	
+	await destroy(0)
+	resolved = true
+	GmManager.emit_signal("_interrupt_resolved")

@@ -31,17 +31,18 @@ func ai_sustain():
 	if !ai_summon_zone.is_empty():
 		ai_hand[0].mana()
 		ai_mana_zone[0].mana()
-		await GmManager.emit_signal("_card_keep", ai_summon_zone[0])
+		GmManager.emit_signal("_card_keep", ai_summon_zone[0])
+		
 	GmManager.emit_signal("_change_phase")
 
 func ai_play():
 	if !ai_summon_zone.is_empty():
 		ai_summon_zone[0].attacking()
-		if !interruptStack.is_empty():
+		while !interruptStack.is_empty():
 			await GmManager._interrupt_resolved
-		if !player_summon_zone.is_empty():
-			await GmManager._block_resolved
-	
+		
+		await GmManager._block_resolved
+		
 	GmManager.emit_signal("_change_turn")
 
 func choose_defense(card: Card):

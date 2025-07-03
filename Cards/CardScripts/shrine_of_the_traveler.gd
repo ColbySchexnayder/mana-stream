@@ -24,8 +24,10 @@ func _process(_delta: float) -> void:
 	summon_button.hide()
 
 func react(card: Card):
+	if card.currentPosition == card.position.IN_DECK:
+		return
 	if !revealed and currentPosition == Card.position.IN_MANA:
-		if card.cardOwner != cardOwner:
+		if card.cardOwner == cardOwner:
 			GmManager.emit_signal("_interrupt", self)
 
 #	0 player1deck, 
@@ -38,16 +40,15 @@ func react(card: Card):
 #	7 player2mana
 func action():
 	
-	resolved = true
 	revealed = true
 	
 	var conditions = {"target self" : false, "exhausted" : true, "name" : ["exclude" , cardName]}
 	var zones : Array[int]= []
 	
 	if cardOwner == 1:
-		zones = [2,3]
+		zones = [3]
 	else:
-		zones = [6,7]
+		zones = [7]
 	
 	GmManager.emit_signal("_offer_selection", self, zones, conditions)
 
@@ -55,3 +56,4 @@ func effectOtherCard(card: Card):
 	if card != null:
 		card.refresh()
 	GmManager.emit_signal("_interrupt_resolved")
+	resolved = true

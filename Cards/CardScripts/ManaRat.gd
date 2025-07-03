@@ -30,6 +30,10 @@ func set_card_info()->void:
 #	6 player2summon, 
 #	7 player2mana
 func resolve_summon():
+	GmManager.emit_signal("_interrupt", self)
+	super.resolve_summon()
+	
+func action():
 	var conditions = {"tags" : ["Creature", "Familiar"], "cost" : 2}
 	var zones : Array[int]
 	if cardOwner == 1:
@@ -38,7 +42,9 @@ func resolve_summon():
 		zones = [4]
 	GmManager.emit_signal("_offer_selection", self, zones, conditions)
 	
-	super.resolve_summon()
+	
 
 func effectOtherCard(card: Card):
 	GmManager.emit_signal("_move_to_hand", card)
+	resolved = true
+	GmManager.emit_signal("_interrupt_resolved")

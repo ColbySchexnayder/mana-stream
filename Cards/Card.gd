@@ -33,6 +33,7 @@ var exhausted := false
 var revealed := false
 var cardOwner := 1
 var resolved := false
+var resolving := false
 
 var boardBreakingVal := 0
 var boardBuildingVal := 0

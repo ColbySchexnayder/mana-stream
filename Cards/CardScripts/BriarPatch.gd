@@ -47,7 +47,7 @@ func card_attacks(card: Card):
 #	7 player2mana
 func action():
 	
-	resolved = true
+	
 	revealed = true
 	attackingCard.exhaust(attackingCard)
 	attackingCard.card_info_animation.visible = false
@@ -70,6 +70,7 @@ func effectOtherCard(card: Card):
 		GmManager.emit_signal("_move_to_hand", card)
 	await destroy(0)
 	GmManager.emit_signal("_interrupt_resolved")
+	resolved = true
 
 func resolve_summon():
 	super.resolve_summon()

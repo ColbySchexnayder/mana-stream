@@ -74,6 +74,7 @@ var cardIndex
 
 @onready var turn_label: RichTextLabel = $Control/TurnLabel
 @onready var phase_label: RichTextLabel = $Control/PhaseLabel
+@onready var interception_message: RichTextLabel = $Control/InterruptChoice/Panel/InterceptionMessage
 
 @onready var ai: AI_Manager = $AI
 
@@ -95,6 +96,9 @@ signal choice_made(num)
 
 # Prepare the duel
 func _ready() -> void:
+	#Language adjustments
+	interception_message.text = tr("ACTIVATION_QUESTION")
+	
 	#region Load Decks
 	for cardFileName in GmManager.Player1Deck:
 		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
@@ -122,13 +126,13 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell1 = ShrineOfTheTraveler.constructor()
+	var testSpell1 = Veterinarian.constructor()
 	testSpell1.cardOwner = 1
 	testSpell1.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell1)
 	p_1_hand.add_child(testSpell1)
 
-	var testSpell = ShrineOfTheTraveler.constructor()
+	var testSpell = Briarpatch.constructor()
 	testSpell.currentPosition = Card.position.IN_HAND
 	player1hand.push_front(testSpell)
 	p_1_hand.add_child(testSpell)
@@ -182,6 +186,9 @@ func _ready() -> void:
 	GmManager.connect("_check_interrupt", check_interrupt)
 	
 	GmManager.connect("_request_field", requestField)
+	
+	GmManager.connect("_draw", draw)
+	GmManager.connect("_shuffle", shuffle)
 	#endregion
 	
 	#Give AI mana for testing
@@ -225,6 +232,12 @@ func _process(_delta: float) -> void:
 	p_2_life.text = str(p2Health)
 
 	check_interrupt()
+
+func shuffle(player: int):
+	if player == 1:
+		player1deck.shuffle()
+	else:
+		player2deck.shuffle()
 
 #Move given card from HAND to MANA
 func card_to_mana(card):
@@ -544,7 +557,8 @@ func card_attack(card : Card):
 	GmManager.attacking = true
 	
 	check_interrupt()
-	#await GmManager._interrupt_resolved
+	
+	await GmManager._interrupt_empty
 	if card.currentPosition != card.position.IN_SUMMON:
 		GmManager.attacking = false
 		return
@@ -766,11 +780,10 @@ func check_interrupt():
 		count += 1
 	
 	if interruptStack.is_empty():
+		GmManager.emit_signal("_interrupt_empty")
 		GmManager.currentPhase = GmManager.phase.PLAY
 		#GmManager.emit_signal("_interrupt_resolved")
 		return
-	else:
-		await GmManager._interrupt_resolved
 	
 	
 #Draw test card. This will be disable eventually

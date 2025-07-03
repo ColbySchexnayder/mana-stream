@@ -9,12 +9,18 @@ var Player2Deck : Array[String] = []
 enum phase {
 	REFRESH,
 	PLAY,
-	INTERRUPT
+	INTERRUPT,
+	INTERRUPTP1,
+	INTERRUPTP2
 }
 
 var currentPhase := phase.PLAY
 var currentTurn := 1
 var attacking := false
+
+#finish action signal YES
+signal _draw(player: int)
+signal _shuffle(player: int)
 
 signal _card_select(card: Card)
 signal _clear_selection()
@@ -50,6 +56,8 @@ signal _pass()
 
 signal _request_field(card: Card)
 signal _request_hand(card: Card)
+
+signal _interrupt_empty
 
 signal _change_phase()
 signal _change_turn()
