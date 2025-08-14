@@ -19,6 +19,9 @@ func set_card_info():
 	cardDescription = tr("SHRINE_OF_THE_TRAVELER_ABILITY")#"This card must be played face down in the Mana Zone. When a card leaves your field reveal this card and refresh one Mana other than Shrine of the Traveler."
 	cardLore = tr("SHRINE_OF_THE_TRAVELER_LORE")#'"It is common for mages to give a bit of their magic to shrines on their journey. A token offering to those on long journeys."'
 	cost = int(tr("SHRINE_OF_THE_TRAVELER_COST"))#0
+	
+	resourceGatheringVal = 1
+	actionBenefit = 1
 
 func _process(_delta: float) -> void:
 	summon_button.hide()

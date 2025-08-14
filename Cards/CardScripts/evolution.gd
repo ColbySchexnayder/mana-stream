@@ -17,6 +17,7 @@ func set_card_info()->void:
 	cardLore = tr("EVOLUTION_LORE")#'"The guiding hand of an expert mage can bring out the best in their familiars"'
 	cost = int(tr("EVOLUTION_COST"))#1
 
+
 #	0 player1deck, 
 #	1 player1hand, 
 #	2 player1summon, 

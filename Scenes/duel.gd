@@ -117,6 +117,7 @@ func _ready() -> void:
 	#endregion
 	
 	#Shuffle the decks
+	randomize()
 	player1deck.shuffle()
 	player2deck.shuffle()
 	

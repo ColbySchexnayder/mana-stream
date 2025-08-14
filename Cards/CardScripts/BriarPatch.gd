@@ -26,6 +26,10 @@ func set_card_info()->void:
 	cardLore = tr("BRIARPATCH_LORE")#'"Once upon a time there was a hungry fox and a clever rabbit."'
 	cost = int(tr("BRIARPATCH_COST"))
 	
+	
+	actionCost = 1
+	actionBenefit = 2
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	summon_button.hide()

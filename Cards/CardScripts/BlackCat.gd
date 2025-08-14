@@ -18,3 +18,5 @@ func set_card_info()->void:
 	health = int(tr("BLACK_CAT_HEALTH"))#2
 	attack = int(tr("BLACK_CAT_ATTACK"))#2
 	
+	boardBuildingVal = health + attack - cardAdvantage
+	boardBreakingVal = attack

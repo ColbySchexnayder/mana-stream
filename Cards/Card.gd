@@ -38,6 +38,10 @@ var resolving := false
 var boardBreakingVal := 0
 var boardBuildingVal := 0
 var resourceGatheringVal := 0
+var manaResource := 1
+var actionCost := 0
+var actionBenefit := 0
+var cardAdvantage := -1
 
 
 @onready var card: Card = $"."
@@ -79,6 +83,10 @@ static func constructor():
 	return obj
 
 func effectOtherCard(card: Card):
+	pass
+
+#When the field changes sometimes that'll effect the usefulness of the card
+func updateHueristics(field):
 	pass
 
 func summon() -> void:

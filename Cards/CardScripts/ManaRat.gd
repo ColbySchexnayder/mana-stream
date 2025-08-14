@@ -20,6 +20,11 @@ func set_card_info()->void:
 	cost = int(tr("MANA_RAT_COST"))#1
 	health = int(tr("MANA_RAT_HEALTH"))#1
 	attack = int(tr("MANA_RAT_ATTACK"))#1
+	
+	cardAdvantage = 0
+	resourceGatheringVal = 1
+	boardBuildingVal = health + attack - cardAdvantage
+	boardBreakingVal = attack
 
 #	0 player1deck, 
 #	1 player1hand, 
