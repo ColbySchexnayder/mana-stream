@@ -2,17 +2,28 @@ class_name AI_Manager extends Node
 
 
 
-var ai_hand := []
-var ai_mana_zone := []
-var ai_summon_zone := []
-var ai_deck := []
+var ai_hand : Array[Card] = []
+var ai_mana_zone : Array[Card] = []
+var ai_summon_zone : Array[Card] = []
+var ai_deck : Array[Card] = []
 
-var player_hand := []
-var player_mana_zone := []
-var player_summon_zone := []
-var player_deck := []
+var player_hand : Array[Card] = []
+var player_mana_zone : Array[Card] = []
+var player_summon_zone :Array[Card] = []
+var player_deck : Array[Card] = []
 
 var interruptStack : Array[Card] = []
+
+#region Player stat values
+var p1Health := 10
+var p1TotalMana := 0
+var p1AvailableMana := 0
+
+var p2Health := 10
+var p2TotalMana := 0
+var p2AvailableMana := 0
+#endregion
+
 
 # choosing defense won't be counted in the list of actions
 # instead handled in isolation
@@ -138,17 +149,80 @@ func end_turn():
 	GmManager.emit_signal("_change_turn")
 #endregion
 
+# normalize:(val, max, min) => (val - min) / (max - min); 
+# Base thought: 1 -> 5/5 -> (5-val*.1)/5 -> result <= 1
 #region action evaluators; should all return floats between 0 and 1
+#evaluate the value of placing a card from hand to mana
+#division will typically assume a minimum divisor of 1 to avoid divide by 0 errors
 func e_to_mana() -> float:
-	return 0
-
+	for card in ai_hand:
+		if card.onlyWorksInMana:
+			return 1
+	
+	var avg_card_cost = 0
+	for card in ai_hand:
+		avg_card_cost += card.cost
+	
+	var total_playable_cards = max(1,len(ai_hand))
+	avg_card_cost = avg_card_cost/total_playable_cards
+	
+	
+	var existing_mana = max(1,len(ai_mana_zone))
+	var untapped_mana = existing_mana - p2AvailableMana
+	
+	var score = (avg_card_cost - existing_mana * .2 + untapped_mana * .1 + 1) / (avg_card_cost + 1)
+	
+	return score
+	
+#evaluate the value of using a card in mana zone
 func e_use_for_mana()-> float:
-	return 0
-
+	if ai_mana_zone.is_empty():
+		return 0
+		
+	
+	var avg_card_cost = 0
+	for card in ai_hand:
+		avg_card_cost += card.cost
+	
+	var total_playable_cards = max(1,len(ai_hand))
+	avg_card_cost = avg_card_cost/total_playable_cards
+	
+	var existing_mana = max(1,len(ai_mana_zone))
+	var untapped_mana = existing_mana - p2AvailableMana
+	
+	var score = (avg_card_cost + untapped_mana * .2 - existing_mana * .1 + 1)/(avg_card_cost + 1)
+	
+	return score
+	
+# Evaluates sending a card to the summon zone. Spell/Summon
 func e_to_field()-> float:
-	return 0
-
+	if ai_mana_zone.is_empty() or p2AvailableMana == 0:
+		return 0
+	
+	var avg_oppenent_power = 0
+	for card in player_summon_zone:
+		avg_oppenent_power += card.attack
+	
+	var n_player_field = max(1,len(player_summon_zone))
+	avg_oppenent_power = avg_oppenent_power/n_player_field
+	
+	var avg_ai_power = 0
+	for card in ai_summon_zone:
+		avg_ai_power += card.attack
+	
+	avg_ai_power = avg_ai_power/max(1, len(ai_summon_zone))
+	
+	var score = (avg_oppenent_power - avg_ai_power * .2 + 1) / (avg_oppenent_power + 1)
+	
+	return score
+	
+#TODO
 func e_activate()-> float:
+	if ai_summon_zone.is_empty() and ai_mana_zone.is_empty():
+		return 0
+	
+	var board_score = len(ai_summon_zone)/max(1,len(player_summon_zone))
+	
 	return 0
 
 func e_attack()-> float:
@@ -161,5 +235,9 @@ func e_sustain()-> float:
 	return 0
 
 func e_end_turn()-> float:
+	return 0
+
+#TODO: Add this to the framework
+func e_evaluate_target()-> float:
 	return 0
 #endregion

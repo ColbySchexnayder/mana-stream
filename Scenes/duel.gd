@@ -231,7 +231,15 @@ func _process(_delta: float) -> void:
 	
 	p_1_life.text = str(health)
 	p_2_life.text = str(p2Health)
-
+	
+	#keep the ai up to date the number components not directly related to cards
+	ai.p1Health = health
+	ai.p1TotalMana = totalMana
+	ai.p1AvailableMana = availableMana
+	ai.p2Health = p2Health
+	ai.p2TotalMana = p2TotalMana
+	ai.p2AvailableMana = p2AvailableMana
+	
 	check_interrupt()
 
 func shuffle(player: int):

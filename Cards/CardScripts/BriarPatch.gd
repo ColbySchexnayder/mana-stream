@@ -29,6 +29,7 @@ func set_card_info()->void:
 	
 	actionCost = 1
 	actionBenefit = 2
+	onlyWorksInMana = true
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

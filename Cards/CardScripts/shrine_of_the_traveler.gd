@@ -22,6 +22,7 @@ func set_card_info():
 	
 	resourceGatheringVal = 1
 	actionBenefit = 1
+	onlyWorksInMana = 2
 
 func _process(_delta: float) -> void:
 	summon_button.hide()

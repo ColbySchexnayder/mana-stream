@@ -35,6 +35,8 @@ var cardOwner := 1
 var resolved := false
 var resolving := false
 
+var onlyWorksInMana := false
+
 var boardBreakingVal := 0
 var boardBuildingVal := 0
 var resourceGatheringVal := 0

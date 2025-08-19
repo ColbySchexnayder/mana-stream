@@ -20,6 +20,7 @@ func set_card_info():
 	
 	actionCost = 1
 	actionBenefit = 2
+	onlyWorksInMana = true
 	
 
 func _process(_delta: float) -> void:
