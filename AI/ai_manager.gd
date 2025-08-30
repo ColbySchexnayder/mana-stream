@@ -75,7 +75,6 @@ func decider():
 	var best_action : String
 	var highest_score : float
 	
-	
 	best_action = ""
 	highest_score = -INF
 	
@@ -88,7 +87,8 @@ func decider():
 			highest_score = score
 	
 	print("Best action: ", best_action, "\n\n")
-	await actions[best_action].call()
+	#TODO need to give time for action to finish
+	actions[best_action].call()
 	
 
 #Seperate decider for the sustain phase to keep things clean
@@ -112,11 +112,11 @@ func sustain_decider():
 			highest_score = score
 	
 	print("Best sustain action: ", best_action, "\n\n")
-	await sustain_actions[best_action].call()
+	sustain_actions[best_action].call()
 
 #TODO: This all needs to be changed!
 #TODO: Seriously don't ignore this
-
+#DEPRECATED
 func ai_sustain():
 	#if !ai_summon_zone.is_empty():
 		#ai_hand[0].mana()
@@ -125,7 +125,7 @@ func ai_sustain():
 		#
 	#GmManager.emit_signal("_change_phase")
 	sustain_decider()
-
+#DEPRECATED
 func ai_play():
 	#if !ai_summon_zone.is_empty():
 		#ai_summon_zone[0].attacking()
@@ -166,14 +166,22 @@ func choose_defense(card: Card):
 			GmManager.emit_signal("_pass")
 
 #region actions to perform
+# If mana is needed choose a card that can only work in mana first
+# If that's not available choose the highest cost card
+#	If the ai can pay for a high cost card it shouldn't need to play mana right now
 func to_mana():
-	
+	#TODO: This is being used twice and tapping the mana automatically; fix this
+	# Maybe only happening the first time?
 	var cards = ai_hand.filter(func(card:Card):
-		card.onlyWorksInMana)
+		return card.onlyWorksInMana)
 	
 	if !cards.is_empty():
-		cards[randi()%len(cards)].mana()
+		await cards[randi()%len(cards)].mana()
 		return
+	
+	var card = ai_hand.reduce(func(max:Card, card:Card):
+		return card if card.cost > max.cost else max)
+	card.mana()
 
 func tap_for_mana():
 	pass

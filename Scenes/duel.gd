@@ -127,24 +127,24 @@ func _ready() -> void:
 		draw(2)
 	
 	#region Add Test Cards
-	var testSpell1 = Veterinarian.constructor()
-	testSpell1.cardOwner = 1
-	testSpell1.currentPosition = Card.position.IN_HAND
-	player1hand.push_front(testSpell1)
-	p_1_hand.add_child(testSpell1)
-
-	var testSpell = Briarpatch.constructor()
-	testSpell.currentPosition = Card.position.IN_HAND
-	player1hand.push_front(testSpell)
-	p_1_hand.add_child(testSpell)
-	
-	
-	var opponentsDefense = Card.constructor()
-	opponentsDefense.revealed = true
-	opponentsDefense.cardOwner = 2
-	opponentsDefense.currentPosition = Card.position.IN_SUMMON
-	p_2_summon_zone.add_child(opponentsDefense)
-	player2summon.push_front(opponentsDefense)
+	#var testSpell1 = Veterinarian.constructor()
+	#testSpell1.cardOwner = 1
+	#testSpell1.currentPosition = Card.position.IN_HAND
+	#player1hand.push_front(testSpell1)
+	#p_1_hand.add_child(testSpell1)
+#
+	#var testSpell = Briarpatch.constructor()
+	#testSpell.currentPosition = Card.position.IN_HAND
+	#player1hand.push_front(testSpell)
+	#p_1_hand.add_child(testSpell)
+	#
+	#
+	#var opponentsDefense = Card.constructor()
+	#opponentsDefense.revealed = true
+	#opponentsDefense.cardOwner = 2
+	#opponentsDefense.currentPosition = Card.position.IN_SUMMON
+	#p_2_summon_zone.add_child(opponentsDefense)
+	#player2summon.push_front(opponentsDefense)
 	#endregion
 	
 	#initialize the text that shows health
@@ -194,7 +194,7 @@ func _ready() -> void:
 	
 	#Give AI mana for testing
 	#Needs to be done after signals are connected otherwise "card_to_mana" won't work
-	player2hand[0].mana()
+	#player2hand[0].mana()
 	
 
 # Keep the text up to date and cards organized

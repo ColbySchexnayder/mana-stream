@@ -95,16 +95,24 @@ func summon() -> void:
 	GmManager.emit_signal("_card_summon", self)
 
 func mana() -> void:
-	if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
-			card_front.visible = false
-			card_art.visible = false
-			card_back.visible = true
+	if cardOwner == 1:
+		if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
+				card_front.visible = false
+				card_art.visible = false
+				card_back.visible = true
+				currentPosition = position.IN_MANA
+				GmManager.emit_signal("_card_to_mana", self)
+		elif currentPosition == position.IN_MANA and !exhausted:
+				GmManager.emit_signal("_add_to_mana", self, 1)
+				exhaust(self)
+	else:
+		if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
 			currentPosition = position.IN_MANA
 			GmManager.emit_signal("_card_to_mana", self)
-	elif currentPosition == position.IN_MANA and !exhausted:
-			GmManager.emit_signal("_add_to_mana", self, 1)
-			exhaust(self)
-
+		elif currentPosition == position.IN_MANA and !exhausted:
+				GmManager.emit_signal("_add_to_mana", self, 2)
+				exhaust(self)	
+			
 func attacking() -> void:
 	card_info_animation.visible = true
 	card_info_animation.play("AttackingAnimation")
