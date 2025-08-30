@@ -4,6 +4,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	randomize()
 	if GmManager.Player1Deck.is_empty():
 		GmManager.Player1Deck = GmManager.load_deck("Deck.txt")
 	

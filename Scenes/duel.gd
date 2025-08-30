@@ -642,6 +642,7 @@ func change_turn():
 	phase_change_animation.visible = false
 	match currentTurn:
 		1:
+			ai.players_turn = true
 			draw(1)
 			for card in player1mana:
 				card.refresh()
@@ -654,7 +655,7 @@ func change_turn():
 				card.refresh()
 			for card in player2summon:
 				card.refresh()
-			ai.ai_sustain()
+			ai.players_turn = false
 
 #Changes from REFRESH to PLAY and destroys any unpaid cards
 func change_phase():
@@ -824,6 +825,9 @@ func _on_interrupt_button_pressed() -> void:
 
 #NOTICE: Assumes no interrupts happen in the SUSTAIN phase
 func _on_interrupt_pass_button_pressed() -> void:
+	for card: Card in interruptStack:
+		card.action_button.visible = false
+	interruptStack.clear()
 	GmManager.currentPhase = GmManager.phase.PLAY
 	GmManager.emit_signal("_interrupt_resolved")
 	interrupt_choice.hide()
