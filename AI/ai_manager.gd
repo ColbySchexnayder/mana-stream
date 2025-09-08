@@ -53,7 +53,6 @@ var sustain_actions = {
 }
 var players_turn = true
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#GmManager.connect("_ai_turn", ai_turn)
@@ -63,10 +62,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if players_turn:
 		return
-	if GmManager.currentPhase == GmManager.phase.REFRESH:
-		sustain_decider()
-	else:
-		decider()
+	if Engine.get_process_frames() % 60 == 0:
+		if GmManager.currentPhase == GmManager.phase.REFRESH:
+			sustain_decider()
+		else:
+			decider()
+		
 	
 # During the enemies turn, sorts through cards and decides an appropriate reaction.
 # This repeats until ending the turn is the best action
@@ -89,7 +90,7 @@ func decider():
 	print("Best action: ", best_action, "\n\n")
 	#TODO need to give time for action to finish
 	actions[best_action].call()
-	
+
 
 #Seperate decider for the sustain phase to keep things clean
 func sustain_decider():
@@ -114,6 +115,7 @@ func sustain_decider():
 	print("Best sustain action: ", best_action, "\n\n")
 	sustain_actions[best_action].call()
 
+
 #TODO: This all needs to be changed!
 #TODO: Seriously don't ignore this
 #DEPRECATED
@@ -124,7 +126,9 @@ func ai_sustain():
 		#GmManager.emit_signal("_card_keep", ai_summon_zone[0])
 		#
 	#GmManager.emit_signal("_change_phase")
-	sustain_decider()
+	#sustain_decider()
+	pass
+	
 #DEPRECATED
 func ai_play():
 	#if !ai_summon_zone.is_empty():
@@ -135,7 +139,8 @@ func ai_play():
 		#await GmManager._block_resolved
 		#
 	#GmManager.emit_signal("_change_turn")
-	decider()
+	#decider()
+	pass
 
 func choose_card(list: Array[Card]) -> Card:
 	return list[0]
@@ -176,7 +181,7 @@ func to_mana():
 		return card.onlyWorksInMana)
 	
 	if !cards.is_empty():
-		await cards[randi()%len(cards)].mana()
+		cards[randi()%len(cards)].mana()
 		return
 	
 	var card = ai_hand.reduce(func(max:Card, card:Card):

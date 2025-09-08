@@ -68,6 +68,9 @@ signal _ai_play()
 
 signal _player_turn()
 
+func wait(seconds: float) -> void:
+	await get_tree().create_timer(seconds).timeout
+
 func load_deck(saveFile: String) -> Array[String]:
 	var deckFile := FileAccess.open("res://Save/"+saveFile, FileAccess.READ)
 	var deck : Array[String] = []

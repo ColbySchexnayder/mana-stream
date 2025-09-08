@@ -681,8 +681,8 @@ func change_phase():
 	phase_change_animation.visible = false
 	
 	GmManager.currentPhase = GmManager.phase.PLAY
-	if currentTurn == 2:
-		ai.ai_play()
+	#if currentTurn == 2:
+	#	ai.ai_play()
 
 #	0 player1deck, 
 #	1 player1hand, 
