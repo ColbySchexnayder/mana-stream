@@ -154,9 +154,6 @@ func to_mana():
 	var cards = ai_hand.filter(func(fcard:Card):
 		return fcard.onlyWorksInMana)
 	
-	var cards = ai_hand.filter(func(card:Card):
-		return card.onlyWorksInMana)
-	
 	if !cards.is_empty():
 		cards[randi_range(0, len(cards)-1)].mana()
 		return
