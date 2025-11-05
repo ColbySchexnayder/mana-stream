@@ -59,7 +59,7 @@ func _ready() -> void:
 	GmManager.connect("_interrupt", handle_interrupt)
 	
 #TODO: Move evaluators and actions here
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if players_turn:
 		return
 	if Engine.get_process_frames() % 60 == 0:
@@ -177,15 +177,15 @@ func choose_defense(card: Card):
 func to_mana():
 	#TODO: This is being used twice and tapping the mana automatically; fix this
 	# Maybe only happening the first time?
-	var cards = ai_hand.filter(func(card:Card):
-		return card.onlyWorksInMana)
+	var cards = ai_hand.filter(func(fcard:Card):
+		return fcard.onlyWorksInMana)
 	
 	if !cards.is_empty():
 		cards[randi()%len(cards)].mana()
 		return
 	
-	var card = ai_hand.reduce(func(max:Card, card:Card):
-		return card if card.cost > max.cost else max)
+	var card = ai_hand.reduce(func(fmax:Card, fcard:Card):
+		return fcard if fcard.cost > fmax.cost else fmax)
 	card.mana()
 
 func tap_for_mana():
@@ -247,7 +247,7 @@ func e_tap_for_mana()-> float:
 	avg_card_cost = avg_card_cost/total_playable_cards
 	
 	
-	var score = (avg_card_cost + p2AvailableMana * .2 - p2TotalMana * .1 + .01)/(avg_card_cost + .01)
+	var score = (avg_card_cost + p2AvailableMana * .2 - p2TotalMana * .2 + .01)/(avg_card_cost + .01)
 	
 	return score
 	
@@ -297,13 +297,13 @@ func e_attack()-> float:
 	if ai_summon_zone.is_empty():
 		return 0
 	
-	ai_attacker = ai_summon_zone.reduce(func(max, card): 
-		return card if card.attack > max.attack else max).attack
+	ai_attacker = ai_summon_zone.reduce(func(fmax, fcard): 
+		return fcard if fcard.attack > fmax.attack else fmax).attack
 	
 	var player_defender = 0
 	if !player_summon_zone.is_empty():
-		player_summon_zone.reduce(func(max, card):
-			return card if card.health > max.health else max).health
+		ai_attacker = player_summon_zone.reduce(func(fmax, fcard):
+			return fcard if fcard.health > fmax.health else fmax).health
 	
 	ai_attacker += .01
 	var score = (ai_attacker - player_defender)/(ai_attacker)
@@ -316,8 +316,8 @@ func e_sustain()-> float:
 		return 0
 	
 	var cost = 0
-	var card = ai_summon_zone.reduce(func(card, cost):
-		return cost + card.cost)
+	var card = ai_summon_zone.reduce(func(fcard, fcost):
+		return fcost + fcard.cost)
 	if card:
 		cost += card.cost
 	
