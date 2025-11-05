@@ -248,25 +248,7 @@ func shuffle(player: int):
 	else:
 		player2deck.shuffle()
 
-#Move given card from HAND to MANA
-func card_to_mana(card):
-	card.currentPosition = Card.position.IN_MANA
-	remove_from_x(card)
-	if card.cardOwner == 1:
-		player1mana.push_front(card)
-		card.reparent(p_1_mana_zone)
-		card.inspect_view.visible = false
-		card.summon_button.visible = false
-		card.revealed = false
-		
-		totalMana += 1
-	else:
-		player2mana.push_front(card)
-		card.reparent(p_2_mana_zone)
-		card.inspect_view.visible = false
-		card.revealed = false
-		p2TotalMana += 1
-	
+
 
 #Draw card from @player deck. Place it in hand
 func draw(player: int):
@@ -414,14 +396,38 @@ func deselect():
 				card.reparent(p_2_summon_zone)
 				p_2_summon_zone.move_child(card, cardIndex)
 
+#Move given card from HAND to MANA
+func card_to_mana(card):
+	card.currentPosition = Card.position.IN_MANA
+	remove_from_x(card)
+	if card.cardOwner == 1:
+		player1mana.push_front(card)
+		card.reparent(p_1_mana_zone)
+		card.inspect_view.visible = false
+		card.summon_button.visible = false
+		card.revealed = false
+		
+		totalMana += 1
+	else:
+		player2mana.push_front(card)
+		card.reparent(p_2_mana_zone)
+		card.inspect_view.visible = false
+		card.revealed = false
+		p2TotalMana += 1
+	
 #Move card from HAND to SUMMON
 #TODO: Allow AI to use this method
 func card_summon(card: Card) -> void:
-	if card.currentPosition != card.position.IN_HAND:
-		return
-	if card.cost <= availableMana:
-		availableMana -= card.cost
-		move_to_summon(card)
+	if card.cardOwner == 1:
+		#if card.currentPosition != card.position.IN_HAND:
+			#return
+		if card.cost <= availableMana:
+			availableMana -= card.cost
+			move_to_summon(card)
+	else:
+		if card.cost <= p2AvailableMana:
+			p2AvailableMana -= card.cost
+			move_to_summon(card)
 
 #Move card to summon zone regardless of previous position or mana
 func move_to_summon(card: Card):
@@ -444,8 +450,14 @@ func move_to_summon(card: Card):
 		card.position.IN_SUMMON:
 			return
 	card.reveal()
-	player1summon.push_front(card)
-	card.reparent(p_1_summon_zone)
+	
+	if card.cardOwner == 1:
+		player1summon.push_front(card)
+		card.reparent(p_1_summon_zone)
+	else:
+		player2summon.push_front(card)
+		card.reparent(p_2_summon_zone)
+	
 	card.currentPosition  = card.position.IN_SUMMON
 	card.summon_button.visible = false
 	card.mana_button.visible = false

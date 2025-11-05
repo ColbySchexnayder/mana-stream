@@ -36,6 +36,7 @@ var resolved := false
 var resolving := false
 
 var onlyWorksInMana := false
+var refreshOthers := false
 
 var boardBreakingVal := 0
 var boardBuildingVal := 0

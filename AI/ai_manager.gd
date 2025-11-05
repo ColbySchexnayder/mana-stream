@@ -116,32 +116,6 @@ func sustain_decider():
 	sustain_actions[best_action].call()
 
 
-#TODO: This all needs to be changed!
-#TODO: Seriously don't ignore this
-#DEPRECATED
-func ai_sustain():
-	#if !ai_summon_zone.is_empty():
-		#ai_hand[0].mana()
-		#ai_mana_zone[0].mana()
-		#GmManager.emit_signal("_card_keep", ai_summon_zone[0])
-		#
-	#GmManager.emit_signal("_change_phase")
-	#sustain_decider()
-	pass
-	
-#DEPRECATED
-func ai_play():
-	#if !ai_summon_zone.is_empty():
-		#ai_summon_zone[0].attacking()
-		#while !interruptStack.is_empty():
-			#await GmManager._interrupt_resolved
-		#
-		#await GmManager._block_resolved
-		#
-	#GmManager.emit_signal("_change_turn")
-	#decider()
-	pass
-
 func choose_card(list: Array[Card]) -> Card:
 	return list[0]
 
@@ -163,10 +137,10 @@ func choose_defense(card: Card):
 					return block_card.attack > card.health)
 			
 			if defense.is_empty():
-				ai_summon_zone[randi() % len(ai_summon_zone)].block()
+				ai_summon_zone[randi_range(0, len(ai_summon_zone)-1)].block()
 				return
 			
-			defense[randi() % len(defense)].block()
+			defense[randi_range(0, len(defense)-1)].block()
 		else:
 			GmManager.emit_signal("_pass")
 
@@ -180,19 +154,44 @@ func to_mana():
 	var cards = ai_hand.filter(func(fcard:Card):
 		return fcard.onlyWorksInMana)
 	
+	var cards = ai_hand.filter(func(card:Card):
+		return card.onlyWorksInMana)
+	
 	if !cards.is_empty():
-		cards[randi()%len(cards)].mana()
+		cards[randi_range(0, len(cards)-1)].mana()
 		return
 	
 	var card = ai_hand.reduce(func(fmax:Card, fcard:Card):
 		return fcard if fcard.cost > fmax.cost else fmax)
 	card.mana()
 
+# Find an appropriate card to tap for mana
+# The card cannot be exhausted
+# Cards that refresh others should be a lower priority
 func tap_for_mana():
-	pass
+	var untapped_cards = ai_mana_zone.filter(func(card:Card):
+		return !card.exhausted)
+	
+	var best_cards = ai_mana_zone.filter(func(card:Card):
+		return !card.refreshOthers)
+	
+	if best_cards.is_empty():
+		untapped_cards[randi_range(0, len(untapped_cards)-1)].mana()
+	else:
+		best_cards[randi_range(0, len(best_cards)-1)].mana()
 
+# Find the best card to play to the field
+# The card cost cannot exceed available mana
 func to_field():
-	pass
+	var available_cards = ai_hand.filter(func(card:Card):
+		return card.cost <= p2AvailableMana && !card.onlyWorksInMana)
+	
+	available_cards.sort_custom(func(a:Card, b:Card):
+		var a_value = a.attack+a.resourceGatheringVal-a.cost
+		var b_value = b.attack+b.resourceGatheringVal-a.cost
+		return a_value > b_value)
+	
+	available_cards[0].summon()
 
 func activate():
 	pass
@@ -228,8 +227,8 @@ func e_to_mana() -> float:
 	avg_card_cost = avg_card_cost/total_playable_cards
 
 	
-	var score = (avg_card_cost - p2TotalMana * .2 + p2AvailableMana * .1 + .01) / (avg_card_cost + .01)
-	
+	#var score = 1 - (avg_card_cost - p2TotalMana * .2 + p2AvailableMana * .2 + .01) / (avg_card_cost + .01)
+	var score = (avg_card_cost * .2 -  p2AvailableMana * .2 + p2TotalMana * .1 )/(avg_card_cost + .001)
 	return score
 	
 #evaluate the value of using a card in mana zone

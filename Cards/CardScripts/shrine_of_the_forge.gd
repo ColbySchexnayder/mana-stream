@@ -21,6 +21,7 @@ func set_card_info():
 	cost = int(tr("SHRINE_OF_THE_FORGE_COST"))#0
 	
 	onlyWorksInMana = true
+	refreshOthers = true
 
 func _process(_delta: float) -> void:
 	summon_button.hide()
