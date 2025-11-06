@@ -56,7 +56,8 @@ var players_turn = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#GmManager.connect("_ai_turn", ai_turn)
-	GmManager.connect("_interrupt", handle_interrupt)
+	#GmManager.connect("_interrupt", handle_interrupt)
+	pass
 	
 #TODO: Move evaluators and actions here
 func _process(_delta: float) -> void:
@@ -122,6 +123,9 @@ func choose_card(list: Array[Card]) -> Card:
 func handle_interrupt(card: Card):
 	if card.cardOwner == 1:
 		return
+	
+	#Assume activating interrupts is always good for now
+	card.action()
 
 # If there are cards to defend with prioritize ones
 # that will survive first
@@ -243,7 +247,7 @@ func e_tap_for_mana()-> float:
 	avg_card_cost = avg_card_cost/total_playable_cards
 	
 	
-	var score = (avg_card_cost + p2AvailableMana * .2 - p2TotalMana * .2 + .01)/(avg_card_cost + .01)
+	var score = (avg_card_cost - p2AvailableMana * .2 + p2TotalMana + .01)/(avg_card_cost + p2TotalMana + .01)
 	
 	return score
 	

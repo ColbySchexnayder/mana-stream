@@ -232,13 +232,26 @@ func _process(_delta: float) -> void:
 	p_1_life.text = str(health)
 	p_2_life.text = str(p2Health)
 	
-	#keep the ai up to date the number components not directly related to cards
+	#region keep the ai up to date
 	ai.p1Health = health
 	ai.p1TotalMana = totalMana
 	ai.p1AvailableMana = availableMana
 	ai.p2Health = p2Health
 	ai.p2TotalMana = p2TotalMana
 	ai.p2AvailableMana = p2AvailableMana
+	
+	ai.ai_deck = player2deck
+	ai.ai_hand = player2hand
+	ai.ai_mana_zone = player2mana
+	ai.ai_summon_zone = player2summon
+	
+	ai.player_deck = player1deck
+	ai.player_hand = player1hand
+	ai.player_summon_zone = player1summon
+	ai.player_mana_zone = player1mana
+	
+	ai.interruptStack = interruptStack
+	#endregion
 	
 	check_interrupt()
 
@@ -785,11 +798,14 @@ func interrupt(card : Card):
 	IF passButtonPressed
 	PROCEED WITH TURN
 	"""
+	interruptStack.push_back(card)
+	GmManager.currentPhase = GmManager.phase.INTERRUPT
 	if (card.cardOwner == 1):
-		interruptStack.push_back(card)
-		GmManager.currentPhase = GmManager.phase.INTERRUPT
+		
 		print("Interrupt added")
 		interrupt_choice.show()
+	else:
+		ai.handle_interrupt(card)
 	
 func check_interrupt():
 	var count := 0
