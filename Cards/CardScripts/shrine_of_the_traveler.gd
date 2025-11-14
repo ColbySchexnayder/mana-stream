@@ -44,7 +44,7 @@ func react(card: Card):
 #	6 player2summon, 
 #	7 player2mana
 func action():
-	
+	await super.action()
 	revealed = true
 	
 	var conditions = {"target self" : false, "exhausted" : true, "name" : ["exclude" , cardName]}

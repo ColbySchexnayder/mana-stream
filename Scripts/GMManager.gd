@@ -1,6 +1,8 @@
 extends Node
 class_name GMManager
 
+@warning_ignore_start("unused_signal")
+
 var Player1Deck : Array[String] = []
 var Player2Deck : Array[String] = []
 
@@ -26,6 +28,9 @@ signal _card_select(card: Card)
 signal _clear_selection()
 
 signal _offer_selection(triggerCard: Card, zonesToSelect: Array[int], matchConditions: Dictionary)
+
+signal _action(card: Card)
+signal _anim_resolved
 
 signal _card_to_mana(card: Card)
 signal _card_exhaust(card: Card)
@@ -76,14 +81,14 @@ func load_deck(saveFile: String) -> Array[String]:
 	var deck : Array[String] = []
 	var cardFileName := ""
 	
-	var count := 0
+	
 	while true:
 		cardFileName = deckFile.get_line()
 		if cardFileName == "":
 			break
 			
 		deck.push_back(cardFileName)
-		count += 1
+		
 	deckFile.close()
 
 	return deck

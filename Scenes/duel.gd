@@ -1,4 +1,4 @@
-extends Node2D
+class_name Duel extends Node2D
 
 #region The field. 
 #Easier to access arrays than getting children from the control nodes
@@ -84,12 +84,18 @@ var cardIndex
 @onready var selection_list_area: TextureRect = $Control/SelectionListArea
 @onready var selection_list: ItemList = $Control/SelectionListArea/SelectionList
 
+@onready var effect_animation: Sprite2D = $EffectAnimation
+@onready var effect_animation_player: AnimationPlayer = $EffectAnimation/AnimationPlayer
+
+
 #endregion
 
 #Preloading necessary files
 const CLICK_3 = preload("res://Sfx/UI Audio/Audio/click3.ogg")
 const CAST_BUTTON = preload("res://Art/castButton.png")
 const SUMMON_BUTTON = preload("res://Art/summonButton.png")
+const FADE_IN_FADE_OUT = preload("uid://b7pxk8gcnsuvk")
+const FADE_IN_ANIM = preload("uid://dtxhkshtiihfm")
 
 #Signals only used within the duel script
 signal choice_made(num)
@@ -190,8 +196,11 @@ func _ready() -> void:
 	
 	GmManager.connect("_draw", draw)
 	GmManager.connect("_shuffle", shuffle)
+	GmManager.connect("_action", action)
 	#endregion
 	
+	effect_animation.position = get_viewport_rect().get_center()
+	effect_animation.scale *= 2
 	#Give AI mana for testing
 	#Needs to be done after signals are connected otherwise "card_to_mana" won't work
 	#player2hand[0].mana()
@@ -823,6 +832,14 @@ func check_interrupt():
 		#GmManager.emit_signal("_interrupt_resolved")
 		return
 	
+func action(card: Card):
+	effect_animation.texture = card.card_art.texture
+	effect_animation.visible = true
+	
+	effect_animation_player.play("Fade")
+	await effect_animation_player.animation_finished
+	
+	GmManager.emit_signal("_anim_resolved")
 	
 #Draw test card. This will be disable eventually
 func _on_p_1_deck_pressed() -> void:

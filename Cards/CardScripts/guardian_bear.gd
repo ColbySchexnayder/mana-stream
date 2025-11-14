@@ -16,6 +16,10 @@ func _process(_delta: float) -> void:
 		GmManager.emit_signal("_request_field", self)
 		cost_text.text = str(cost)
 
+func summon() -> void:
+	if cost < baseCost:
+		await super.action()
+		super.summon()
 #	0 player1deck, 
 #	1 player1hand, 
 #	2 player1summon, 

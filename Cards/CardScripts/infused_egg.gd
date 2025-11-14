@@ -26,6 +26,7 @@ func set_card_info() -> void:
 #	6 player2summon, 
 #	7 player2mana
 func resolve_summon():
+	await super.action()
 	var conditions = {"tags" : ["Creature", "Familiar"]}
 	var zones : Array[int]
 	if cardOwner == 1:

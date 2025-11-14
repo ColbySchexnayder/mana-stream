@@ -120,7 +120,8 @@ func attacking() -> void:
 	GmManager.emit_signal("_card_attack", self)
 
 func action() -> void:
-	pass
+	GmManager.emit_signal("_action", self)
+	await GmManager._anim_resolved
 	
 func block() -> void:
 	card_info_animation.visible = true

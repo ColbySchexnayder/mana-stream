@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cy6xfsj2qbdjs"]
+[gd_scene load_steps=18 format=3 uid="uid://cy6xfsj2qbdjs"]
 
 [ext_resource type="Script" uid="uid://c4ulnevqbvheg" path="res://Cards/Card.gd" id="1_hmu5p"]
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
@@ -14,6 +14,40 @@
 [ext_resource type="Texture2D" uid="uid://sh0jg283udom" path="res://Art/add.png" id="11_yrf87"]
 [ext_resource type="Texture2D" uid="uid://dwavn4d1505jc" path="res://Art/passIcon.png" id="12_pmnv2"]
 [ext_resource type="PackedScene" uid="uid://u6e2sh0anf25" path="res://Art/Animations/card_info_animation.tscn" id="14_af8jt"]
+
+[sub_resource type="Animation" id="Animation_af8jt"]
+resource_name = "Fade"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.15555556, -3.6666667, 0, 0, 1, -0.25, 0, 0.25, 0, 1, -0.3277778, 1, 0, 0, 0, -0.34444445, 0, 0, 0),
+"times": PackedFloat32Array(0, 2, 4, 6)
+}
+
+[sub_resource type="Animation" id="Animation_kwacb"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kwacb"]
+_data = {
+&"Fade": SubResource("Animation_af8jt"),
+&"RESET": SubResource("Animation_kwacb")
+}
 
 [node name="Card" type="Control"]
 layout_mode = 3
@@ -324,8 +358,18 @@ text = " Remove?"
 
 [node name="CardInfoAnimation" parent="." instance=ExtResource("14_af8jt")]
 visible = false
+modulate = Color(0, 1, 1, 0)
 position = Vector2(56, 47)
 scale = Vector2(4.0625, 4.0625)
+
+[node name="EffectAnimation" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EffectAnimation"]
+libraries = {
+&"": SubResource("AnimationLibrary_kwacb")
+}
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

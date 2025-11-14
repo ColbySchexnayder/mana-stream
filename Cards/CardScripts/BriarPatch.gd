@@ -51,7 +51,7 @@ func card_attacks(card: Card):
 #	6 player2summon, 
 #	7 player2mana
 func action():
-	
+	await super.action()
 	
 	revealed = true
 	attackingCard.exhaust(attackingCard)

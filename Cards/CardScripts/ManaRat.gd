@@ -39,6 +39,7 @@ func resolve_summon():
 	super.resolve_summon()
 	
 func action():
+	await super.action()
 	var conditions = {"tags" : ["Creature", "Familiar"], "cost" : 2}
 	var zones : Array[int]
 	if cardOwner == 1:

@@ -41,6 +41,7 @@ func react(card: Card):
 	GmManager.emit_signal("_interrupt", self)
 
 func action():
+	await super.action()
 	reveal()
 	GmManager.emit_signal("_shuffle", cardOwner)
 	GmManager.emit_signal("_draw", cardOwner)
