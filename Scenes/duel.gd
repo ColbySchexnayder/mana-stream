@@ -87,6 +87,8 @@ var cardIndex
 @onready var effect_animation: Sprite2D = $EffectAnimation
 @onready var effect_animation_player: AnimationPlayer = $EffectAnimation/AnimationPlayer
 
+@onready var placement_image: Placement_Image = $PlacementImage
+@onready var placement_positions: Node2D = $PlacementPositions
 
 #endregion
 
@@ -121,17 +123,7 @@ func _ready() -> void:
 		player2deck.push_back(card)
 		p_2_deck_holder.add_child(card)
 	#endregion
-	
-	#Shuffle the decks
-	randomize()
-	player1deck.shuffle()
-	player2deck.shuffle()
-	
-	#Draw the starting hand
-	for i in range(5):
-		draw(1)
-		draw(2)
-	
+
 	#region Add Test Cards
 	#var testSpell1 = Veterinarian.constructor()
 	#testSpell1.cardOwner = 1
@@ -205,6 +197,15 @@ func _ready() -> void:
 	#Needs to be done after signals are connected otherwise "card_to_mana" won't work
 	#player2hand[0].mana()
 	
+	#Shuffle the decks
+	randomize()
+	player1deck.shuffle()
+	player2deck.shuffle()
+	
+	#Draw the starting hand
+	for i in range(5):
+		await draw(1)
+		await draw(2)
 
 # Keep the text up to date and cards organized
 func _process(_delta: float) -> void:
@@ -276,12 +277,18 @@ func shuffle(player: int):
 func draw(player: int):
 	match player:
 		1:
+			placement_image.card_moves(placement_positions.get_node("P1DeckPlacement").position, 
+			placement_positions.get_node("P1HandPlacement").position)
+			await placement_image._Movement_Complete
 			var card = player1deck.pop_front()
 			player1hand.push_back(card)
 			card.reparent(p_1_hand)
 			card.currentPosition = Card.position.IN_HAND
 			
 		2:
+			placement_image.card_moves(placement_positions.get_node("P2DeckPlacement").position, 
+			placement_positions.get_node("P2HandPlacement").position)
+			await placement_image._Movement_Complete
 			var card = player2deck.pop_front()
 			player2hand.push_back(card)
 			card.reparent(p_2_hand)
@@ -419,10 +426,14 @@ func deselect():
 				p_2_summon_zone.move_child(card, cardIndex)
 
 #Move given card from HAND to MANA
-func card_to_mana(card):
+func card_to_mana(card: Card):
 	card.currentPosition = Card.position.IN_MANA
 	remove_from_x(card)
 	if card.cardOwner == 1:
+		#var vec := Vector2(p_1_hand.global_position.x+.width/2,0)
+		placement_image.card_moves(placement_positions.get_node("P1HandPlacement").position,
+		 placement_positions.get_node("P1ManaPlacement").position)
+		await placement_image._Movement_Complete
 		player1mana.push_front(card)
 		card.reparent(p_1_mana_zone)
 		card.inspect_view.visible = false
@@ -431,6 +442,9 @@ func card_to_mana(card):
 		
 		totalMana += 1
 	else:
+		placement_image.card_moves(placement_positions.get_node("P2HandPlacement").position,
+		 placement_positions.get_node("P2ManaPlacement").position)
+		await placement_image._Movement_Complete
 		player2mana.push_front(card)
 		card.reparent(p_2_mana_zone)
 		card.inspect_view.visible = false
@@ -457,18 +471,36 @@ func move_to_summon(card: Card):
 		Card.position.IN_HAND:
 			if card.cardOwner == 1:
 				player1hand.erase(card)
+				placement_image.card_moves(placement_positions.get_node("P1HandPlacement").position,
+				placement_positions.get_node("P1SummonPlacement").position)
+				await placement_image._Movement_Complete
 			else:
+				placement_image.card_moves(placement_positions.get_node("P2HandPlacement").position,
+				placement_positions.get_node("P2SummonPlacement").position)
+				await placement_image._Movement_Complete
 				player2hand.erase(card)
 		card.position.IN_DECK:
 			if card.cardOwner == 1:
 				player1deck.erase(card)
+				placement_image.card_moves(placement_positions.get_node("P1DeckPlacement").position,
+				placement_positions.get_node("P1SummonPlacement").position)
+				await placement_image._Movement_Complete
 			else:
+				placement_image.card_moves(placement_positions.get_node("P2DeckPlacement").position,
+				placement_positions.get_node("P2SummonPlacement").position)
+				await placement_image._Movement_Complete
 				player2deck.erase(card)
 		card.position.IN_MANA:
 			if card.cardOwner == 1:
 				player1mana.erase(card)
+				placement_image.card_moves(placement_positions.get_node("P1ManaPlacement").position,
+				placement_positions.get_node("P1SummonPlacement").position)
+				await placement_image._Movement_Complete
 			else:
 				player2mana.erase(card)
+				placement_image.card_moves(placement_positions.get_node("P2ManaPlacement").position,
+				placement_positions.get_node("P2SummonPlacement").position)
+				await placement_image._Movement_Complete
 		card.position.IN_SUMMON:
 			return
 	card.reveal()
@@ -542,9 +574,15 @@ func move_to_deck(card: Card) -> void:
 	if card.cardOwner == 1:
 		player1deck.push_back(card)
 		card.reparent(p_1_deck)
+		placement_image.card_moves(placement_positions.get_node("P1SummonPlacement").position,
+		placement_positions.get_node("P1DeckPlacement").position)
+		await placement_image._Movement_Complete
 	else:
 		player2deck.push_back(card)
 		card.reparent(p_2_deck)
+		placement_image.card_moves(placement_positions.get_node("P2SummonPlacement").position,
+		placement_positions.get_node("P2DeckPlacement").position)
+		await placement_image._Movement_Complete
 	#Set the card's current location to be in the deck
 	card.currentPosition = Card.position.IN_DECK
 	card.hide()
@@ -556,10 +594,19 @@ func move_to_hand(card: Card) -> void:
 	if card.cardOwner == 1:
 		if card.currentPosition == Card.position.IN_DECK:
 			player1deck.erase(card)
+			placement_image.card_moves(placement_positions.get_node("P1DeckPlacement").position,
+			placement_positions.get_node("P1HandPlacement").position)
+			await placement_image._Movement_Complete
 		elif card.currentPosition == Card.position.IN_MANA:
 			player1mana.erase(card)
+			placement_image.card_moves(placement_positions.get_node("P1ManaPlacement").position,
+			placement_positions.get_node("P1HandPlacement").position)
+			await placement_image._Movement_Complete
 		elif card.currentPosition == Card.position.IN_SUMMON:
 			player1summon.erase(card)
+			placement_image.card_moves(placement_positions.get_node("P1SummonPlacement").position,
+			placement_positions.get_node("P1HandPlacement").position)
+			await placement_image._Movement_Complete
 		
 		card.reveal()
 		player1hand.push_back(card)
@@ -572,10 +619,19 @@ func move_to_hand(card: Card) -> void:
 		
 		if card.currentPosition == Card.position.IN_DECK:
 			player2deck.erase(card)
+			placement_image.card_moves(placement_positions.get_node("P2DeckPlacement").position,
+			placement_positions.get_node("P2HandPlacement").position)
+			await placement_image._Movement_Complete
 		elif card.currentPosition == Card.position.IN_MANA:
 			player2mana.erase(card)
+			placement_image.card_moves(placement_positions.get_node("P2ManaPlacement").position,
+			placement_positions.get_node("P2HandPlacement").position)
+			await placement_image._Movement_Complete
 		elif card.currentPosition == Card.position.IN_SUMMON:
 			player2summon.erase(card)
+			placement_image.card_moves(placement_positions.get_node("P2SummonPlacement").position,
+			placement_positions.get_node("P2HandPlacement").position)
+			await placement_image._Movement_Complete
 			
 		player2hand.push_back(card)
 		card.reparent(p_2_hand)

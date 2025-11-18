@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbr45uaedmdua"]
+
+[ext_resource type="Texture2D" uid="uid://cg55dg77mwxkh" path="res://Cards/manastreambackrainbowCorrectRes.png" id="2_0fa3k"]
+[ext_resource type="Script" uid="uid://yw6pio8opdni" path="res://Scenes/placement_image.gd" id="2_rxueg"]
+
+[node name="PlacementImage" type="Sprite2D"]
+texture = ExtResource("2_0fa3k")
+script = ExtResource("2_rxueg")
