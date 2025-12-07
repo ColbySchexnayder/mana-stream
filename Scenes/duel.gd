@@ -452,7 +452,6 @@ func card_to_mana(card: Card):
 		p2TotalMana += 1
 	
 #Move card from HAND to SUMMON
-#TODO: Allow AI to use this method
 func card_summon(card: Card) -> void:
 	if card.cardOwner == 1:
 		#if card.currentPosition != card.position.IN_HAND:
