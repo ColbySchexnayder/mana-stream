@@ -88,9 +88,6 @@ static func constructor():
 func effectOtherCard(card: Card):
 	pass
 
-#When the field changes sometimes that'll effect the usefulness of the card
-func updateHueristics(field):
-	pass
 
 func summon() -> void:
 	GmManager.emit_signal("_card_summon", self)
