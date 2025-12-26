@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cx5b2r46v00uw"]
+[gd_scene load_steps=23 format=3 uid="uid://cx5b2r46v00uw"]
 
 [ext_resource type="Texture2D" uid="uid://dsc3ly3yyje2k" path="res://Backgrounds/starbackground0.png" id="1_ku1mf"]
 [ext_resource type="Script" uid="uid://cmxvls1bkqmjx" path="res://Scenes/duel.gd" id="1_ljhtk"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://cqgbuaan4vy6m" path="res://Cards/CardArt/blackcat.png" id="16_jmbob"]
 [ext_resource type="PackedScene" uid="uid://cbr45uaedmdua" path="res://Scenes/placement_image.tscn" id="17_6kaua"]
 [ext_resource type="Texture2D" uid="uid://bclgb8scwwre0" path="res://Art/ManaButton.png" id="18_sgn6l"]
+[ext_resource type="PackedScene" uid="uid://bd82obug5i687" path="res://Scenes/AI Viewer.tscn" id="19_pa7a4"]
 
 [sub_resource type="Animation" id="Animation_jmbob"]
 resource_name = "Fade"
@@ -451,8 +452,11 @@ texture = ExtResource("18_sgn6l")
 position = Vector2(338, 152)
 texture = ExtResource("18_sgn6l")
 
+[node name="AiViewer" parent="." instance=ExtResource("19_pa7a4")]
+
 [connection signal="pressed" from="Control/P1Deck/P1DeckButton" to="." method="_on_p_1_deck_pressed"]
 [connection signal="pressed" from="Control/PassButton" to="." method="_on_pass_button_pressed"]
 [connection signal="pressed" from="Control/InterruptChoice/InterruptButton" to="." method="_on_interrupt_button_pressed"]
 [connection signal="pressed" from="Control/InterruptChoice/InterruptPassButton" to="." method="_on_interrupt_pass_button_pressed"]
 [connection signal="item_clicked" from="Control/SelectionListArea/SelectionList" to="." method="_on_selection_list_item_clicked"]
+[connection signal="ai_view_button_pressed" from="AiViewer" to="." method="_on_ai_viewer_ai_view_button_pressed"]

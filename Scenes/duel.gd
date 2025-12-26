@@ -76,7 +76,15 @@ var cardIndex
 @onready var phase_label: RichTextLabel = $Control/PhaseLabel
 @onready var interception_message: RichTextLabel = $Control/InterruptChoice/Panel/InterceptionMessage
 
-@onready var ai: AI_Manager = $AI
+#@onready var ai: AI_Manager = $AI
+@onready var ai: AI = AI.new()
+#region AI Debug tools
+const AI_VIEWER = preload("uid://bd82obug5i687")
+@onready var ai_viewer: Window = $AiViewer
+@onready var vtree: Tree = $AiViewer/VBoxContainer/Tree
+var ui_root: TreeItem
+@onready var spin_box: SpinBox = $AiViewer/VBoxContainer/HBoxContainer/SpinBox
+#endregion
 
 @onready var sfx_player: AudioStreamPlayer = $SFXPlayer
 @onready var phase_change_animation: AnimatedSprite2D = $PhaseChangeAnimation
@@ -206,6 +214,14 @@ func _ready() -> void:
 	for i in range(5):
 		await draw(1)
 		await draw(2)
+	
+	ai.current_state = ai.set_board_state()
+	
+	
+	ui_root = vtree.create_item()
+	ui_root.set_text(0, "Current State")
+	var child = vtree.create_item(ui_root)
+	child.set_text(0, ai.current_state.to_string())
 
 # Keep the text up to date and cards organized
 func _process(_delta: float) -> void:
@@ -938,3 +954,19 @@ func _on_selection_list_item_clicked(index: int, at_position: Vector2, mouse_but
 		return
 	
 	emit_signal("choice_made", index)
+
+
+#WARNING AI is using references when it should make shallow copies (or maybe even not use object at all)
+#WARNING AI Debug framework, multiple presses will add more children without clearing existing ones
+func _on_ai_viewer_ai_view_button_pressed(depth) -> void:
+	
+	print(depth)
+	
+	ai.generate_child_states()
+	var label = vtree.create_item(ui_root)
+	label.set_text(0, "Depth 1")
+	for state in ai.current_state.children:
+		var child = vtree.create_item(label)
+		child.set_text(0, state.to_string())
+		
+	

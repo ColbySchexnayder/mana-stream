@@ -1,5 +1,6 @@
 class_name AI extends Node
 
+
 #region Field
 var ai_hand : Array[Card] = []
 var ai_mana_zone : Array[Card] = []
@@ -69,53 +70,109 @@ func set_board_state(base : BoardState = null) -> BoardState:
 	
 	return state
 	
-	
-func generate_children(state : BoardState = current_state):
+#Generate possible changes to the field from given state
+func generate_child_states(state : BoardState = current_state):
 	var new_state : BoardState = set_board_state(state)
 	
 	if state.player_turn == 1:
 		new_state.player_turn = 2
+		new_state.ai_hand.push_back(new_state.ai_deck.pop_front())
+		new_state.node_score = new_state.calculate_score()
 		state.children.push_back(new_state)
+		
 		for card in state.player_hand:
 			new_state = set_board_state(state)
 			new_state.player_mana_zone.push_back(card)
 			new_state.player_hand.erase(card)
+			new_state.node_score = new_state.calculate_score()
 			state.children.push_back(new_state)
+			
 			if card.cost < state.p1AvailableMana and !card.onlyWorksInMana:
 				new_state = set_board_state(state)
 				new_state.player_summon_zone.push_back(card)
 				new_state.player_hand.erase(card)
 				new_state.p1AvailableMana -= card.cost
+				new_state.node_score = new_state.calculate_score()
 				state.children.push_back(new_state)
+				
 		for card in state.player_mana_zone:
 			if !card.exhausted:
 				new_state = set_board_state(state)
 				new_state.player_mana_zone.get(card.get_index()).exhausted = true
 				new_state.p1AvailableMana += 1
 				new_state.p1TotalMana += 1
+				new_state.node_score = new_state.calculate_score()
 				state.children.push_back(new_state)
+				
 		for card in state.player_summon_zone:
-			pass
+			if !card.exhausted:
+				if ai_summon_zone.is_empty():
+					new_state = set_board_state(state)
+					new_state.player_summon_zone.get(card.get_index()).exhausted = true
+					new_state.p2Health -= card.attack
+					new_state.node_score = new_state.calculate_score()
+					state.children.push_back(new_state)
+				else:
+					for opp_card in ai_summon_zone:
+						new_state = set_board_state(state)
+						if card.attack > opp_card.health:
+							new_state.ai_deck.push_back(opp_card)
+							new_state.ai_summon_zone.erase(opp_card)
+						if opp_card.attack > card.health:
+							new_state.player_deck.push_back(card)
+							new_state.player_summon_zone.erase(card)
+						new_state.node_score = new_state.calculate_score()
+						state.children.push_back(new_state)
+						
 	else:
 		new_state.player_turn = 1
+		new_state.player_hand.push_back(new_state.player_deck.pop_front())
+		new_state.node_score = new_state.calculate_score()
 		state.children.push_back(new_state)
+		
 		for card in state.ai_hand:
 			new_state = set_board_state(state)
 			new_state.ai_mana_zone.push_back(card)
 			new_state.ai_hand.erase(card)
+			new_state.node_score = new_state.calculate_score()
 			state.children.push_back(new_state)
+			
 			if card.cost < state.p2AvailableMana and !card.onlyWorksInMana:
 				new_state = set_board_state(state)
 				new_state.ai_summon_zone.push_back(card)
 				new_state.ai_hand.erase(card)
 				new_state.p2AvailableMana -= card.cost
+				new_state.node_score = new_state.calculate_score()
 				state.children.push_back(new_state)
+				
 		for card in state.ai_mana_zone:
 			if !card.exhausted:
 				new_state = set_board_state(state)
 				new_state.ai_mana_zone.get(card.get_index()).exhausted = true
 				new_state.p2AvailableMana += 1
 				new_state.p2TotalMana += 1
+				new_state.node_score = new_state.calculate_score()
 				state.children.push_back(new_state)
+				
 		for card in ai_summon_zone:
-			pass
+			if !card.exhausted:
+				if player_summon_zone.is_empty():
+					new_state = set_board_state(state)
+					new_state.ai_summon_zone.get(card.get_index()).exhausted = true
+					new_state.p1Health -= card.attack
+					new_state.node_score = new_state.calculate_score()
+					state.children.push_back(new_state)
+				else:
+					for opp_card in player_summon_zone:
+						new_state = set_board_state(state)
+						if card.attack > opp_card.health:
+							new_state.player_deck.push_back(opp_card)
+							new_state.player_summon_zone.erase(opp_card)
+						if opp_card.attack > card.health:
+							new_state.ai_deck.push_back(card)
+							new_state.ai_summon_zone.erase(card)
+						new_state.node_score = new_state.calculate_score()
+						state.children.push_back(new_state)
+						
+	state.children.sort_custom(func (state1:BoardState, state2:BoardState):
+		return state1.node_score > state2.node_score)
