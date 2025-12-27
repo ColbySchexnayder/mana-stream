@@ -26,11 +26,12 @@ var p2AvailableMana := 0
 var player_turn := 1
 #endregion
 
-var node_score = 0
-var children : Array[BoardState] = []
+var node_score : int = 0
+var depth : int = 0
+var next_states : Array[BoardState] = []
 
 func _to_string() -> String:
-	var txt = "Current Player: " + str(player_turn) + "\n"
+	var txt = "Node Score: " + str(node_score) + "\n" + "Current Player: " + str(player_turn) + "\n"
 	txt += "AI\n"
 	txt += "AI Health: " + str(p2Health) + "\n AI Mana: " + str(p2AvailableMana) + "/" + str(p2TotalMana) + "\n"
 	txt += "AI Hand:\n\t"
@@ -56,7 +57,7 @@ func _to_string() -> String:
 		txt += card.cardName + " e:" + str(card.exhausted) + ", "
 	return txt
 
-func calculate_score() -> float:
+func calculate_score() -> int:
 	node_score += p2Health*5 - p1Health*5
 	for card in ai_hand:
 		node_score += 1

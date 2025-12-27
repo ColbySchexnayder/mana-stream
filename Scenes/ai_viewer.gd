@@ -1,6 +1,7 @@
 extends Window
 
 @onready var spin_box: SpinBox = $VBoxContainer/HBoxContainer/SpinBox
+@onready var tree: Tree = $VBoxContainer/Tree
 
 signal ai_view_button_pressed
 
