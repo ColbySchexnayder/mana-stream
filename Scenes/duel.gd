@@ -215,13 +215,10 @@ func _ready() -> void:
 		await draw(1)
 		await draw(2)
 	
-	ai.current_state = ai.set_board_state()
 	
 	
-	ui_root = vtree.create_item()
-	ui_root.set_text(0, "Current State")
-	var child = vtree.create_item(ui_root)
-	child.set_text(0, ai.current_state.to_string())
+	
+
 
 # Keep the text up to date and cards organized
 func _process(_delta: float) -> void:
@@ -957,37 +954,37 @@ func _on_selection_list_item_clicked(index: int, at_position: Vector2, mouse_but
 
 
 
-#WARNING AI Debug framework, multiple presses will add more children without clearing existing ones
-func _on_ai_viewer_ai_view_button_pressed(depth) -> void:
-	
-	vtree.clear()
-	
-	ui_root = vtree.create_item()
-	ui_root.set_text(0, "Current State")
-
-	var c_state = vtree.create_item(ui_root)
-	ai.current_state = ai.set_board_state()
-	c_state.set_text(0, ai.current_state.to_string())
-	
-	ai.generate_next_states()
-	var label = vtree.create_item(ui_root)
-	label.set_text(0, "Depth 1")
-	
-	var child_states : Array[BoardState] = []
-	for state in ai.current_state.next_states:
-		var child = vtree.create_item(label)
-		child.set_text(0, state.to_string())
-		child_states.push_back(state)
-	
-		while !child_states.is_empty():
-			var state1 : BoardState= child_states.pop_front()
-			#var child1 = vtree.create_item(vtree.get_item_at_position(Vector2(0, state1.depth)))
-			#child1.set_text(0, state1.to_string())
-			if state1.depth < depth:
-				print(state1.depth)
-				ai.generate_next_states(state1)
-				for next_state in state.next_states:
-					child_states.push_back(next_state)
-		
-	
-	
+##WARNING AI Debug framework, multiple presses will add more children without clearing existing ones
+#func _on_ai_viewer_ai_view_button_pressed(depth) -> void:
+	#
+	#vtree.clear()
+	#
+	#ui_root = vtree.create_item()
+	#ui_root.set_text(0, "Current State")
+#
+	#var c_state = vtree.create_item(ui_root)
+	#ai.current_state = ai.set_board_state()
+	#c_state.set_text(0, ai.current_state.to_string())
+	#
+	#ai.generate_next_states()
+	#var label = vtree.create_item(ui_root)
+	#label.set_text(0, "Depth 1")
+	#
+	#var child_states : Array[BoardState] = []
+	#for state in ai.current_state.next_states:
+		#var child = vtree.create_item(label)
+		#child.set_text(0, state.to_string())
+		#child_states.push_back(state)
+	#
+		#while !child_states.is_empty():
+			#var state1 : BoardState= child_states.pop_front()
+			##var child1 = vtree.create_item(vtree.get_item_at_position(Vector2(0, state1.depth)))
+			##child1.set_text(0, state1.to_string())
+			#if state1.depth < depth:
+				#print(state1.depth)
+				#ai.generate_next_states(state1)
+				#for next_state in state.next_states:
+					#child_states.push_back(next_state)
+		#
+	#
+	#
