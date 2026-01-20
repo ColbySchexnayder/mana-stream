@@ -95,7 +95,11 @@ func score_cards():
 					"action" : ""
 				}
 				pseudo_card["name"] = h_card.cardName
-				pseudo_card["score"] += h_card.cost
+				# A given cards score is:
+				# Higher based on the cost. The cost is already a representation of how valuable the card is
+				# Higher based on other cards it can bring in
+				pseudo_card["score"] += h_card.cost + h_card.resourceGatheringVal
+				pseudo_card["action"] = "summon"
 				
 				pass
 		GmManager.phase.INTERRUPT:

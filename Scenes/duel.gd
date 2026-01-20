@@ -216,8 +216,6 @@ func _ready() -> void:
 		await draw(2)
 	
 	
-	
-	
 
 
 # Keep the text up to date and cards organized

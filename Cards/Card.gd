@@ -27,6 +27,8 @@ enum position {
 	IN_SUMMON
 }
 
+var available_actions : Array[AI_CardActions.CardActions] = []
+
 var currentPosition := position.IN_DECK
 var paid := false
 var exhausted := false
@@ -93,6 +95,7 @@ func summon() -> void:
 	GmManager.emit_signal("_card_summon", self)
 
 func mana() -> void:
+	available_actions.clear()
 	if cardOwner == 1:
 		if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
 				card_front.visible = false
@@ -100,6 +103,9 @@ func mana() -> void:
 				card_back.visible = true
 				currentPosition = position.IN_MANA
 				GmManager.emit_signal("_card_to_mana", self)
+				
+				available_actions.push_back(AI_CardActions.CardActions.TapForMana)
+				
 		elif currentPosition == position.IN_MANA and !exhausted:
 				GmManager.emit_signal("_add_to_mana", self, 1)
 				exhaust(self)
@@ -107,6 +113,9 @@ func mana() -> void:
 		if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
 			currentPosition = position.IN_MANA
 			GmManager.emit_signal("_card_to_mana", self)
+			
+			available_actions.push_back(AI_CardActions.CardActions.TapForMana)
+			
 		elif currentPosition == position.IN_MANA and !exhausted:
 				GmManager.emit_signal("_add_to_mana", self, 2)
 				exhaust(self)	
@@ -130,7 +139,7 @@ func block() -> void:
 
 #NOTICE Tentatively @cause. 0: Resolving card. 1: from battle. 2:from card effect. 3. Cost not paid more to be added?
 func destroy(cause: int) -> void:
-	#WARNING: The commented code only plays the animation when called with await
+	available_actions.clear()
 	
 	card_info_animation.visible = true
 	card_info_animation.play("Destroyed")
@@ -142,6 +151,8 @@ func destroy(cause: int) -> void:
 	GmManager.emit_signal("_move_to_deck", card)
 
 func exhaust(card: Card)-> void:
+	available_actions.clear()
+	
 	if card.exhausted:
 		return
 	card.exhausted = true
@@ -154,7 +165,7 @@ func exhaust(card: Card)-> void:
 	card.card_art.scale.y = .5
 
 func resolve_summon()->void:
-	return
+	available_actions.push_back(AI_CardActions.CardActions.ActivateAbility)
 	
 func refresh()->void:
 	paid = false
