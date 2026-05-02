@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cx5b2r46v00uw"]
+[gd_scene format=3 uid="uid://cx5b2r46v00uw"]
 
 [ext_resource type="Texture2D" uid="uid://dsc3ly3yyje2k" path="res://Backgrounds/starbackground0.png" id="1_ku1mf"]
 [ext_resource type="Script" uid="uid://cmxvls1bkqmjx" path="res://Scenes/duel.gd" id="1_ljhtk"]
@@ -55,10 +55,10 @@ _data = {
 &"RESET": SubResource("Animation_6kaua")
 }
 
-[node name="Duel" type="Node2D"]
+[node name="Duel" type="Node2D" unique_id=2022160354]
 script = ExtResource("1_ljhtk")
 
-[node name="P1DeckHolder" type="Control" parent="."]
+[node name="P1DeckHolder" type="Control" parent="." unique_id=1918114792]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -159.0
@@ -66,59 +66,59 @@ offset_top = 1.0
 offset_right = -119.0
 offset_bottom = 41.0
 
-[node name="P2DeckHolder" type="Control" parent="."]
+[node name="P2DeckHolder" type="Control" parent="." unique_id=963303199]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -179.0
 offset_right = -139.0
 offset_bottom = 40.0
 
-[node name="Parallax" type="Node2D" parent="."]
+[node name="Parallax" type="Node2D" parent="." unique_id=1767583069]
 
-[node name="PFar" type="Parallax2D" parent="Parallax"]
+[node name="PFar" type="Parallax2D" parent="Parallax" unique_id=1015371725]
 scroll_scale = Vector2(0.8, 0.8)
 repeat_size = Vector2(640, 480)
 autoscroll = Vector2(50, 50)
 repeat_times = 3
 
-[node name="Far" type="Sprite2D" parent="Parallax/PFar"]
+[node name="Far" type="Sprite2D" parent="Parallax/PFar" unique_id=377730634]
 z_index = -5
 position = Vector2(320, 240)
 texture = ExtResource("1_ku1mf")
 
-[node name="PMid" type="Parallax2D" parent="Parallax"]
+[node name="PMid" type="Parallax2D" parent="Parallax" unique_id=168390142]
 scroll_scale = Vector2(0.5, 0.5)
 repeat_size = Vector2(640, 480)
 autoscroll = Vector2(100, 100)
 repeat_times = 3
 
-[node name="Mid" type="Sprite2D" parent="Parallax/PMid"]
+[node name="Mid" type="Sprite2D" parent="Parallax/PMid" unique_id=1230268447]
 z_index = -5
 position = Vector2(320, 240)
 texture = ExtResource("2_mkbtj")
 
-[node name="PNear" type="Parallax2D" parent="Parallax"]
+[node name="PNear" type="Parallax2D" parent="Parallax" unique_id=766525771]
 scroll_scale = Vector2(0.3, 0.3)
 repeat_size = Vector2(640, 480)
 autoscroll = Vector2(150, 150)
 repeat_times = 3
 
-[node name="Near" type="Sprite2D" parent="Parallax/PNear"]
+[node name="Near" type="Sprite2D" parent="Parallax/PNear" unique_id=662795496]
 z_index = -5
 position = Vector2(320, 240)
 texture = ExtResource("3_luy51")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1685184271]
 position = Vector2(320, 240)
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=1022611024]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 640.0
 offset_bottom = 480.0
 mouse_filter = 2
 
-[node name="Player1Zone" type="VBoxContainer" parent="Control"]
+[node name="Player1Zone" type="VBoxContainer" parent="Control" unique_id=2125739554]
 layout_direction = 1
 layout_mode = 1
 anchors_preset = 2
@@ -128,27 +128,27 @@ offset_top = -240.0
 offset_right = 495.0
 grow_vertical = 0
 
-[node name="P1SummonZone" type="HBoxContainer" parent="Control/Player1Zone"]
+[node name="P1SummonZone" type="HBoxContainer" parent="Control/Player1Zone" unique_id=198671829]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="P1ManaZone" type="HBoxContainer" parent="Control/Player1Zone"]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 120
-alignment = 1
-
-[node name="P1Hand" type="HBoxContainer" parent="Control/Player1Zone"]
+[node name="P1ManaZone" type="HBoxContainer" parent="Control/Player1Zone" unique_id=1537797669]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 120
 alignment = 1
 
-[node name="Player2Zone" type="VBoxContainer" parent="Control"]
+[node name="P1Hand" type="HBoxContainer" parent="Control/Player1Zone" unique_id=2034934681]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 120
+alignment = 1
+
+[node name="Player2Zone" type="VBoxContainer" parent="Control" unique_id=1442575388]
 layout_direction = 1
 layout_mode = 1
 anchors_preset = 2
@@ -160,48 +160,48 @@ offset_right = 640.0
 offset_bottom = -240.0
 grow_vertical = 0
 
-[node name="P2Hand" type="HBoxContainer" parent="Control/Player2Zone"]
+[node name="P2Hand" type="HBoxContainer" parent="Control/Player2Zone" unique_id=520531467]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 120
 alignment = 1
 
-[node name="P2ManaZone" type="HBoxContainer" parent="Control/Player2Zone"]
+[node name="P2ManaZone" type="HBoxContainer" parent="Control/Player2Zone" unique_id=1913423109]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 120
 alignment = 1
 
-[node name="P2SummonZone" type="HBoxContainer" parent="Control/Player2Zone"]
+[node name="P2SummonZone" type="HBoxContainer" parent="Control/Player2Zone" unique_id=1789567289]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="P1Deck" type="PanelContainer" parent="Control"]
+[node name="P1Deck" type="PanelContainer" parent="Control" unique_id=717191853]
 layout_mode = 0
 offset_left = 525.0
 offset_top = 307.0
 offset_right = 635.0
 offset_bottom = 482.0
 
-[node name="P1DeckButton" type="TextureButton" parent="Control/P1Deck"]
+[node name="P1DeckButton" type="TextureButton" parent="Control/P1Deck" unique_id=1512123352]
 layout_mode = 2
 texture_normal = ExtResource("6_8c1q3")
 
-[node name="P2Deck" type="PanelContainer" parent="Control"]
+[node name="P2Deck" type="PanelContainer" parent="Control" unique_id=491611972]
 layout_mode = 0
 offset_left = 1.0
 offset_right = 104.0
 offset_bottom = 181.0
 
-[node name="P2DeckButton" type="TextureButton" parent="Control/P2Deck"]
+[node name="P2DeckButton" type="TextureButton" parent="Control/P2Deck" unique_id=357231870]
 layout_mode = 2
 texture_normal = ExtResource("6_8c1q3")
 
-[node name="P1LifeIcon" type="TextureRect" parent="Control"]
+[node name="P1LifeIcon" type="TextureRect" parent="Control" unique_id=1349264909]
 layout_mode = 0
 offset_left = 583.0
 offset_top = 269.0
@@ -209,7 +209,7 @@ offset_right = 615.0
 offset_bottom = 301.0
 texture = ExtResource("6_rwkrb")
 
-[node name="P1Life" type="RichTextLabel" parent="Control"]
+[node name="P1Life" type="RichTextLabel" parent="Control" unique_id=1059375465]
 layout_mode = 0
 offset_left = 545.0
 offset_top = 266.0
@@ -218,7 +218,7 @@ offset_bottom = 306.0
 theme = ExtResource("7_o1sjj")
 text = "10"
 
-[node name="P1Mana" type="RichTextLabel" parent="Control"]
+[node name="P1Mana" type="RichTextLabel" parent="Control" unique_id=957025192]
 layout_mode = 0
 offset_left = 544.0
 offset_top = 239.0
@@ -227,7 +227,7 @@ offset_bottom = 263.0
 theme = ExtResource("7_o1sjj")
 text = "0/0"
 
-[node name="P2LifeIcon" type="TextureRect" parent="Control"]
+[node name="P2LifeIcon" type="TextureRect" parent="Control" unique_id=2057159529]
 layout_mode = 0
 offset_left = 58.0
 offset_top = 181.0
@@ -235,7 +235,7 @@ offset_right = 90.0
 offset_bottom = 213.0
 texture = ExtResource("6_rwkrb")
 
-[node name="P2Life" type="RichTextLabel" parent="Control"]
+[node name="P2Life" type="RichTextLabel" parent="Control" unique_id=8096452]
 layout_mode = 0
 offset_left = 29.0
 offset_top = 181.0
@@ -244,7 +244,7 @@ offset_bottom = 221.0
 theme = ExtResource("7_o1sjj")
 text = "10"
 
-[node name="P2Mana" type="RichTextLabel" parent="Control"]
+[node name="P2Mana" type="RichTextLabel" parent="Control" unique_id=731877591]
 layout_mode = 0
 offset_left = 27.0
 offset_top = 213.0
@@ -253,7 +253,7 @@ offset_bottom = 237.0
 theme = ExtResource("7_o1sjj")
 text = "0/0"
 
-[node name="PassButton" type="TextureButton" parent="Control"]
+[node name="PassButton" type="TextureButton" parent="Control" unique_id=775861143]
 layout_mode = 0
 offset_left = 537.0
 offset_top = 215.0
@@ -261,7 +261,7 @@ offset_right = 623.0
 offset_bottom = 236.0
 texture_normal = ExtResource("8_lj5r5")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Control/PassButton"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PassButton" unique_id=681400001]
 layout_mode = 0
 offset_left = 26.0
 offset_top = -3.0
@@ -272,7 +272,7 @@ theme = ExtResource("7_o1sjj")
 theme_override_styles/normal = ExtResource("9_yk5x5")
 text = "Pass?"
 
-[node name="InspectionArea" type="Control" parent="Control"]
+[node name="InspectionArea" type="Control" parent="Control" unique_id=168913365]
 anchors_preset = 0
 offset_left = 1.0
 offset_top = 141.0
@@ -280,14 +280,14 @@ offset_right = 642.0
 offset_bottom = 338.0
 mouse_filter = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="Control/InspectionArea"]
+[node name="CenterContainer" type="CenterContainer" parent="Control/InspectionArea" unique_id=96345728]
 layout_mode = 0
 offset_left = 197.0
 offset_top = -49.0
 offset_right = 268.0
 offset_bottom = 7.0
 
-[node name="InterruptChoice" type="Control" parent="Control"]
+[node name="InterruptChoice" type="Control" parent="Control" unique_id=1368568731]
 visible = false
 anchors_preset = 0
 offset_left = 189.0
@@ -295,7 +295,7 @@ offset_top = 175.0
 offset_right = 446.0
 offset_bottom = 312.0
 
-[node name="Panel" type="Panel" parent="Control/InterruptChoice"]
+[node name="Panel" type="Panel" parent="Control/InterruptChoice" unique_id=1621882498]
 layout_mode = 0
 offset_left = -53.0
 offset_top = -45.0
@@ -304,7 +304,7 @@ offset_bottom = 166.0
 theme = ExtResource("7_o1sjj")
 theme_override_styles/panel = ExtResource("9_yk5x5")
 
-[node name="InterceptionMessage" type="RichTextLabel" parent="Control/InterruptChoice/Panel"]
+[node name="InterceptionMessage" type="RichTextLabel" parent="Control/InterruptChoice/Panel" unique_id=528569831]
 layout_mode = 0
 offset_left = 12.0
 offset_top = 4.0
@@ -314,7 +314,7 @@ theme_override_font_sizes/normal_font_size = 32
 text = "Card activates. Respond?"
 horizontal_alignment = 1
 
-[node name="InterruptButton" type="TextureButton" parent="Control/InterruptChoice"]
+[node name="InterruptButton" type="TextureButton" parent="Control/InterruptChoice" unique_id=107457493]
 layout_mode = 0
 offset_left = -39.0
 offset_right = 42.0
@@ -323,7 +323,7 @@ scale = Vector2(2, 2)
 texture_normal = ExtResource("10_yyo3b")
 stretch_mode = 3
 
-[node name="InterruptButtonText" type="RichTextLabel" parent="Control/InterruptChoice/InterruptButton"]
+[node name="InterruptButtonText" type="RichTextLabel" parent="Control/InterruptChoice/InterruptButton" unique_id=1388364484]
 layout_mode = 0
 offset_left = 25.5
 offset_top = 37.0
@@ -332,7 +332,7 @@ offset_bottom = 77.0
 mouse_filter = 2
 text = "Yes!"
 
-[node name="InterruptPassButton" type="TextureButton" parent="Control/InterruptChoice"]
+[node name="InterruptPassButton" type="TextureButton" parent="Control/InterruptChoice" unique_id=1684132276]
 layout_mode = 0
 offset_left = 138.0
 offset_top = 6.0
@@ -342,7 +342,7 @@ scale = Vector2(2, 2)
 texture_normal = ExtResource("8_3ou88")
 stretch_mode = 3
 
-[node name="PassButtonText" type="RichTextLabel" parent="Control/InterruptChoice/InterruptPassButton"]
+[node name="PassButtonText" type="RichTextLabel" parent="Control/InterruptChoice/InterruptPassButton" unique_id=1126620964]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 34.5
@@ -351,13 +351,13 @@ offset_bottom = 63.5
 mouse_filter = 2
 text = "Pass..."
 
-[node name="SelectionList" type="ItemList" parent="Control"]
+[node name="SelectionList" type="ItemList" parent="Control" unique_id=136605565]
 visible = false
 layout_mode = 0
 offset_right = 638.0
 offset_bottom = 482.0
 
-[node name="TurnLabel" type="RichTextLabel" parent="Control"]
+[node name="TurnLabel" type="RichTextLabel" parent="Control" unique_id=1463400683]
 layout_mode = 0
 offset_left = 3.0
 offset_top = 246.0
@@ -367,7 +367,7 @@ mouse_filter = 2
 theme = ExtResource("7_o1sjj")
 text = "Turn 1"
 
-[node name="PhaseLabel" type="RichTextLabel" parent="Control"]
+[node name="PhaseLabel" type="RichTextLabel" parent="Control" unique_id=1838495200]
 layout_mode = 0
 offset_left = 3.0
 offset_top = 275.0
@@ -377,14 +377,14 @@ mouse_filter = 2
 theme = ExtResource("7_o1sjj")
 text = "Play Phase"
 
-[node name="SelectionListArea" type="TextureRect" parent="Control"]
+[node name="SelectionListArea" type="TextureRect" parent="Control" unique_id=2082859829]
 visible = false
 layout_mode = 0
 offset_right = 956.0
 offset_bottom = 480.0
 texture = ExtResource("12_lat0q")
 
-[node name="SelectionList" type="ItemList" parent="Control/SelectionListArea"]
+[node name="SelectionList" type="ItemList" parent="Control/SelectionListArea" unique_id=227378618]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -393,66 +393,64 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("7_o1sjj")
 
-[node name="AI" type="Node" parent="."]
+[node name="AI" type="Node" parent="." unique_id=746923807]
 script = ExtResource("10_qiwog")
 
-[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1927805964]
 stream = ExtResource("13_8gp5r")
 
-[node name="PhaseChangeAnimation" parent="." instance=ExtResource("14_w8i7p")]
+[node name="PhaseChangeAnimation" parent="." unique_id=1009400975 instance=ExtResource("14_w8i7p")]
 visible = false
 position = Vector2(320, 240)
 animation = &"PlayNotice"
 
-[node name="EffectAnimation" type="Sprite2D" parent="."]
+[node name="EffectAnimation" type="Sprite2D" parent="." unique_id=135513168]
 visible = false
 modulate = Color(1, 1, 1, 0)
 texture = ExtResource("16_jmbob")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="EffectAnimation"]
-libraries = {
-&"": SubResource("AnimationLibrary_sgn6l")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EffectAnimation" unique_id=741808924]
+libraries/ = SubResource("AnimationLibrary_sgn6l")
 
-[node name="PlacementImage" parent="." instance=ExtResource("17_6kaua")]
+[node name="PlacementImage" parent="." unique_id=957279861 instance=ExtResource("17_6kaua")]
 visible = false
 
-[node name="PlacementPositions" type="Node2D" parent="."]
+[node name="PlacementPositions" type="Node2D" parent="." unique_id=1708176163]
 visible = false
 
-[node name="P1DeckPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P1DeckPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=1474777935]
 position = Vector2(557, 326)
 texture = ExtResource("18_sgn6l")
 
-[node name="P1HandPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P1HandPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=1732589106]
 position = Vector2(275, 418)
 texture = ExtResource("18_sgn6l")
 
-[node name="P1ManaPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P1ManaPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=1005995415]
 position = Vector2(277, 352)
 texture = ExtResource("18_sgn6l")
 
-[node name="P1SummonPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P1SummonPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=1133154779]
 position = Vector2(276, 301)
 texture = ExtResource("18_sgn6l")
 
-[node name="P2DeckPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P2DeckPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=213912931]
 position = Vector2(25, 22)
 texture = ExtResource("18_sgn6l")
 
-[node name="P2HandPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P2HandPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=1825066117]
 position = Vector2(337, 25)
 texture = ExtResource("18_sgn6l")
 
-[node name="P2ManaPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P2ManaPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=1905225608]
 position = Vector2(337, 87)
 texture = ExtResource("18_sgn6l")
 
-[node name="P2SummonPlacement" type="Sprite2D" parent="PlacementPositions"]
+[node name="P2SummonPlacement" type="Sprite2D" parent="PlacementPositions" unique_id=509727977]
 position = Vector2(338, 152)
 texture = ExtResource("18_sgn6l")
 
-[node name="AiViewer" parent="." instance=ExtResource("19_pa7a4")]
+[node name="AiViewer" parent="." unique_id=1630705166 instance=ExtResource("19_pa7a4")]
 
 [connection signal="pressed" from="Control/P1Deck/P1DeckButton" to="." method="_on_p_1_deck_pressed"]
 [connection signal="pressed" from="Control/PassButton" to="." method="_on_pass_button_pressed"]

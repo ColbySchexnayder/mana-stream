@@ -1,5 +1,11 @@
 class_name AI_Manager extends Node
+#NOTICE: Don't try to make this universal.
+#Different priorities will have different personalities.
+#EXAMPLE: AI could focus on keeping large beat stick on the field
+#AI could just keep as many small creatures on the field as possible
+#Mario party games got away with: go towards the star; buy character items
 
+#Get it working. Simple is fine. Playable is better than perfect.
 
 
 var ai_hand : Array[Card] = []
