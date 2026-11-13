@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://doo2vnqj80csx"]
+[gd_scene format=3 uid="uid://doo2vnqj80csx"]
 
 [ext_resource type="Texture2D" uid="uid://dcexpf3lcwll4" path="res://Art/rainbowgradienthorizontal.png" id="1_600nb"]
 [ext_resource type="Script" uid="uid://t3bxxl8fnf6y" path="res://Scenes/title_screen.gd" id="1_kyaoj"]
 [ext_resource type="Texture2D" uid="uid://wivjdglbnywb" path="res://Art/titledScreenMonochromelight.png" id="2_tmt8w"]
 [ext_resource type="Theme" uid="uid://d2ypb0vgb31t6" path="res://Cards/CardFontDefaultTheme.tres" id="3_4rc84"]
 
-[node name="TitleScreen" type="Control"]
+[node name="TitleScreen" type="Control" unique_id=988247953]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,27 +14,30 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_kyaoj")
 
-[node name="CardLoader" type="Control" parent="."]
+[node name="CardLoader" type="Control" parent="." unique_id=583665030]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Parallax2D" type="Parallax2D" parent="."]
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=2077066958]
 scroll_scale = Vector2(0.8, 0.8)
 repeat_size = Vector2(640, 480)
 autoscroll = Vector2(-150, -150)
 repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=658711456]
 texture = ExtResource("1_600nb")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="TextureRect" type="TextureRect" parent="." unique_id=276320747]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_tmt8w")
 
-[node name="NewGameButton" type="Button" parent="."]
+[node name="NewGameButton" type="Button" parent="TextureRect" unique_id=1196597817]
 layout_mode = 0
 offset_left = 150.0
 offset_top = 243.0
@@ -44,7 +47,7 @@ theme = ExtResource("3_4rc84")
 theme_override_font_sizes/font_size = 36
 text = "New Game?"
 
-[node name="DeckEditButton" type="Button" parent="."]
+[node name="DeckEditButton" type="Button" parent="TextureRect" unique_id=838906033]
 layout_mode = 0
 offset_left = 150.0
 offset_top = 282.0
@@ -54,7 +57,7 @@ theme = ExtResource("3_4rc84")
 theme_override_font_sizes/font_size = 36
 text = "Deck Edit"
 
-[node name="ContinueButton" type="Button" parent="."]
+[node name="ContinueButton" type="Button" parent="TextureRect" unique_id=2067554625]
 layout_mode = 0
 offset_left = 150.0
 offset_top = 205.0
@@ -64,6 +67,6 @@ theme = ExtResource("3_4rc84")
 theme_override_font_sizes/font_size = 36
 text = "Duel!"
 
-[connection signal="pressed" from="NewGameButton" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="DeckEditButton" to="." method="_on_deck_edit_button_pressed"]
-[connection signal="pressed" from="ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="TextureRect/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="TextureRect/DeckEditButton" to="." method="_on_deck_edit_button_pressed"]
+[connection signal="pressed" from="TextureRect/ContinueButton" to="." method="_on_continue_button_pressed"]

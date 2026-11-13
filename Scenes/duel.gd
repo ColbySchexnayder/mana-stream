@@ -37,7 +37,7 @@ var p2TotalMana := 0
 var p2AvailableMana := 0
 #endregion
 #A place to store the currently selected card
-var inspectedCard
+var inspectedCard : Card
 
 #Turn managment variables
 var currentTurn := 1
@@ -79,11 +79,11 @@ var cardIndex
 #@onready var ai: AI_Manager = $AI
 @onready var ai: AI = AI.new()
 #region AI Debug tools
-const AI_VIEWER = preload("uid://bd82obug5i687")
-@onready var ai_viewer: Window = $AiViewer
-@onready var vtree: Tree = $AiViewer/VBoxContainer/Tree
-var ui_root: TreeItem
-@onready var spin_box: SpinBox = $AiViewer/VBoxContainer/HBoxContainer/SpinBox
+#const AI_VIEWER = preload("uid://bd82obug5i687")
+#@onready var ai_viewer: Window = $AiViewer
+#@onready var vtree: Tree = $AiViewer/VBoxContainer/Tree
+#var ui_root: TreeItem
+#@onready var spin_box: SpinBox = $AiViewer/VBoxContainer/HBoxContainer/SpinBox
 #endregion
 
 @onready var sfx_player: AudioStreamPlayer = $SFXPlayer
@@ -335,13 +335,6 @@ func card_select(card):
 	card.card_front.visible = true
 	card.card_art.visible = true
 	
-	#Even if the card is exhausted we want to see it it full scale when inspected
-	card.card_back.scale.x = 1
-	card.card_back.scale.y = 1
-	card.card_front.scale.x = 1
-	card.card_front.scale.y = 1
-	card.card_art.scale.x = 1
-	card.card_art.scale.y = 1
 	
 	#If it's the player's card show the appropriate buttons
 	if card.cardOwner == 1:
@@ -394,16 +387,6 @@ func deselect():
 	card.keep_button.visible = false
 	card.mana_button.visible = false
 	card.action_button.visible = false
-	
-	
-	#If the card is exhausted put it back at the right scale
-	if card.exhausted:
-		card.card_back.scale.x = .5
-		card.card_back.scale.y = .5
-		card.card_front.scale.x = .5
-		card.card_front.scale.y = .5
-		card.card_art.scale.x = .5
-		card.card_art.scale.y = .5
 	
 	#Get the cards current 
 	match (card.currentPosition):
@@ -480,10 +463,11 @@ func move_to_summon(card: Card):
 	match card.currentPosition:
 		Card.position.IN_HAND:
 			if card.cardOwner == 1:
-				player1hand.erase(card)
+				
 				placement_image.card_moves(placement_positions.get_node("P1HandPlacement").position,
 				placement_positions.get_node("P1SummonPlacement").position)
 				await placement_image._Movement_Complete
+				player1hand.erase(card)
 			else:
 				placement_image.card_moves(placement_positions.get_node("P2HandPlacement").position,
 				placement_positions.get_node("P2SummonPlacement").position)
@@ -676,7 +660,7 @@ func card_attack(card : Card):
 	if currentTurn == 1:
 		if player2summon.size() == 0:
 			
-			GmManager.emit_signal("_card_exhaust", card)
+			card.exhaust()
 			p2Health -= card.attack
 			p_2_life.text = str(p2Health)
 			
@@ -688,7 +672,7 @@ func card_attack(card : Card):
 			return
 		ai.choose_defense(card)
 	if currentTurn == 2 and player1summon.size() == 0:
-		GmManager.emit_signal("_card_exhaust", card)
+		card.exhaust()
 		
 		health -= card.attack
 		p_1_life.text = str(health)
@@ -708,7 +692,7 @@ func direct_damage(damage: int, player: int):
 
 #A response to being attacked. Destroy any card involved that takes more damage than it has health
 func card_block(card : Card):
-	attackingCard.exhaust(attackingCard)
+	attackingCard.exhaust()
 	deselect()
 	if (attackingCard.attack > card.health):
 		card.card_info_animation.play("DefenseFail")

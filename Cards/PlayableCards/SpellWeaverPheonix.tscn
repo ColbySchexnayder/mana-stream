@@ -1,11 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://q5bbtkglp6nc"]
+[gd_scene format=3 uid="uid://q5bbtkglp6nc"]
 
 [ext_resource type="PackedScene" uid="uid://cy6xfsj2qbdjs" path="res://Cards/Card.tscn" id="1_yme5f"]
 [ext_resource type="Script" uid="uid://ptsdclc55cd2" path="res://Cards/CardScripts/spell_weaver_pheonix.gd" id="2_so5wm"]
 [ext_resource type="Texture2D" uid="uid://7f5savvxgsui" path="res://Cards/CardArt/spellweaverphoenix.png" id="3_o2nmy"]
 
-[node name="SpellWeaverPheonix" instance=ExtResource("1_yme5f")]
+[node name="SpellWeaverPheonix" unique_id=830154664 instance=ExtResource("1_yme5f")]
 script = ExtResource("2_so5wm")
 
-[node name="CardArt" parent="." index="0"]
+[node name="CardArt" parent="." index="0" unique_id=211727173]
 texture = ExtResource("3_o2nmy")

@@ -54,7 +54,7 @@ func action():
 	await super.action()
 	
 	revealed = true
-	attackingCard.exhaust(attackingCard)
+	attackingCard.exhaust()
 	attackingCard.card_info_animation.visible = false
 	
 	var conditions = {"target self" : false}

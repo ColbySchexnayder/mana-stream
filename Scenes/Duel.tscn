@@ -18,7 +18,6 @@
 [ext_resource type="Texture2D" uid="uid://cqgbuaan4vy6m" path="res://Cards/CardArt/blackcat.png" id="16_jmbob"]
 [ext_resource type="PackedScene" uid="uid://cbr45uaedmdua" path="res://Scenes/placement_image.tscn" id="17_6kaua"]
 [ext_resource type="Texture2D" uid="uid://bclgb8scwwre0" path="res://Art/ManaButton.png" id="18_sgn6l"]
-[ext_resource type="PackedScene" uid="uid://bd82obug5i687" path="res://Scenes/AI Viewer.tscn" id="19_pa7a4"]
 
 [sub_resource type="Animation" id="Animation_jmbob"]
 resource_name = "Fade"
@@ -119,7 +118,6 @@ offset_bottom = 480.0
 mouse_filter = 2
 
 [node name="Player1Zone" type="VBoxContainer" parent="Control" unique_id=2125739554]
-layout_direction = 1
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -127,6 +125,7 @@ anchor_bottom = 1.0
 offset_top = -240.0
 offset_right = 495.0
 grow_vertical = 0
+layout_direction = 1
 
 [node name="P1SummonZone" type="HBoxContainer" parent="Control/Player1Zone" unique_id=198671829]
 clip_contents = true
@@ -149,7 +148,6 @@ theme_override_constants/separation = 120
 alignment = 1
 
 [node name="Player2Zone" type="VBoxContainer" parent="Control" unique_id=1442575388]
-layout_direction = 1
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -159,6 +157,7 @@ offset_top = -480.0
 offset_right = 640.0
 offset_bottom = -240.0
 grow_vertical = 0
+layout_direction = 1
 
 [node name="P2Hand" type="HBoxContainer" parent="Control/Player2Zone" unique_id=520531467]
 clip_contents = true
@@ -450,11 +449,8 @@ texture = ExtResource("18_sgn6l")
 position = Vector2(338, 152)
 texture = ExtResource("18_sgn6l")
 
-[node name="AiViewer" parent="." unique_id=1630705166 instance=ExtResource("19_pa7a4")]
-
 [connection signal="pressed" from="Control/P1Deck/P1DeckButton" to="." method="_on_p_1_deck_pressed"]
 [connection signal="pressed" from="Control/PassButton" to="." method="_on_pass_button_pressed"]
 [connection signal="pressed" from="Control/InterruptChoice/InterruptButton" to="." method="_on_interrupt_button_pressed"]
 [connection signal="pressed" from="Control/InterruptChoice/InterruptPassButton" to="." method="_on_interrupt_pass_button_pressed"]
 [connection signal="item_clicked" from="Control/SelectionListArea/SelectionList" to="." method="_on_selection_list_item_clicked"]
-[connection signal="ai_view_button_pressed" from="AiViewer" to="." method="_on_ai_viewer_ai_view_button_pressed"]

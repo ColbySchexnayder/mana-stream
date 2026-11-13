@@ -1,8 +1,8 @@
 extends Control
 
-var cards = []
-var cardNames = []
-var deck = []
+var cards : Array[Card] = []
+var cardNames : Array[String] = []
+var deck : Array[Card] = []
 
 var selectedIndex = -1
 
@@ -85,7 +85,7 @@ func _on_card_list_item_clicked(index: int, at_position: Vector2, mouse_button_i
 		return
 		
 	selectedIndex = index
-	var card = cards[index]
+	var card : Card = cards[index]
 	
 	for inspected in inspect_view.get_children():
 		inspected.reparent(cardsControl)

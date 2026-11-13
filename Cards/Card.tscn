@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cy6xfsj2qbdjs"]
+[gd_scene format=3 uid="uid://cy6xfsj2qbdjs"]
 
 [ext_resource type="Script" uid="uid://c4ulnevqbvheg" path="res://Cards/Card.gd" id="1_hmu5p"]
 [ext_resource type="Texture2D" uid="uid://c3ksc7vhpejbr" path="res://Cards/manastreamFrontCorrectResDraft.png" id="1_kwd8c"]
@@ -49,7 +49,7 @@ _data = {
 &"RESET": SubResource("Animation_kwacb")
 }
 
-[node name="Card" type="Control"]
+[node name="Card" type="Control" unique_id=220077384]
 layout_mode = 3
 anchor_right = 0.177
 anchor_bottom = 0.365
@@ -59,7 +59,7 @@ pivot_offset = Vector2(56, 87)
 mouse_default_cursor_shape = 2
 script = ExtResource("1_hmu5p")
 
-[node name="CardArt" type="TextureRect" parent="."]
+[node name="CardArt" type="TextureRect" parent="." unique_id=211727173]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 14.0
@@ -67,14 +67,14 @@ offset_right = 98.0
 offset_bottom = 80.0
 texture = ExtResource("5_xiqwp")
 
-[node name="CardFront" type="TextureRect" parent="."]
+[node name="CardFront" type="TextureRect" parent="." unique_id=64399343]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 pivot_offset = Vector2(56, 87)
 texture = ExtResource("1_kwd8c")
 
-[node name="Cost" type="RichTextLabel" parent="CardFront"]
+[node name="Cost" type="RichTextLabel" parent="CardFront" unique_id=497904520]
 layout_mode = 0
 offset_left = 3.0
 offset_top = -5.0
@@ -85,7 +85,7 @@ theme_override_font_sizes/normal_font_size = 30
 text = "0"
 visible_characters = 1
 
-[node name="Health" type="RichTextLabel" parent="CardFront"]
+[node name="Health" type="RichTextLabel" parent="CardFront" unique_id=1753822691]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -5.0
@@ -96,7 +96,7 @@ theme_override_font_sizes/normal_font_size = 30
 text = "0"
 visible_characters = 1
 
-[node name="Attack" type="RichTextLabel" parent="CardFront"]
+[node name="Attack" type="RichTextLabel" parent="CardFront" unique_id=1659600176]
 layout_mode = 0
 offset_left = 100.0
 offset_top = 155.0
@@ -107,7 +107,7 @@ theme_override_font_sizes/normal_font_size = 30
 text = "0"
 visible_characters = 1
 
-[node name="CardName" type="RichTextLabel" parent="CardFront"]
+[node name="CardName" type="RichTextLabel" parent="CardFront" unique_id=1745306949]
 layout_mode = 0
 offset_left = 21.0
 offset_top = 1.0
@@ -121,7 +121,7 @@ theme_override_font_sizes/normal_font_size = 16
 text = "An Overly Verbose And Realy long Text Name Test Name"
 scroll_active = false
 
-[node name="CardDescription" type="RichTextLabel" parent="CardFront"]
+[node name="CardDescription" type="RichTextLabel" parent="CardFront" unique_id=724932330]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 112.0
@@ -142,14 +142,14 @@ Accusamus in et doloremque ex. Laudantium aut animi quidem sint expedita volupta
 Sed soluta non velit quae. Pariatur et corrupti illum neque quis. Reprehenderit id quisquam vero harum ipsum commodi quisquam cupiditate."
 scroll_active = false
 
-[node name="CardBack" type="TextureRect" parent="."]
+[node name="CardBack" type="TextureRect" parent="." unique_id=468684485]
 visible = false
 layout_mode = 0
 offset_right = 113.0
 offset_bottom = 175.0
 texture = ExtResource("2_8rs7r")
 
-[node name="InspectView" type="Control" parent="."]
+[node name="InspectView" type="Control" parent="." unique_id=586049316]
 visible = false
 anchors_preset = 0
 offset_top = -44.0
@@ -157,7 +157,7 @@ offset_right = 310.0
 offset_bottom = 267.0
 mouse_filter = 1
 
-[node name="ExpandedName" type="RichTextLabel" parent="InspectView"]
+[node name="ExpandedName" type="RichTextLabel" parent="InspectView" unique_id=1314960929]
 layout_mode = 0
 offset_top = -30.0
 offset_right = 115.0
@@ -166,7 +166,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "An Overly Verbose and long winded test name"
 
-[node name="ExpandedDescription" type="RichTextLabel" parent="InspectView"]
+[node name="ExpandedDescription" type="RichTextLabel" parent="InspectView" unique_id=2066576241]
 layout_mode = 0
 offset_left = 146.0
 offset_top = 46.0
@@ -176,7 +176,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "An Overly Verbose and long winded test name"
 
-[node name="LoreText" type="RichTextLabel" parent="InspectView"]
+[node name="LoreText" type="RichTextLabel" parent="InspectView" unique_id=951856202]
 layout_mode = 0
 offset_left = -30.0
 offset_top = 221.0
@@ -186,7 +186,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "An Overly Verbose and long winded test name"
 
-[node name="TagText" type="RichTextLabel" parent="InspectView"]
+[node name="TagText" type="RichTextLabel" parent="InspectView" unique_id=1166148917]
 layout_mode = 0
 offset_left = 141.0
 offset_top = -30.0
@@ -196,7 +196,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "List of tagged values"
 
-[node name="SummonButton" type="TextureButton" parent="InspectView"]
+[node name="SummonButton" type="TextureButton" parent="InspectView" unique_id=383118274]
 visible = false
 layout_mode = 0
 offset_left = -124.0
@@ -205,7 +205,7 @@ offset_right = -13.0
 offset_bottom = 125.0
 texture_normal = ExtResource("6_rhvt5")
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/SummonButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/SummonButton" unique_id=827476843]
 layout_mode = 0
 offset_left = 20.0
 offset_top = -2.0
@@ -216,7 +216,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = " Summon?"
 
-[node name="ActionButton" type="TextureButton" parent="InspectView"]
+[node name="ActionButton" type="TextureButton" parent="InspectView" unique_id=453857933]
 visible = false
 layout_mode = 0
 offset_left = -124.0
@@ -225,7 +225,7 @@ offset_right = -13.0
 offset_bottom = 125.0
 texture_normal = ExtResource("6_rhvt5")
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/ActionButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/ActionButton" unique_id=2034894590]
 layout_mode = 0
 offset_left = 20.0
 offset_top = -2.0
@@ -236,7 +236,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = " Play?"
 
-[node name="ManaButton" type="TextureButton" parent="InspectView"]
+[node name="ManaButton" type="TextureButton" parent="InspectView" unique_id=26255444]
 visible = false
 layout_mode = 0
 offset_left = -124.0
@@ -245,7 +245,7 @@ offset_right = -13.0
 offset_bottom = 168.0
 texture_normal = ExtResource("9_dmo3y")
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/ManaButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/ManaButton" unique_id=942603650]
 layout_mode = 0
 offset_left = 20.0
 offset_top = -2.0
@@ -256,7 +256,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = " Mana?"
 
-[node name="KeepButton" type="TextureButton" parent="InspectView"]
+[node name="KeepButton" type="TextureButton" parent="InspectView" unique_id=231016837]
 visible = false
 layout_mode = 0
 offset_left = -124.0
@@ -265,7 +265,7 @@ offset_right = -13.0
 offset_bottom = 125.0
 texture_normal = ExtResource("6_rhvt5")
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/KeepButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/KeepButton" unique_id=1530854341]
 layout_mode = 0
 offset_left = 20.0
 offset_top = -2.0
@@ -276,7 +276,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "Sustain?"
 
-[node name="AttackButton" type="TextureButton" parent="InspectView"]
+[node name="AttackButton" type="TextureButton" parent="InspectView" unique_id=1953958568]
 visible = false
 layout_mode = 0
 offset_left = -124.0
@@ -285,7 +285,7 @@ offset_right = -14.0
 offset_bottom = 158.0
 texture_normal = ExtResource("8_eyrls")
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/AttackButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/AttackButton" unique_id=2078194980]
 layout_mode = 0
 offset_left = 23.0
 offset_right = 98.0
@@ -295,7 +295,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "Attack?"
 
-[node name="BlockButton" type="TextureButton" parent="InspectView"]
+[node name="BlockButton" type="TextureButton" parent="InspectView" unique_id=1874861488]
 visible = false
 layout_mode = 0
 offset_left = -124.0
@@ -304,7 +304,7 @@ offset_right = -9.0
 offset_bottom = 199.0
 texture_normal = ExtResource("9_oeuk8")
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/BlockButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/BlockButton" unique_id=1703705405]
 layout_mode = 0
 offset_left = 23.0
 offset_right = 90.0
@@ -314,7 +314,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = "Block?"
 
-[node name="AddButton" type="TextureButton" parent="InspectView"]
+[node name="AddButton" type="TextureButton" parent="InspectView" unique_id=1930402587]
 visible = false
 layout_mode = 0
 offset_left = -133.0
@@ -324,7 +324,7 @@ offset_bottom = 125.0
 texture_normal = ExtResource("11_yrf87")
 stretch_mode = 4
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/AddButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/AddButton" unique_id=1832207332]
 layout_mode = 0
 offset_left = 46.0
 offset_top = 8.0
@@ -335,7 +335,7 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = " Add?"
 
-[node name="RemoveButton" type="TextureButton" parent="InspectView"]
+[node name="RemoveButton" type="TextureButton" parent="InspectView" unique_id=681259308]
 visible = false
 layout_mode = 0
 offset_left = -130.0
@@ -345,7 +345,7 @@ offset_bottom = 124.0
 texture_normal = ExtResource("12_pmnv2")
 stretch_mode = 4
 
-[node name="ButtonText" type="RichTextLabel" parent="InspectView/RemoveButton"]
+[node name="ButtonText" type="RichTextLabel" parent="InspectView/RemoveButton" unique_id=1969549061]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 2.0
@@ -356,20 +356,18 @@ theme = ExtResource("3_gx64q")
 theme_override_styles/normal = ExtResource("6_n0a8q")
 text = " Remove?"
 
-[node name="CardInfoAnimation" parent="." instance=ExtResource("14_af8jt")]
+[node name="CardInfoAnimation" parent="." unique_id=692061223 instance=ExtResource("14_af8jt")]
 visible = false
 modulate = Color(0, 1, 1, 0)
 position = Vector2(56, 47)
 scale = Vector2(4.0625, 4.0625)
 
-[node name="EffectAnimation" type="Sprite2D" parent="."]
+[node name="EffectAnimation" type="Sprite2D" parent="." unique_id=221353117]
 visible = false
 modulate = Color(1, 1, 1, 0)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="EffectAnimation"]
-libraries = {
-&"": SubResource("AnimationLibrary_kwacb")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EffectAnimation" unique_id=1445163987]
+libraries/ = SubResource("AnimationLibrary_kwacb")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

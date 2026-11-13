@@ -48,10 +48,12 @@ var actionCost := 0
 var actionBenefit := 0
 var cardAdvantage := -1
 
+var art_texture : Texture
+var front_texture : Texture
+var back_texture : Texture
 
 @onready var card: Card = $"."
 
-@onready var card_front: TextureRect = $CardFront
 @onready var cost_text: RichTextLabel = $CardFront/Cost
 @onready var health_text: RichTextLabel = $CardFront/Health
 @onready var attack_text: RichTextLabel = $CardFront/Attack
@@ -60,6 +62,7 @@ var cardAdvantage := -1
 @onready var description_text: RichTextLabel = $CardFront/CardDescription
 
 @onready var card_back: TextureRect = $CardBack
+@onready var card_front: TextureRect = $CardFront
 
 @onready var inspect_view: Control = $InspectView
 @onready var expanded_name: RichTextLabel = $InspectView/ExpandedName
@@ -93,6 +96,7 @@ func effectOtherCard(card: Card):
 
 func summon() -> void:
 	GmManager.emit_signal("_card_summon", self)
+	
 
 func mana() -> void:
 	available_actions.clear()
@@ -108,7 +112,7 @@ func mana() -> void:
 				
 		elif currentPosition == position.IN_MANA and !exhausted:
 				GmManager.emit_signal("_add_to_mana", self, 1)
-				exhaust(self)
+				exhaust()
 	else:
 		if currentPosition == position.IN_HAND and GmManager.currentPhase == GmManager.phase.PLAY:
 			currentPosition = position.IN_MANA
@@ -118,7 +122,7 @@ func mana() -> void:
 			
 		elif currentPosition == position.IN_MANA and !exhausted:
 				GmManager.emit_signal("_add_to_mana", self, 2)
-				exhaust(self)	
+				exhaust()	
 			
 func attacking() -> void:
 	card_info_animation.visible = true
@@ -133,7 +137,7 @@ func block() -> void:
 	card_info_animation.visible = true
 	card_info_animation.play("DefendingAnimation")
 	
-	exhaust(self)
+	exhaust()
 	GmManager.emit_signal("_card_block", self)
 	
 
@@ -150,19 +154,31 @@ func destroy(cause: int) -> void:
 	GmManager.emit_signal("_card_destroy", self)
 	GmManager.emit_signal("_move_to_deck", card)
 
-func exhaust(card: Card)-> void:
+func exhaust()-> void:
 	available_actions.clear()
 	
 	if card.exhausted:
 		return
+	
+	card_art.texture = to_grayscale(card_art.texture)
+	card_back.texture = to_grayscale(card_back.texture)
+	card_front.texture = to_grayscale(card_front.texture)
 	card.exhausted = true
 	#card.card_info_animation.visible = false
-	card.card_back.scale.x = .5
-	card.card_back.scale.y = .5
-	card.card_front.scale.x = .5
-	card.card_front.scale.y = .5
-	card.card_art.scale.x = .5
-	card.card_art.scale.y = .5
+	#card.card_back.scale.x = .5
+	#card.card_back.scale.y = .5
+	#card.card_front.scale.x = .5
+	#card.card_front.scale.y = .5
+	#card.card_art.scale.x = .5
+	#card.card_art.scale.y = .5
+
+func to_grayscale(texture : Texture2D) -> Texture2D:
+	var image : Image = texture.get_image()
+	image.convert(Image.FORMAT_LA8)
+	image.convert(Image.FORMAT_RGBA8) # Not strictly necessary
+
+	var image_texture = ImageTexture.new()
+	return image_texture.create_from_image(image)
 
 func resolve_summon()->void:
 	available_actions.push_back(AI_CardActions.CardActions.ActivateAbility)
@@ -171,12 +187,15 @@ func refresh()->void:
 	paid = false
 	exhausted = false
 	resolved = false #NOTICE: Keep an eye on this
-	card_back.scale.x = 1
-	card_back.scale.y = 1
-	card_front.scale.x = 1
-	card_front.scale.y = 1
-	card_art.scale.x = 1
-	card_art.scale.y = 1
+	card_art.texture = art_texture
+	#card_front.texture = front_texture
+	card_back.texture = back_texture
+	#card_back.scale.x = 1
+	#card_back.scale.y = 1
+	#card_front.scale.x = 1
+	#card_front.scale.y = 1
+	#card_art.scale.x = 1
+	#card_art.scale.y = 1
 
 func reveal() -> void:
 	revealed = true
@@ -220,6 +239,10 @@ func _ready() -> void:
 	expanded_description.text = cardDescription
 	lore_text.text = cardLore
 	tag_text.text = tags[0] + ", " + tags[1]
+	
+	art_texture = card_art.texture
+	back_texture = card_back.texture
+	front_texture = card.front_texture
 	
 	summon_button.hide()
 	attack_button.hide()
