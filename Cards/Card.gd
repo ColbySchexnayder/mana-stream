@@ -164,13 +164,7 @@ func exhaust()-> void:
 	card_back.texture = to_grayscale(card_back.texture)
 	card_front.texture = to_grayscale(card_front.texture)
 	card.exhausted = true
-	#card.card_info_animation.visible = false
-	#card.card_back.scale.x = .5
-	#card.card_back.scale.y = .5
-	#card.card_front.scale.x = .5
-	#card.card_front.scale.y = .5
-	#card.card_art.scale.x = .5
-	#card.card_art.scale.y = .5
+	
 
 func to_grayscale(texture : Texture2D) -> Texture2D:
 	var image : Image = texture.get_image()
@@ -190,13 +184,7 @@ func refresh()->void:
 	card_art.texture = art_texture
 	#card_front.texture = front_texture
 	card_back.texture = back_texture
-	#card_back.scale.x = 1
-	#card_back.scale.y = 1
-	#card_front.scale.x = 1
-	#card_front.scale.y = 1
-	#card_art.scale.x = 1
-	#card_art.scale.y = 1
-
+	
 func reveal() -> void:
 	revealed = true
 	card_back.visible=  false
@@ -242,7 +230,7 @@ func _ready() -> void:
 	
 	art_texture = card_art.texture
 	back_texture = card_back.texture
-	front_texture = card.front_texture
+	front_texture = card_front.texture
 	
 	summon_button.hide()
 	attack_button.hide()
