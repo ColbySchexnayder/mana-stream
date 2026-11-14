@@ -1,6 +1,5 @@
 class_name AI extends Node
 
-
 #region Field
 var ai_hand : Array[Card] = []
 var ai_mana_zone : Array[Card] = []
@@ -105,6 +104,10 @@ func score_cards():
 		GmManager.phase.INTERRUPT:
 			pass
 
+func start_ai_turn() -> void:
+	score_field()
+	print(field_score["Total"])
+	
 #var current_state : BoardState
 #
 ##Awful. Ineffecient. Broken. Do Not Do This

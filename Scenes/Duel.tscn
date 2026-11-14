@@ -395,6 +395,10 @@ theme = ExtResource("7_o1sjj")
 [node name="AI" type="Node" parent="." unique_id=746923807]
 script = ExtResource("10_qiwog")
 
+[node name="AI_Manager" type="Node" parent="AI" unique_id=272029032]
+script = ExtResource("10_qiwog")
+metadata/_custom_type_script = "uid://dpgam1mn1u4ke"
+
 [node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1927805964]
 stream = ExtResource("13_8gp5r")
 

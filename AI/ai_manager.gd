@@ -67,7 +67,7 @@ func _ready() -> void:
 	
 #TODO: Move evaluators and actions here
 func _process(_delta: float) -> void:
-	if players_turn:
+	if GmManager.currentTurn == 1:
 		return
 	if Engine.get_process_frames() % 60 == 0:
 		if GmManager.currentPhase == GmManager.phase.REFRESH:

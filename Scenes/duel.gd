@@ -363,6 +363,7 @@ func card_select(card):
 		else:
 			if card.currentPosition == card.position.IN_SUMMON:
 				if GmManager.currentPhase == GmManager.phase.PLAY and !card.exhausted:
+					#TODO: prevent block from being available until a card actually attacks
 					card.block_button.visible = true
 					
 		#If something happens to the card while it's inspected it should still be destroyed properly
@@ -726,7 +727,6 @@ func change_turn():
 	phase_change_animation.visible = false
 	match currentTurn:
 		1:
-			ai.players_turn = true
 			draw(1)
 			for card in player1mana:
 				card.refresh()
@@ -739,7 +739,6 @@ func change_turn():
 				card.refresh()
 			for card in player2summon:
 				card.refresh()
-			ai.players_turn = false
 
 #Changes from REFRESH to PLAY and destroys any unpaid cards
 func change_phase():
