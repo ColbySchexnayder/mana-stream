@@ -7,7 +7,7 @@ class_name AI_Manager extends Node
 
 #Get it working. Simple is fine. Playable is better than perfect.
 
-
+var pilot : Pilot
 var ai_hand : Array[Card] = []
 var ai_mana_zone : Array[Card] = []
 var ai_summon_zone : Array[Card] = []

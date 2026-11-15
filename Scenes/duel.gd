@@ -76,15 +76,8 @@ var cardIndex
 @onready var phase_label: RichTextLabel = $Control/PhaseLabel
 @onready var interception_message: RichTextLabel = $Control/InterruptChoice/Panel/InterceptionMessage
 
-#@onready var ai: AI_Manager = $AI
-@onready var ai: AI = AI.new()
-#region AI Debug tools
-#const AI_VIEWER = preload("uid://bd82obug5i687")
-#@onready var ai_viewer: Window = $AiViewer
-#@onready var vtree: Tree = $AiViewer/VBoxContainer/Tree
-#var ui_root: TreeItem
-#@onready var spin_box: SpinBox = $AiViewer/VBoxContainer/HBoxContainer/SpinBox
-#endregion
+@onready var ai: AI_Manager = $AI_Manager
+
 
 @onready var sfx_player: AudioStreamPlayer = $SFXPlayer
 @onready var phase_change_animation: AnimatedSprite2D = $PhaseChangeAnimation
