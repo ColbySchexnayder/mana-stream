@@ -76,9 +76,6 @@ var cardIndex
 @onready var phase_label: RichTextLabel = $Control/PhaseLabel
 @onready var interception_message: RichTextLabel = $Control/InterruptChoice/Panel/InterceptionMessage
 
-@onready var ai: AI_Manager = $AI_Manager
-
-
 @onready var sfx_player: AudioStreamPlayer = $SFXPlayer
 @onready var phase_change_animation: AnimatedSprite2D = $PhaseChangeAnimation
 
@@ -103,11 +100,15 @@ const FADE_IN_ANIM = preload("uid://dtxhkshtiihfm")
 #Signals only used within the duel script
 signal choice_made(num)
 
+var  pilot : Pilot
+
 # Prepare the duel
 func _ready() -> void:
 	#Language adjustments
 	interception_message.text = tr("ACTIVATION_QUESTION")
-	
+	if !pilot:
+		pilot = load("res://AI/Pilots/MeekMouse.gd")
+		
 	#region Load Decks
 	for cardFileName in GmManager.Player1Deck:
 		var card = ResourceLoader.load("res://Cards/PlayableCards/"+cardFileName+".tscn").instantiate()#load("res://Cards/PlayableCards/"+cardFileName+".tscn")
@@ -151,17 +152,17 @@ func _ready() -> void:
 	p_2_life.text = str(p2Health)
 	
 	#Give the ai a copy of the field
-	ai.ai_deck = player2deck
-	ai.ai_hand = player2hand
-	ai.ai_mana_zone = player2mana
-	ai.ai_summon_zone = player2summon
+	pilot.ai_deck = player2deck
+	pilot.ai_hand = player2hand
+	pilot.ai_mana_zone = player2mana
+	pilot.ai_summon_zone = player2summon
 	
-	ai.player_deck = player1deck
-	ai.player_hand = player1hand
-	ai.player_summon_zone = player1summon
-	ai.player_mana_zone = player1mana
+	pilot.player_deck = player1deck
+	pilot.player_hand = player1hand
+	pilot.player_summon_zone = player1summon
+	pilot.player_mana_zone = player1mana
 	
-	ai.interruptStack = interruptStack
+	pilot.interruptStack = interruptStack
 	
 	#region Initialize signals
 	GmManager.connect("_card_select", card_select)
@@ -247,24 +248,24 @@ func _process(_delta: float) -> void:
 	p_2_life.text = str(p2Health)
 	
 	#region keep the ai up to date
-	ai.p1Health = health
-	ai.p1TotalMana = totalMana
-	ai.p1AvailableMana = availableMana
-	ai.p2Health = p2Health
-	ai.p2TotalMana = p2TotalMana
-	ai.p2AvailableMana = p2AvailableMana
+	pilot.p1Health = health
+	pilot.p1TotalMana = totalMana
+	pilot.p1AvailableMana = availableMana
+	pilot.p2Health = p2Health
+	pilot.p2TotalMana = p2TotalMana
+	pilot.p2AvailableMana = p2AvailableMana
 	
-	ai.ai_deck = player2deck
-	ai.ai_hand = player2hand
-	ai.ai_mana_zone = player2mana
-	ai.ai_summon_zone = player2summon
+	pilot.ai_deck = player2deck
+	pilot.ai_hand = player2hand
+	pilot.ai_mana_zone = player2mana
+	pilot.ai_summon_zone = player2summon
 	
-	ai.player_deck = player1deck
-	ai.player_hand = player1hand
-	ai.player_summon_zone = player1summon
-	ai.player_mana_zone = player1mana
+	pilot.player_deck = player1deck
+	pilot.player_hand = player1hand
+	pilot.player_summon_zone = player1summon
+	pilot.player_mana_zone = player1mana
 	
-	ai.interruptStack = interruptStack
+	pilot.interruptStack = interruptStack
 	#endregion
 	
 	check_interrupt()
@@ -664,7 +665,7 @@ func card_attack(card : Card):
 			GmManager.emit_signal("_block_resolved")
 			card.card_info_animation.visible = false
 			return
-		ai.choose_defense(card)
+		pilot.choose_defense(card)
 	if currentTurn == 2 and player1summon.size() == 0:
 		card.exhaust()
 		
@@ -821,7 +822,7 @@ func offer_selection(triggerCard: Card, zonesToSearch: Array[int], matchConditio
 	if triggerCard.cardOwner == 1:
 		chosenCard = await playerListSelection(selectionChoices)
 	else:
-		chosenCard = ai.choose_card(selectionChoices)
+		chosenCard = pilot.choose_card(selectionChoices)
 	
 	triggerCard.effectOtherCard(chosenCard)
 
@@ -856,7 +857,7 @@ func interrupt(card : Card):
 		print("Interrupt added")
 		interrupt_choice.show()
 	else:
-		ai.handle_interrupt(card)
+		pilot.handle_interrupt(card)
 	
 func check_interrupt():
 	var count := 0

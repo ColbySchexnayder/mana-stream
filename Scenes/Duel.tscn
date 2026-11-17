@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://dwavn4d1505jc" path="res://Art/passIcon.png" id="8_3ou88"]
 [ext_resource type="Texture2D" uid="uid://bjrpll86l131l" path="res://Art/arrow.png" id="8_lj5r5"]
 [ext_resource type="StyleBox" uid="uid://cg5rh6mn7nl38" path="res://Cards/InspectViewStyleBox.tres" id="9_yk5x5"]
-[ext_resource type="Script" uid="uid://dpgam1mn1u4ke" path="res://AI/AI_Manager.gd" id="10_qiwog"]
 [ext_resource type="Texture2D" uid="uid://bj0dvj3qv6nt3" path="res://Art/exclaimIcon.png" id="10_yyo3b"]
 [ext_resource type="Texture2D" uid="uid://cxlnyx77yc0lh" path="res://Art/BackgroundScreenMonochromelight.png" id="12_lat0q"]
 [ext_resource type="AudioStream" uid="uid://dkyqewcth6rkp" path="res://Sfx/UI Audio/Audio/click3.ogg" id="13_8gp5r"]
@@ -391,10 +390,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("7_o1sjj")
-
-[node name="AI_Manager" type="Node" parent="." unique_id=272029032]
-script = ExtResource("10_qiwog")
-metadata/_custom_type_script = "uid://dpgam1mn1u4ke"
 
 [node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1927805964]
 stream = ExtResource("13_8gp5r")
